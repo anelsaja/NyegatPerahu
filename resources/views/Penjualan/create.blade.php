@@ -137,6 +137,7 @@
         </button>
         </div>
     </div>
+    <div style="height: 60px;"></div>
 
     <div id="step-4" class="step-section">
         <h5 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h5>
@@ -206,6 +207,7 @@
     @csrf
     <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
     <input type="hidden" name="nelayan_id" id="input-rahasia-nelayan">
+    <input type="hidden" name="status_pembayaran" value="Lunas"> 
     <input type="hidden" name="biaya_admin" id="input-admin-hidden">
     
     <div id="tempat-input-ikan-rahasia"></div>

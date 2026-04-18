@@ -109,7 +109,7 @@ class PenjualanController extends Controller
         ]);
 
         // B. HAPUS SEMUA rincian ikan yang lama (Trik paling aman)
-        \App\DetailPenjualan::where('penjualan_id', $penjualan->penjualan_id)->delete();
+        DetailPenjualan::where('penjualan_id', $penjualan->penjualan_id)->delete();
 
         $total_keseluruhan = 0;
 
@@ -117,7 +117,7 @@ class PenjualanController extends Controller
         if ($request->has('hasil_laut')) {
             foreach ($request->hasil_laut as $item) {
                 if (!empty($item['jenis']) && !empty($item['harga']) && !empty($item['pengepul'])) {
-                    \App\DetailPenjualan::create([
+                    DetailPenjualan::create([
                         'penjualan_id' => $penjualan->penjualan_id,
                         'nama_pengepul' => $item['pengepul'],
                         'jenis_hasil_laut' => $item['jenis'],

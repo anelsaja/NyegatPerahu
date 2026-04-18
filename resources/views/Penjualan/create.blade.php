@@ -48,6 +48,22 @@
         text-decoration: none !important;
     }
     
+    .btn-bawahh { 
+        position: fixed;
+        bottom: 150px; /* di atas bottom nav */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 98%;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none !important;
+    }
+    .btn-bawahh a {
+        color: white;
+        text-decoration: none !important;
+    }
+    
     /* 3. ANIMASI PINDAH HALAMAN */
     .step-section { display: none; animation: fadeIn 0.3s ease-in-out; }
     .step-section.active { display: block; } /* Hanya yang punya class 'active' yang tampil */
@@ -115,10 +131,11 @@
                 <input type="number" id="input-Elek-Elekan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
         </div>
-        
-        <button onclick="simpanKeKeranjang()" class="btn btn-success btn-lg btn-block font-weight-bold mt-4 shadow-sm" style="border-radius: 10px;">
+        <div class="btn-bawahh">
+            <button onclick="simpanKeKeranjang()" class="btn btn-success btn-lg btn-block font-weight-bold mt-4 shadow-sm" style="border-radius: 10px;">
             + Tambahkan Data Ini
         </button>
+        </div>
     </div>
 
     <div id="step-4" class="step-section">
@@ -152,6 +169,16 @@
         <strong id="total-akhir" class="text-success">Rp 0</strong>
     </div>
 
+    <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
+    <div class="card-body">
+        <label class="font-weight-bold text-muted small">Status Pembayaran</label>
+        <select name="status_pembayaran" id="pilih-status" class="form-control border-0 bg-light" style="border-radius: 10px; font-weight: bold;">
+            <option value="Lunas">✅ Lunas (Uang sudah diterima)</option>
+            <option value="Belum Lunas">⏳ Belum Lunas (Bon/Hutang)</option>
+        </select>
+    </div>
+</div>
+
 </div>
 
         <h6 class="font-weight-bold mt-5 pt-3 border-top mb-3">Pilih Pengepul Lainnya</h6>
@@ -179,7 +206,6 @@
     @csrf
     <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
     <input type="hidden" name="nelayan_id" id="input-rahasia-nelayan">
-    <input type="hidden" name="status_pembayaran" value="Lunas"> 
     <input type="hidden" name="biaya_admin" id="input-admin-hidden">
     
     <div id="tempat-input-ikan-rahasia"></div>
@@ -373,6 +399,34 @@
 
     document.getElementById('total-akhir').innerText = 
         "Rp " + totalAkhir.toLocaleString('id-ID');
+}
+// Fungsi untuk menghapus ikan dari keranjang sebelum simpan
+function hapusIkan(index) {
+    if(confirm("Hapus data ikan ini?")) {
+        memori.daftar_belanja.splice(index, 1); // Hapus 1 data dari array
+        gambarUlangKeranjangBelanja();
+        
+        // Jika keranjang kosong, balik ke step 3
+        if(memori.daftar_belanja.length === 0) pindahKeStep(3);
+    }
+}
+
+// Fungsi untuk edit (mengembalikan data ke input step 3)
+function editIkan(index) {
+    let ikan = memori.daftar_belanja[index];
+    memori.pengepul_aktif = ikan.pengepul;
+    
+    // Tampilkan input harga di step 3 dan isi nilainya
+    let inputIkan = document.getElementById('input-' + ikan.jenis);
+    if(inputIkan) {
+        inputIkan.style.display = 'block';
+        inputIkan.value = ikan.harga;
+    }
+    
+    // Hapus data lama di keranjang agar tidak double saat disimpan ulang
+    memori.daftar_belanja.splice(index, 1);
+    
+    pindahKeStep(3);
 }
 </script>
 @endsection

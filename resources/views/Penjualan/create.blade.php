@@ -72,7 +72,8 @@
 
 <div class="p-3">
     
-    <div id="step-1" class="step-section active"> <h5 class="font-weight-bold mb-4 mt-2">Tambah Data Penjualan</h5>
+    <div id="step-1" class="step-section active">
+        <h4 class="font-weight-bold mb-4 mt-2">Tambah Data Penjualan</h4>
         <p class="font-weight-bold">Pilih Nelayan</p>
         
         <div class="grid-btn">
@@ -86,12 +87,16 @@
     </div>
 
     <div id="step-2" class="step-section">
-        <h5 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h5>
+        <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
         <table class="info-table mb-4">
             <tr><td>Tanggal</td><td>{{ date('d M Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td id="info-nelayan-nama">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
+
+        <button onclick="pindahKeStep(1)" class="btn btn-sm btn-light text-secondary mb-3 shadow-sm" style="border-radius: 8px; font-weight: bold;">
+            <i class="bi bi-arrow-left mr-1"></i> Kembali Pilih Nelayan
+        </button>
         
         <p class="font-weight-bold">Pilih Pengepul</p>
         <div class="grid-btn">
@@ -109,8 +114,12 @@
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
+
+        <button onclick="pindahKeStep(2)" class="btn btn-sm btn-light text-secondary mb-3 shadow-sm" style="border-radius: 8px; font-weight: bold;">
+            <i class="bi bi-arrow-left mr-1"></i> Kembali Pilih Pengepul
+        </button>
         
-        <h6 class="font-weight-bold border-bottom pb-2 mb-3 mt-4">Pengepul: <span id="info-pengepul-nama" class="text-info">-</span></h6>
+        <h6 class="font-weight-bold border-bottom pb-2 mb-3">Pengepul: <span id="info-pengepul-nama" class="text-info">-</span></h6>
         
         <p class="font-weight-bold">Pilih Jenis Nama Hasil Laut</p>
         <div class="grid-btn">
@@ -131,16 +140,25 @@
                 <input type="number" id="input-Elek-Elekan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
         </div>
+        <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
+            <div class="card-body">
+                <label class="font-weight-bold text-muted small">Status Pembayaran</label>
+                <select name="status_pembayaran" id="pilihan-status" class="form-control border-0 bg-light" style="border-radius: 10px; font-weight: bold;">
+                    <option value="Lunas">Lunas</option>
+                    <option value="Belum Lunas">Belum Lunas</option>
+                </select>
+            </div>
+        </div>
+        <div style="height: 100px;"></div>
         <div class="btn-bawahh">
             <button onclick="simpanKeKeranjang()" class="btn btn-success btn-lg btn-block font-weight-bold mt-4 shadow-sm" style="border-radius: 10px;">
             + Tambahkan Data Ini
-        </button>
+            </button>
         </div>
     </div>
-    <div style="height: 60px;"></div>
 
     <div id="step-4" class="step-section">
-        <h5 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h5>
+        <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
         
         <button onclick="kirimKeDatabaseLaravel()" class="btn btn-primary btn-lg btn-block font-weight-bold mb-4 shadow" style="border-radius: 10px; background-color: #007bff;">
             <i class="fas fa-print"></i> Cetak & Simpan Transaksi
@@ -155,42 +173,29 @@
         <div id="area-keranjang-belanja"></div>
         <div class="card p-3 mt-3 shadow-sm" style="border-radius: 12px;">
     
-    <div class="d-flex justify-content-between mb-2">
-        <span class="text-muted">Total Semua</span>
-        <strong id="total-semua">Rp 0</strong>
-    </div>
+        <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Total Semua</span>
+            <strong id="total-semua">Rp 0</strong>
+        </div>
 
-    <div class="form-group mb-2">
-        <label class="text-muted">Biaya Admin</label>
-        <input type="number" id="input-admin" class="form-control text-right" placeholder="Rp 0" oninput="hitungTotalAkhir()">
-    </div>
+        <div class="form-group mb-2">
+            <label class="text-muted">Biaya Admin</label>
+            <input type="number" id="input-admin" class="form-control text-right" placeholder="Rp 0" oninput="hitungTotalAkhir()">
+        </div>
 
-    <div class="d-flex justify-content-between mt-2 border-top pt-2">
-        <span class="font-weight-bold">Total Akhir</span>
-        <strong id="total-akhir" class="text-success">Rp 0</strong>
-    </div>
-
-    <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
-    <div class="card-body">
-        <label class="font-weight-bold text-muted small">Status Pembayaran</label>
-        <select name="status_pembayaran" id="pilih-status" class="form-control border-0 bg-light" style="border-radius: 10px; font-weight: bold;">
-            <option value="Lunas">✅ Lunas (Uang sudah diterima)</option>
-            <option value="Belum Lunas">⏳ Belum Lunas (Bon/Hutang)</option>
-        </select>
-    </div>
-</div>
-
-</div>
-
-        <h6 class="font-weight-bold mt-5 pt-3 border-top mb-3">Pilih Pengepul Lainnya</h6>
-        <div class="grid-btn">
-            <div class="btn-kotak" onclick="pilihPengepul('Kaji Arip')"><div class="icon-box">🐟</div>Kaji Arip</div>
-            <div class="btn-kotak" onclick="pilihPengepul('BBI')"><div class="icon-box">🏢</div>BBI</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Tarom')"><div class="icon-box">🚛</div>Tarom</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Panggang')"><div class="icon-box">🔥</div>Panggang</div>
+        <div class="d-flex justify-content-between mt-2 border-top pt-2">
+            <span class="font-weight-bold">Total Akhir</span>
+            <strong id="total-akhir" class="text-success">Rp 0</strong>
         </div>
     </div>
-
+    <h6 class="font-weight-bold pt-3 border-top mb-3">Pilih Pengepul Lainnya</h6>
+    <div class="grid-btn">
+        <div class="btn-kotak" onclick="pilihPengepul('Kaji Arip')"><div class="icon-box">🐟</div>Kaji Arip</div>
+        <div class="btn-kotak" onclick="pilihPengepul('BBI')"><div class="icon-box">🏢</div>BBI</div>
+        <div class="btn-kotak" onclick="pilihPengepul('Tarom')"><div class="icon-box">🚛</div>Tarom</div>
+        <div class="btn-kotak" onclick="pilihPengepul('Panggang')"><div class="icon-box">🔥</div>Panggang</div>
+    </div>
+    <div style="height: 100px;"></div>
 </div>
 
 <div class="btn-bawah">
@@ -207,9 +212,10 @@
     @csrf
     <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
     <input type="hidden" name="nelayan_id" id="input-rahasia-nelayan">
-    <input type="hidden" name="status_pembayaran" value="Lunas"> 
-    <input type="hidden" name="biaya_admin" id="input-admin-hidden">
     
+    <input type="hidden" name="status_pembayaran" id="input-rahasia-status"> 
+    
+    <input type="hidden" name="biaya_admin" id="input-admin-hidden">
     <div id="tempat-input-ikan-rahasia"></div>
 </form>
 
@@ -277,6 +283,8 @@
     // 6. SAAT KLIK TOMBOL "+ TAMBAHKAN DATA" (Step 3)
     function simpanKeKeranjang() {
         let adaIkanYangDiisi = false;
+        // Ambil status yang dipilih (Lunas / Belum Lunas)
+        let statusDipilih = document.getElementById('pilihan-status').value;
         
         // Cek satu-satu semua input harga yang ada di layar
         document.querySelectorAll('.input-harga').forEach(function(kotakInput) {
@@ -291,7 +299,8 @@
                 memori.daftar_belanja.push({
                     pengepul: memori.pengepul_aktif,
                     jenis: namaIkan,
-                    harga: hargaIkan
+                    harga: hargaIkan,
+                    status: statusDipilih // Simpan status di sini
                 });
                 
                 adaIkanYangDiisi = true;
@@ -328,10 +337,20 @@
     for (let namaPengepul in lemariPengepul) {
         let totalHarga = 0;
 
+        // Ambil status dari ikan pertama dalam grup pengepul ini
+        let statusTampil = lemariPengepul[namaPengepul][0].status;
+        
+        // Tentukan warna badge: Lunas (Success/Hijau), Belum Lunas (Warning/Kuning)
+        let warnaBadge = (statusTampil === 'Lunas') ? 'badge-success' : 'badge-warning';
+
         let desainHTML = `
             <div class="mb-4 border-bottom pb-2">
                 <h6 class="font-weight-bold d-inline-block">Pengepul: ${namaPengepul}</h6>
-                <span class="badge badge-success float-right rounded-pill px-2">Lunas</span>
+                
+                <span class="badge ${warnaBadge} float-right rounded-pill px-2">
+                    ${statusTampil}
+                </span>
+
                 <table class="info-table mt-1">
         `;
 
@@ -372,6 +391,9 @@
 
         // A. Isi ID Nelayan ke form rahasia
         document.getElementById('input-rahasia-nelayan').value = memori.nelayan_id;
+
+        // TAMBAHKAN BARIS INI: Ambil status Lunas/Belum Lunas yang dipilih user
+        document.getElementById('input-rahasia-status').value = document.getElementById('pilihan-status').value;
 
         // B. Buat inputan rahasia untuk setiap ikan di keranjang
         let areaInputRahasia = document.getElementById('tempat-input-ikan-rahasia');

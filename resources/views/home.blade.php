@@ -34,14 +34,14 @@
 
     <form action="{{ route('home') }}" method="GET" class="mb-4">
         <div class="input-group">
-            <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}">
+            <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}" max="{{ date('Y-m-d') }}">
             <div class="input-group-append">
                 <button class="btn btn-secondary" type="submit">Cari</button>
             </div>
         </div>
     </form>
 
-@foreach($riwayat_penjualan as $trx)
+    @foreach($riwayat_penjualan->sortByDesc('created_at') as $trx)
     <div class="card mb-3 shadow-lg border-0" style="border-radius: 12px; background-color: #ffffff;">
         <div class="card-body p-3">
             <div class="d-flex justify-content-between border-bottom pb-2 mb-2">

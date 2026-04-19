@@ -50,13 +50,16 @@
     
     .btn-bawahh { 
         position: fixed;
-        bottom: 150px; /* di atas bottom nav */
+        bottom: 90px; /* di atas bottom nav */
         left: 50%;
         transform: translateX(-50%);
         width: 98%;
+        padding: 20px;
         font-size: 18px;
+        border-radius: 15px;
         font-weight: bold;
         text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         text-decoration: none !important;
     }
     .btn-bawahh a {
@@ -84,6 +87,14 @@
             </div>
             @endforeach
         </div>
+        <div class="btn-bawah">
+            <a href="{{ route('home') }}" 
+            class="w-100 shadow-sm py-3 text-center"
+            style="border-radius: 12px; font-size: 16px;">
+                <i class="bi bi-x-circle"></i><br>
+                Batal
+            </a>
+        </div>
     </div>
 
     <div id="step-2" class="step-section">
@@ -94,9 +105,7 @@
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
-        <button onclick="pindahKeStep(1)" class="btn btn-sm btn-light text-secondary mb-3 shadow-sm" style="border-radius: 8px; font-weight: bold;">
-            <i class="bi bi-arrow-left mr-1"></i> Kembali Pilih Nelayan
-        </button>
+
         
         <p class="font-weight-bold">Pilih Pengepul</p>
         <div class="grid-btn">
@@ -104,6 +113,12 @@
             <div class="btn-kotak" onclick="pilihPengepul('BBI')"><div class="icon-box">🏢</div>BBI</div>
             <div class="btn-kotak" onclick="pilihPengepul('Tarom')"><div class="icon-box">🚛</div>Tarom</div>
             <div class="btn-kotak" onclick="pilihPengepul('Panggang')"><div class="icon-box">🔥</div>Panggang</div>
+        </div>
+
+        <div class="btn-bawah">
+            <button onclick="pindahKeStep(1)" class="btn btn-sm btn-light text-secondary mb-3 shadow-sm" style="border-radius: 8px; font-weight: bold;">
+                <i class="bi bi-arrow-left mr-1"></i> Kembali Pilih Nelayan
+            </button>
         </div>
     </div>
 
@@ -114,10 +129,6 @@
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
-
-        <button onclick="pindahKeStep(2)" class="btn btn-sm btn-light text-secondary mb-3 shadow-sm" style="border-radius: 8px; font-weight: bold;">
-            <i class="bi bi-arrow-left mr-1"></i> Kembali Pilih Pengepul
-        </button>
         
         <h6 class="font-weight-bold border-bottom pb-2 mb-3">Pengepul: <span id="info-pengepul-nama" class="text-info">-</span></h6>
         
@@ -155,6 +166,10 @@
             + Tambahkan Data Ini
             </button>
         </div>
+        <div class="btn-bawah">
+            <button onclick="pindahKeStep(2)" class="btn btn-sm btn-light text-secondary mb-3 shadow-sm" style="border-radius: 8px; font-weight: bold;">
+                <i class="bi bi-arrow-left mr-1"></i> Kembali Pilih Pengepul
+            </button>
     </div>
 
     <div id="step-4" class="step-section">
@@ -198,22 +213,13 @@
     <div style="height: 100px;"></div>
 </div>
 
-<div class="btn-bawah">
-    <a href="{{ route('home') }}" 
-       class="w-100 shadow-sm py-3 text-center"
-       style="border-radius: 12px; font-size: 16px;">
-        
-        <div style="font-size:20px;">⊗</div>
-        Batal
-    </a>
-</div>
 
 <form id="form-rahasia" action="{{ route('penjualan.store') }}" method="POST" style="display: none;">
     @csrf
     <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
     <input type="hidden" name="nelayan_id" id="input-rahasia-nelayan">
     
-    <input type="hidden" name="status_pembayaran" id="input-rahasia-status"> 
+    <!-- <input type="hidden" name="status_pembayaran" id="input-rahasia-status">  -->
     
     <input type="hidden" name="biaya_admin" id="input-admin-hidden">
     <div id="tempat-input-ikan-rahasia"></div>
@@ -393,7 +399,7 @@
         document.getElementById('input-rahasia-nelayan').value = memori.nelayan_id;
 
         // TAMBAHKAN BARIS INI: Ambil status Lunas/Belum Lunas yang dipilih user
-        document.getElementById('input-rahasia-status').value = document.getElementById('pilihan-status').value;
+        // document.getElementById('input-rahasia-status').value = document.getElementById('pilihan-status').value;
 
         // B. Buat inputan rahasia untuk setiap ikan di keranjang
         let areaInputRahasia = document.getElementById('tempat-input-ikan-rahasia');
@@ -403,6 +409,7 @@
             areaInputRahasia.innerHTML += `<input type="hidden" name="hasil_laut[${urutan}][pengepul]" value="${ikan.pengepul}">`;
             areaInputRahasia.innerHTML += `<input type="hidden" name="hasil_laut[${urutan}][jenis]" value="${ikan.jenis}">`;
             areaInputRahasia.innerHTML += `<input type="hidden" name="hasil_laut[${urutan}][harga]" value="${ikan.harga}">`;
+            areaInputRahasia.innerHTML += `<input type="hidden" name="hasil_laut[${urutan}][status_pembayaran]" value="${ikan.status}">`;
         });
 
         // ambil nilai admin dari input

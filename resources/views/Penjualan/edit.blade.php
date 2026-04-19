@@ -2,7 +2,6 @@
 @section('content')
 
 <style>
-    /* Sembunyikan navigasi bawah KHUSUS di halaman ini */
     .bottom-nav { display: none !important; }
     .mobile-container { padding-bottom: 120px !important; }
 
@@ -10,40 +9,41 @@
     .info-table td { padding: 4px 0; border-bottom: 1px dashed #eee; }
     .info-table td:last-child { text-align: right; font-weight: bold; }
     
-    /* Bar putih di bawah */
     .btn-bawah-ganda { 
-        position: fixed; 
-        bottom: 0; 
-        left: 0; 
-        width: 100%; 
-        padding: 12px; 
-        z-index: 1050; 
-        display: flex; 
-        gap: 10px;
+        position: fixed; bottom: 0; left: 0; width: 100%; 
+        padding: 12px; z-index: 1050; display: flex; gap: 10px; background-color: #ffffff;
+        border-top: 1px solid #f0f0f0;
     }
 
-    .btn-bawah-ganda a, 
-    .btn-bawah-ganda button {
-        flex: 1; /* otomatis 50:50 */
-        padding: 14px;
-        border-radius: 12px;
-        font-weight: 600;
-        text-align: center;
-        border: none; 
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    .btn-bawah-ganda a, .btn-bawah-ganda button {
+        flex: 1; padding: 14px; border-radius: 12px; font-weight: 600;
+        text-align: center; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
     }
 
-    /* Modifikasi Input agar terlihat seperti struk */
     .input-struk {
         border: 1px solid #e0e0e0; background-color: #fafafa;
         border-radius: 8px; font-size: 14px; font-weight: bold;
     }
     .input-struk:focus { background-color: #fff; border-color: #5bc0de; box-shadow: none; }
     
-    /* Kotak Ikan */
     .card-ikan {
         background-color: #ffffff; border-radius: 12px; 
         border: 1px solid #eaeaea; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    /* Gaya Input Ikan seperti Card Step 3 */
+    .card-input-ikan {
+        background-color: #eaf6fd;
+        border: 1px solid #b8daff;
+        border-radius: 8px;
+        padding: 4px 10px;
+    }
+    .card-input-ikan input {
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #0056b3;
+        padding: 0;
     }
 </style>
 
@@ -60,29 +60,37 @@
         <table class="info-table mb-4">
             <tr><td class="text-muted">Tanggal</td><td>{{ date('d M Y', strtotime($penjualan->tanggal)) }}</td></tr>
             <tr><td class="text-muted">Nama Nelayan</td><td>{{ $penjualan->nelayan->nama ?? '-' }}</td></tr>
-            <tr><td class="text-muted">Dicatat Oleh</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
+            <tr><td class="text-muted">Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
-        <h6 class="font-weight-bold mt-4 mb-3 pb-2 border-bottom">Rincian Tangkapan</h6>
+        <h6 class="font-weight-bold mt-4 mb-3 pb-2 border-bottom">Rincian Tangkapan & Pembayaran</h6>
 
         <div id="area-hasil-laut">
             @foreach($penjualan->detail as $index => $item)
             <div class="mb-3 p-3 card-ikan" id="baris-ikan-{{ $index }}">
                 
                 <div class="d-flex justify-content-between mb-3 align-items-center border-bottom pb-2">
-                    <select name="hasil_laut[{{ $index }}][pengepul]" class="form-control form-control-sm input-struk w-75 border-0 bg-light" required>
+                    <select name="hasil_laut[{{ $index }}][pengepul]" class="form-control form-control-sm input-struk mr-2 border-0 bg-light" style="flex: 1.2;" required>
                         <option value="Kaji Arip" {{ $item->nama_pengepul == 'Kaji Arip' ? 'selected' : '' }}>Pengepul: Kaji Arip</option>
                         <option value="BBI" {{ $item->nama_pengepul == 'BBI' ? 'selected' : '' }}>Pengepul: BBI</option>
                         <option value="Tarom" {{ $item->nama_pengepul == 'Tarom' ? 'selected' : '' }}>Pengepul: Tarom</option>
                         <option value="Panggang" {{ $item->nama_pengepul == 'Panggang' ? 'selected' : '' }}>Pengepul: Panggang</option>
                     </select>
-                    <button type="button" class="btn btn-sm text-danger font-weight-bold" onclick="hapusBaris('baris-ikan-{{ $index }}')">
+                    
+                    <select name="hasil_laut[{{ $index }}][status_pembayaran]" class="form-control form-control-sm input-struk mr-2 border-0" style="flex: 1; background-color: #fff3cd; color: #856404; font-size: 12px;" required>
+                        <option value="Lunas" {{ $item->status_pembayaran == 'Lunas' ? 'selected' : '' }}>✅ Lunas</option>
+                        <option value="Belum Lunas" {{ $item->status_pembayaran == 'Belum Lunas' ? 'selected' : '' }}>⏳ Bon</option>
+                    </select>
+
+                    <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('baris-ikan-{{ $index }}')">
                         <i class="bi bi-trash3-fill" style="font-size: 16px;"></i>
                     </button>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <input type="text" name="hasil_laut[{{ $index }}][jenis]" class="form-control form-control-sm input-struk mr-2" style="flex: 1;" value="{{ $item->jenis_hasil_laut }}" required>
+                    <div class="card-input-ikan mr-2" style="flex: 1;">
+                        <input type="text" name="hasil_laut[{{ $index }}][jenis]" class="form-control form-control-sm font-weight-bold" value="{{ $item->jenis_hasil_laut }}" placeholder="Nama Ikan" required>
+                    </div>
                     
                     <div class="input-group input-group-sm" style="flex: 1.2;">
                         <div class="input-group-prepend">
@@ -99,16 +107,6 @@
             <i class="bi bi-plus-circle mr-1"></i> Tambah Ikan Lainnya
         </button>
 
-        <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px; background-color: #f8f9fa;">
-            <div class="card-body p-3">
-                <label class="font-weight-bold text-muted small mb-2">Status Pembayaran</label>
-                <select name="status_pembayaran" class="form-control form-control-lg border-0 shadow-sm" style="border-radius: 10px; font-weight: bold;">
-                    <option value="Lunas" {{ $penjualan->status_pembayaran == 'Lunas' ? 'selected' : '' }}>✅ Lunas (Uang Diterima)</option>
-                    <option value="Belum Lunas" {{ $penjualan->status_pembayaran == 'Belum Lunas' ? 'selected' : '' }}>⏳ Belum Lunas (Masih Hutang)</option>
-                </select>
-            </div>
-        </div>
-
         <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px; background-color: #eaf6fd;">
             <div class="card-body p-3 d-flex justify-content-between align-items-center">
                 <span class="font-weight-bold text-muted small">Total Keseluruhan:</span>
@@ -117,21 +115,11 @@
         </div>
 
         <div class="btn-bawah-ganda">
-            <a href="{{ route('home') }}" class="btn btn-light text-secondary">
-                Batal
-            </a>
+            <a href="{{ route('home') }}" class="btn btn-light text-secondary">Batal</a>
             <button type="submit" class="btn btn-warning font-weight-bold shadow-sm text-black">
                 <i class="bi bi-floppy-fill mr-1"></i> Simpan Edit
             </button>
         </div>
-        <!-- <div class="btn-bawah-ganda">
-            <a href="{{ route('home') }}" class="btn btn-light text-secondary">
-                Kembali
-            </a>
-            <a href="{{ route('penjualan.cetak', $penjualan->penjualan_id) }}" class="btn btn-primary text-white">
-                <i class="bi bi-printer-fill mr-2"></i> Cetak Ulang
-            </a>
-        </div> -->
     </form>
 </div>
 
@@ -141,23 +129,30 @@
     document.getElementById('btn-tambah-baris').addEventListener('click', function() {
         let idBaris = 'baris-ikan-' + urutanKe;
         
-        // 3. KONSISTENSI ICON (Ubah fa-trash-alt jadi bi-trash3-fill)
         let kotakBaru = `
             <div class="mb-3 p-3 card-ikan" id="${idBaris}">
                 <div class="d-flex justify-content-between mb-3 align-items-center border-bottom pb-2">
-                    <select name="hasil_laut[${urutanKe}][pengepul]" class="form-control form-control-sm input-struk w-75 border-0 bg-light" required>
+                    <select name="hasil_laut[${urutanKe}][pengepul]" class="form-control form-control-sm input-struk mr-2 border-0 bg-light w-75" required>
                         <option value="">-- Pilih Pengepul --</option>
-                        <option value="Kaji Arip">Pengepul: Kaji Arip</option>
-                        <option value="BBI">Pengepul: BBI</option>
-                        <option value="Tarom">Pengepul: Tarom</option>
-                        <option value="Panggang">Pengepul: Panggang</option>
+                        <option value="Kaji Arip">Kaji Arip</option>
+                        <option value="BBI">BBI</option>
+                        <option value="Tarom">Tarom</option>
+                        <option value="Panggang">Panggang</option>
                     </select>
-                    <button type="button" class="btn btn-sm text-danger font-weight-bold" onclick="hapusBaris('${idBaris}')">
+                    
+                    <select name="hasil_laut[${urutanKe}][status_pembayaran]" class="form-control form-control-sm input-struk mr-2 border-0" style="flex: 1; background-color: #fff3cd; color: #856404; font-size: 12px;" required>
+                        <option value="Lunas">✅ Lunas</option>
+                        <option value="Belum Lunas">⏳ Bon</option>
+                    </select>
+
+                    <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('${idBaris}')">
                         <i class="bi bi-trash3-fill" style="font-size: 16px;"></i>
                     </button>
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
-                    <input type="text" name="hasil_laut[${urutanKe}][jenis]" class="form-control form-control-sm input-struk mr-2" style="flex: 1;" placeholder="Jenis Ikan" required>
+                    <div class="card-input-ikan mr-2" style="flex: 1;">
+                        <input type="text" name="hasil_laut[${urutanKe}][jenis]" class="form-control form-control-sm font-weight-bold" placeholder="Nama Ikan" required>
+                    </div>
                     
                     <div class="input-group input-group-sm" style="flex: 1.2;">
                         <div class="input-group-prepend">
@@ -176,11 +171,10 @@
         let elemen = document.getElementById(id);
         if(elemen) {
             elemen.remove();
-            hitungTotalBaru(); // Hitung ulang total jika ada baris yang dihapus
+            hitungTotalBaru(); 
         }
     }
 
-    // FUNGSI BARU: Kalkulator Total Otomatis
     function hitungTotalBaru() {
         let total = 0;
         let semuaHarga = document.querySelectorAll('.nilai-harga');
@@ -191,12 +185,9 @@
                 total += angka;
             }
         });
-
-        // Tampilkan ke layar dengan format Rupiah
         document.getElementById('teks-total-semua').innerText = 'Rp ' + total.toLocaleString('id-ID');
     }
 
-    // Jalankan satu kali saat halaman edit baru saja dibuka
     window.onload = function() {
         hitungTotalBaru();
     };

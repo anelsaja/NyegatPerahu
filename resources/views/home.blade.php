@@ -50,9 +50,6 @@
             </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
-                    <span class="badge {{ $trx->status_pembayaran == 'Lunas' ? 'badge-success' : 'badge-warning' }} mb-1">
-                        {{ $trx->status_pembayaran }}
-                    </span>
                     <div style="font-size: 13px;">Pengepul: <strong>{{ $trx->detail->pluck('nama_pengepul')->unique()->implode(', ') }}</strong></div>
                 </div>
                 <div class="text-right">

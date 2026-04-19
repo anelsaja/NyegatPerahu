@@ -20,6 +20,9 @@ class CreateDetailPenjualanTable extends Migration
             $table->string('jenis_hasil_laut');
             $table->decimal('harga', 15, 2);
 
+            // TAMBAHKAN BARIS INI:
+            $table->enum('status_pembayaran', ['Lunas', 'Belum Lunas'])->default('Lunas');
+
             $table->foreign('penjualan_id')->references('penjualan_id')->on('penjualan')->onDelete('cascade');
         });
     }

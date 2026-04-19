@@ -27,7 +27,7 @@ class PenjualanController extends Controller
             'tanggal' => $request->tanggal,
             'total_harga' => 0, 
             'biaya_admin' => $request->biaya_admin ?? 0,
-            'status_pembayaran' => $request->status_pembayaran,
+            // 'status_pembayaran' => $request->status_pembayaran,
         ]);
 
         $total_keseluruhan = 0;
@@ -40,7 +40,8 @@ class PenjualanController extends Controller
                         'penjualan_id' => $penjualan->penjualan_id,
                         'nama_pengepul' => $item['pengepul'], // Disimpan per baris ikan
                         'jenis_hasil_laut' => $item['jenis'],
-                        'harga' => $item['harga']
+                        'harga' => $item['harga'],
+                        'status_pembayaran' => $item['status_pembayaran'] // Pastikan ini ikut disimpan!
                     ]);
                     $total_keseluruhan += $item['harga']; 
                 }
@@ -121,7 +122,8 @@ class PenjualanController extends Controller
                         'penjualan_id' => $penjualan->penjualan_id,
                         'nama_pengepul' => $item['pengepul'],
                         'jenis_hasil_laut' => $item['jenis'],
-                        'harga' => $item['harga']
+                        'harga' => $item['harga'],
+                        'status_pembayaran' => $item['status_pembayaran'] // Pastikan ini ikut disimpan!
                     ]);
                     $total_keseluruhan += $item['harga'];
                 }

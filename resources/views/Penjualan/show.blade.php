@@ -15,9 +15,7 @@
         bottom: 0; 
         left: 0; 
         width: 100%; 
-        background-color: #ffffff; 
         padding: 12px; 
-        border-top: 1px solid #f0f0f0; 
         z-index: 1050; 
         display: flex; 
         gap: 10px;
@@ -38,10 +36,8 @@
 
 
 <div class="p-3">
-    <div class="text-center mb-4 mt-2">
-        <h5 class="font-weight-bold mb-1">Rincian Transaksi</h5>
-        <span class="badge {{ $penjualan->status_pembayaran == 'Lunas' ? 'badge-success' : 'badge-warning' }}">{{ $penjualan->status_pembayaran }}</span>
-    </div>
+    <h4 class="font-weight-bold mb-4 mt-2">Rincian Transaksi</h4>
+    <span class="badge {{ $penjualan->status_pembayaran == 'Lunas' ? 'badge-success' : 'badge-warning' }}">{{ $penjualan->status_pembayaran }}</span>
     
     <table class="info-table mb-4">
         <tr><td class="text-muted">Tanggal</td><td>{{ date('d M Y', strtotime($penjualan->tanggal)) }}</td></tr>
@@ -96,4 +92,12 @@
         <i class="bi bi-printer-fill mr-2"></i> Cetak Ulang
     </a>
 </div>
+        <div class="btn-bawah-ganda">
+            <a href="{{ route('home') }}" class="btn btn-light text-secondary">
+                Batal
+            </a>
+            <button type="submit" class="btn btn-warning font-weight-bold shadow-sm text-black">
+                <i class="bi bi-floppy-fill mr-1"></i> Simpan Edit
+            </button>
+        </div>
 @endsection

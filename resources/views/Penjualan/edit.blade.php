@@ -12,19 +12,25 @@
     
     /* Bar putih di bawah */
     .btn-bawah-ganda { 
-        position: fixed; bottom: 0; left: 0; width: 100%; 
-        background-color: #ffffff; padding: 15px; 
-        border-top: 1px solid #f0f0f0; z-index: 1050; 
-        display: flex; justify-content: center; gap: 15px;
+        position: fixed; 
+        bottom: 0; 
+        left: 0; 
+        width: 100%; 
+        padding: 12px; 
+        z-index: 1050; 
+        display: flex; 
+        gap: 10px;
     }
 
-    .btn-bawah-ganda a, .btn-bawah-ganda button {
-        flex: 1; max-width: 240px; padding: 14px;
-        border-radius: 12px; font-weight: bold; text-align: center;
-        border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: none; 
-    }
-    .btn-bawah-ganda a:active, .btn-bawah-ganda button:active {
-        transform: translateY(2px); box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
+    .btn-bawah-ganda a, 
+    .btn-bawah-ganda button {
+        flex: 1; /* otomatis 50:50 */
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-align: center;
+        border: none; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
     }
 
     /* Modifikasi Input agar terlihat seperti struk */
@@ -42,13 +48,7 @@
 </style>
 
 <div class="p-3">
-    <div class="text-center mb-4 mt-2">
-        <div style="width: 60px; height: 60px; background-color: #fff3cd; color: #ffc107; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-size: 26px; margin-bottom: 10px;">
-            <i class="bi bi-pencil-square"></i>
-        </div>
-        <h5 class="font-weight-bold mb-1 text-dark">Edit Transaksi</h5>
-        <p class="text-muted small">Perbarui data atau ubah status pembayaran</p>
-    </div>
+    <h4 class="font-weight-bold mb-3 mt-2">Edit Transaksi</h4>
 
     <form action="{{ route('penjualan.update', $penjualan->penjualan_id) }}" method="POST">
         @csrf
@@ -56,16 +56,6 @@
 
         <input type="hidden" name="tanggal" value="{{ $penjualan->tanggal }}">
         <input type="hidden" name="nelayan_id" value="{{ $penjualan->nelayan_id }}">
-
-        <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px; background-color: #f8f9fa;">
-            <div class="card-body p-3">
-                <label class="font-weight-bold text-muted small mb-2">Status Pembayaran</label>
-                <select name="status_pembayaran" class="form-control form-control-lg border-0 shadow-sm" style="border-radius: 10px; font-weight: bold;">
-                    <option value="Lunas" {{ $penjualan->status_pembayaran == 'Lunas' ? 'selected' : '' }}>✅ Lunas (Uang Diterima)</option>
-                    <option value="Belum Lunas" {{ $penjualan->status_pembayaran == 'Belum Lunas' ? 'selected' : '' }}>⏳ Belum Lunas (Masih Hutang)</option>
-                </select>
-            </div>
-        </div>
 
         <table class="info-table mb-4">
             <tr><td class="text-muted">Tanggal</td><td>{{ date('d M Y', strtotime($penjualan->tanggal)) }}</td></tr>
@@ -109,6 +99,16 @@
             <i class="bi bi-plus-circle mr-1"></i> Tambah Ikan Lainnya
         </button>
 
+        <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px; background-color: #f8f9fa;">
+            <div class="card-body p-3">
+                <label class="font-weight-bold text-muted small mb-2">Status Pembayaran</label>
+                <select name="status_pembayaran" class="form-control form-control-lg border-0 shadow-sm" style="border-radius: 10px; font-weight: bold;">
+                    <option value="Lunas" {{ $penjualan->status_pembayaran == 'Lunas' ? 'selected' : '' }}>✅ Lunas (Uang Diterima)</option>
+                    <option value="Belum Lunas" {{ $penjualan->status_pembayaran == 'Belum Lunas' ? 'selected' : '' }}>⏳ Belum Lunas (Masih Hutang)</option>
+                </select>
+            </div>
+        </div>
+
         <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px; background-color: #eaf6fd;">
             <div class="card-body p-3 d-flex justify-content-between align-items-center">
                 <span class="font-weight-bold text-muted small">Total Keseluruhan:</span>
@@ -117,13 +117,21 @@
         </div>
 
         <div class="btn-bawah-ganda">
-            <a href="{{ route('home') }}" class="btn btn-light font-weight-bold shadow-sm text-secondary" style="border-radius: 12px;">
+            <a href="{{ route('home') }}" class="btn btn-light text-secondary">
                 Batal
             </a>
-            <button type="submit" class="btn btn-warning font-weight-bold shadow-sm text-white" style="border-radius: 12px;">
+            <button type="submit" class="btn btn-warning font-weight-bold shadow-sm text-black">
                 <i class="bi bi-floppy-fill mr-1"></i> Simpan Edit
             </button>
         </div>
+        <!-- <div class="btn-bawah-ganda">
+            <a href="{{ route('home') }}" class="btn btn-light text-secondary">
+                Kembali
+            </a>
+            <a href="{{ route('penjualan.cetak', $penjualan->penjualan_id) }}" class="btn btn-primary text-white">
+                <i class="bi bi-printer-fill mr-2"></i> Cetak Ulang
+            </a>
+        </div> -->
     </form>
 </div>
 

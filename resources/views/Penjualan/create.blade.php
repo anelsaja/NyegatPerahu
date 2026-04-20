@@ -191,7 +191,64 @@
 
     <div id="step-4" class="step-section">
         <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
+        <table class="info-table mb-4">
+            <tr><td>Tanggal</td><td>{{ date('d M Y') }}</td></tr>
+            <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
+            <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
+        </table>
+
+        <div id="area-keranjang-belanja"></div>
         
+        <div class="card p-3 mb-3 bg-light">
+            <div class="d-flex justify-content-between">
+                <span>Total Sementara</span>
+                <strong id="total-semua">Rp 0</strong>
+            </div>
+        </div>
+
+        <h6 class="font-weight-bold pt-3 border-top mb-3">Pilih Pengepul Lainnya</h6>
+        <div class="grid-btn">
+            <div class="btn-kotak" onclick="pilihPengepul('Kaji Arip')"><div class="icon-box">🐟</div>Kaji Arip</div>
+            <div class="btn-kotak" onclick="pilihPengepul('BBI')"><div class="icon-box">🏢</div>BBI</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Tarom')"><div class="icon-box">🚛</div>Tarom</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Panggang')"><div class="icon-box">🔥</div>Panggang</div>
+        </div>
+        <div style="height: 100px;"></div>
+
+        <div class="btn-bawah">
+            <button onclick="pindahKeStep(5)" class="btn-batal" style="background-color: green;">
+                Lanjut ke Pembayaran
+            </button>
+        </div>
+    </div>
+
+    <div id="step-5" class="step-section">
+        <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
+        <table class="info-table mb-4">
+            <tr><td>Tanggal</td><td>{{ date('d M Y') }}</td></tr>
+            <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
+            <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
+        </table>
+
+        <div id="area-keranjang-belanja"></div>
+        
+        <div class="card p-3 shadow-sm mb-4">
+            <div class="d-flex justify-content-between mb-3">
+                <span class="text-muted">Total Tangkapan</span>
+                <strong id="teks-total-kotor-step5">Rp 0</strong>
+            </div>
+
+            <div class="form-group border-bottom pb-3">
+                <label>Potongan Biaya Admin</label>
+                <input type="number" id="input-admin" class="form-control form-control-lg text-right" placeholder="0" oninput="hitungTotalAkhir()">
+            </div>
+
+            <div class="d-flex justify-content-between mt-3">
+                <span class="font-weight-bold text-success">TOTAL AKHIR</span>
+                <strong id="teks-total-akhir" class="text-success" style="font-size: 24px;">Rp 0</strong>
+            </div>
+        </div>
+
         <div class="d-flex mb-4" style="gap: 10px;">
             <button type="button" onclick="kirimKeDatabaseLaravel('simpan')" class="btn btn-outline-success font-weight-bold shadow-sm" style="flex: 1; border-radius: 10px; border-width: 2px;">
                 <i class="bi bi-floppy-fill mr-1"></i> Simpan Saja
@@ -201,39 +258,7 @@
                 <i class="bi bi-printer-fill mr-1"></i> Cetak Karcis
             </button>
         </div>
-
-        <table class="info-table mb-4">
-            <tr><td>Tanggal</td><td>{{ date('d M Y') }}</td></tr>
-            <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
-            <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
-        </table>
-
-        <div id="area-keranjang-belanja"></div>
-        <div class="card p-3 mt-3 shadow-sm" style="border-radius: 12px;">
-    
-        <div class="d-flex justify-content-between mb-2">
-            <span class="text-muted">Total Semua</span>
-            <strong id="total-semua">Rp 0</strong>
-        </div>
-
-        <div class="form-group mb-2">
-            <label class="text-muted">Biaya Admin</label>
-            <input type="number" id="input-admin" class="form-control text-right" placeholder="Rp 0" oninput="hitungTotalAkhir()">
-        </div>
-
-        <div class="d-flex justify-content-between mt-2 border-top pt-2">
-            <span class="font-weight-bold">Total Akhir</span>
-            <strong id="total-akhir" class="text-success">Rp 0</strong>
-        </div>
     </div>
-    <h6 class="font-weight-bold pt-3 border-top mb-3">Pilih Pengepul Lainnya</h6>
-    <div class="grid-btn">
-        <div class="btn-kotak" onclick="pilihPengepul('Kaji Arip')"><div class="icon-box">🐟</div>Kaji Arip</div>
-        <div class="btn-kotak" onclick="pilihPengepul('BBI')"><div class="icon-box">🏢</div>BBI</div>
-        <div class="btn-kotak" onclick="pilihPengepul('Tarom')"><div class="icon-box">🚛</div>Tarom</div>
-        <div class="btn-kotak" onclick="pilihPengepul('Panggang')"><div class="icon-box">🔥</div>Panggang</div>
-    </div>
-    <div style="height: 100px;"></div>
 </div>
 
 
@@ -258,12 +283,20 @@
 
     // 2. FUNGSI PINDAH HALAMAN
     // Tugasnya: Menyembunyikan semua step, lalu menampilkan step yang diminta
-    function pindahKeStep(nomorStep) {
-        document.querySelectorAll('.step-section').forEach(function(bagian) {
-            bagian.classList.remove('active'); // Sembunyikan semua
-        });
-        document.getElementById('step-' + nomorStep).classList.add('active'); // Tampilkan 1 saja
-        window.scrollTo(0, 0); // Gulir layar ke paling atas
+    function pindahKeStep(nomor) {
+        // Sembunyikan semua step
+        document.querySelectorAll('.step-section').forEach(s => s.style.display = 'none');
+        
+        // Tampilkan step yang dipilih
+        let stepSekarang = document.getElementById('step-' + nomor);
+        if (stepSekarang) {
+            stepSekarang.style.display = 'block';
+        }
+
+        // KHUSUS: Jika pindah ke Step 5, sinkronkan angkanya
+        if (nomor === 5) {
+            hitungTotalAkhir();
+        }
     }
 
     // 3. SAAT KLIK NAMA NELAYAN (Step 1)
@@ -518,14 +551,34 @@
     }
 
     function hitungTotalAkhir() {
-    let admin = document.getElementById('input-admin').value;
-    admin = admin ? parseInt(admin) : 0;
+        // 1. Gunakan variabel global totalSemuaGlobal yang diisi saat gambarUlangKeranjangBelanja
+        let kotor = typeof totalSemuaGlobal !== 'undefined' ? totalSemuaGlobal : 0;
 
-    let totalAkhir = totalSemuaGlobal - admin;
+        // 2. Tampilkan Total Kotor di Step 5 jika elemennya ada
+        let elKotor = document.getElementById('teks-total-kotor-step5');
+        if (elKotor) {
+            elKotor.innerText = "Rp " + kotor.toLocaleString('id-ID');
+        }
 
-    document.getElementById('total-akhir').innerText = 
-        "Rp " + totalAkhir.toLocaleString('id-ID');
-}
+        // 3. Ambil nilai admin
+        let elAdmin = document.getElementById('input-admin');
+        let nilaiAdmin = 0;
+        if (elAdmin && elAdmin.value !== "") {
+            nilaiAdmin = parseInt(elAdmin.value) || 0;
+        }
+
+        // 4. Hitung Bersih
+        let bersih = kotor - nilaiAdmin;
+
+        // 5. Tampilkan Hasil Akhir jika elemennya ada
+        let elAkhir = document.getElementById('teks-total-akhir');
+        if (elAkhir) {
+            elAkhir.innerText = "Rp " + bersih.toLocaleString('id-ID');
+        }
+
+        // Simpan ke memori untuk database
+        memori.biaya_admin = nilaiAdmin;
+    }
 // Fungsi untuk menghapus ikan dari keranjang sebelum simpan
 function hapusIkan(index) {
     if(confirm("Hapus data ikan ini?")) {

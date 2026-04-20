@@ -26,45 +26,35 @@
     /* Input harga disembunyikan di awal */
     .input-harga { display: none; width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; margin-top: 10px; text-align: right; font-weight: bold;}
     
-    /* Tombol Batal Melayang di Bawah */
+    /* Container hanya untuk posisi */
     .btn-bawah { 
         position: fixed;
-        bottom: 40px; /* di atas bottom nav */
+        bottom: 40px;
         left: 50%;
         transform: translateX(-50%);
-        width: 98%;
+        width: 95%;
+        z-index: 999;
+    }
+
+    /* Tombol full clickable */
+    .btn-batal {
+        display: block;
+        width: 100%;
         background: red;
         color: white;
         border-radius: 15px;
-        padding: 20px;
-        font-size: 18px;
+        padding: 18px;
+        font-size: 16px;
         font-weight: bold;
         text-align: center;
         box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         text-decoration: none !important;
+        border: none;
     }
-    .btn-bawah a {
+
+    /* Hover */
+    .btn-batal:hover {
         color: white;
-        text-decoration: none !important;
-    }
-    
-    .btn-bawahh { 
-        position: fixed;
-        bottom: 90px; /* di atas bottom nav */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 98%;
-        padding: 20px;
-        font-size: 18px;
-        border-radius: 15px;
-        font-weight: bold;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        text-decoration: none !important;
-    }
-    .btn-bawahh a {
-        color: white;
-        text-decoration: none !important;
     }
     
     /* 3. ANIMASI PINDAH HALAMAN */
@@ -88,11 +78,9 @@
             @endforeach
         </div>
         <div class="btn-bawah">
-            <a href="{{ route('home') }}" 
-            class="w-100 shadow-sm py-3 text-center"
-            style="border-radius: 12px; font-size: 16px;">
-                <i class="bi bi-x-circle"></i><br>
-                Batal
+            <a href="{{ route('home') }}" class="btn-batal">
+                <i class="bi bi-x-circle"></i>
+                <span>Batal</span>
             </a>
         </div>
     </div>
@@ -104,21 +92,18 @@
             <tr><td>Nama Nelayan</td><td id="info-nelayan-nama">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
-
-
         
+        <a href="javascript:void(0)" onclick="pindahKeStep(1)" class="btn-batal" style="background-color: whitesmoke; color: black;">
+            <i class="bi bi-arrow-left"></i> Kembali Pilih Nelayan
+        </a>
+        <div style="height: 20px;"></div>
+
         <p class="font-weight-bold">Pilih Pengepul</p>
         <div class="grid-btn">
             <div class="btn-kotak" onclick="pilihPengepul('Kaji Arip')"><div class="icon-box">🐟</div>Kaji Arip</div>
             <div class="btn-kotak" onclick="pilihPengepul('BBI')"><div class="icon-box">🏢</div>BBI</div>
             <div class="btn-kotak" onclick="pilihPengepul('Tarom')"><div class="icon-box">🚛</div>Tarom</div>
             <div class="btn-kotak" onclick="pilihPengepul('Panggang')"><div class="icon-box">🔥</div>Panggang</div>
-        </div>
-
-        <div class="btn-bawah">
-            <button onclick="pindahKeStep(1)" class="btn btn-sm btn-light text-secondary mb-3 shadow-sm" style="border-radius: 8px; font-weight: bold;">
-                <i class="bi bi-arrow-left mr-1"></i> Kembali Pilih Nelayan
-            </button>
         </div>
     </div>
 
@@ -129,6 +114,13 @@
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
+
+
+        <a href="javascript:void(0)" onclick="pindahKeStep(2)" class="btn-batal" style="background-color: whitesmoke; color: black;">
+            <i class="bi bi-arrow-left"></i> Kembali Pilih Pengepul
+        </a>
+        <div style="height: 20px;"></div>
+
         
         <h6 class="font-weight-bold border-bottom pb-2 mb-3">Pengepul: <span id="info-pengepul-nama" class="text-info">-</span></h6>
         
@@ -160,16 +152,13 @@
                 </select>
             </div>
         </div>
-        <div style="height: 100px;"></div>
-        <div class="btn-bawahh">
-            <button onclick="simpanKeKeranjang()" class="btn btn-success btn-lg btn-block font-weight-bold mt-4 shadow-sm" style="border-radius: 10px;">
+        <div style="height: 50px;"></div>
+
+        <div class="btn-bawah">
+            <button onclick="simpanKeKeranjang()" class="btn-batal" style="background-color: green;">
             + Tambahkan Data Ini
             </button>
         </div>
-        <div class="btn-bawah">
-            <button onclick="pindahKeStep(2)" class="btn btn-sm btn-light text-secondary mb-3 shadow-sm" style="border-radius: 8px; font-weight: bold;">
-                <i class="bi bi-arrow-left mr-1"></i> Kembali Pilih Pengepul
-            </button>
     </div>
 
     <div id="step-4" class="step-section">

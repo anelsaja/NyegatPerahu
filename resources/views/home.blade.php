@@ -70,7 +70,7 @@
 
                 <!-- EDIT -->
                 <a href="{{ route('penjualan.edit', $trx->penjualan_id) }}" 
-                class="btn btn-warning shadow-sm py-3 mr-2 text-white" 
+                class="btn btn-warning shadow-sm py-3 mr-2" 
                 style="border-radius: 12px; font-size: 14px; flex: 1;">
                     <i class="bi bi-pencil-square"></i><br>
                     Edit
@@ -109,4 +109,12 @@
         <div class="text-center text-muted mt-4">Belum ada riwayat penjualan.</div>
     @endif
 </div>
+@if(session('buka_pdf'))
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Otomatis membuka tab baru ke link PDF yang dikirim dari Controller
+        window.open("{{ session('buka_pdf') }}", "_blank");
+    });
+</script>
+@endif
 @endsection

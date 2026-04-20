@@ -115,7 +115,7 @@
         </div>
 
         <div class="btn-bawah-ganda">
-            <a href="{{ route('home') }}" class="btn btn-light text-secondary">Batal</a>
+            <a href="{{ route('home') }}" class="btn btn-light text-black">Batal</a>
             <button type="submit" class="btn btn-warning font-weight-bold shadow-sm text-black">
                 <i class="bi bi-floppy-fill mr-1"></i> Simpan Edit
             </button>

@@ -13,15 +13,13 @@
     
     .btn-bawah-ganda { 
         position: fixed; bottom: 0; left: 0; width: 100%; 
-        padding: 15px; z-index: 1050; display: flex; gap: 12px; 
-        background-color: #ffffff; border-top: 1px solid #f0f0f0;
-        justify-content: center;
+        padding: 12px; z-index: 1050; display: flex; gap: 10px; background-color: #ffffff;
+        border-top: 1px solid #f0f0f0;
     }
 
     .btn-bawah-ganda a, .btn-bawah-ganda button {
-        flex: 1; max-width: 240px; padding: 14px; border-radius: 12px; 
-        font-weight: 700; text-align: center; border: none; 
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        flex: 1; padding: 14px; border-radius: 12px; font-weight: 600;
+        text-align: center; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
     }
 
     /* Gaya Card Baru untuk Pengepul */
@@ -44,23 +42,13 @@
 </style>
 
 <div class="p-3">
-    <div class="d-flex justify-content-between align-items-center mb-4 mt-2">
-        <div>
-            <h4 class="font-weight-bold mb-0 text-dark">Detail Transaksi</h4>
-            <small class="text-muted">Rincian struk penjualan</small>
-        </div>
-        <div style="width: 50px; height: 50px; background-color: #eaf6fd; color: #5bc0de; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 22px;">
-            <i class="bi bi-receipt"></i>
-        </div>
-    </div>
+    <h4 class="font-weight-bold mb-4 mt-2">Detail Data Penjualan</h4>
     
-    <div class="card-pengepul p-3 mb-4 border" style="border-color: #e0e0e0 !important;">
-        <table class="info-table">
-            <tr><td class="text-muted">Tanggal</td><td>{{ date('d M Y', strtotime($penjualan->tanggal)) }}</td></tr>
-            <tr><td class="text-muted">Nama Nelayan</td><td class="text-primary" style="font-size: 15px;">{{ $penjualan->nelayan->nama ?? '-' }}</td></tr>
-            <tr><td class="text-muted">Dicatat Oleh</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
-        </table>
-    </div>
+    <table class="info-table">
+        <tr><td class="text-muted">Tanggal</td><td>{{ date('d M Y', strtotime($penjualan->tanggal)) }}</td></tr>
+        <tr><td class="text-muted">Nama Nelayan</td><td>{{ $penjualan->nelayan->nama ?? '-' }}</td></tr>
+        <tr><td class="text-muted">Dicatat Oleh</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
+    </table>
 
     <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Tangkapan per Pengepul</h6>
 
@@ -127,11 +115,11 @@
 </div>
 
 <div class="btn-bawah-ganda">
-    <a href="{{ route('home') }}" class="btn btn-light text-secondary" style="background-color: #f8f9fa;">
+    <a href="{{ route('home') }}" class="btn btn-light" style="background-color: #f8f9fa;">
         <i class="bi bi-arrow-left mr-1"></i> Kembali
     </a>
     <a href="{{ route('penjualan.cetak', $penjualan->penjualan_id) }}" class="btn btn-primary text-white shadow-sm">
-        <i class="bi bi-printer-fill mr-1"></i> Cetak Ulang Struk
+        <i class="bi bi-printer-fill mr-1"></i> Cetak Ulang
     </a>
 </div>
 @endsection

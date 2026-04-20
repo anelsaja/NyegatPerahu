@@ -30,13 +30,19 @@ class NelayanController extends Controller
             'nomor_hp' => 'nullable|string|max:15',
         ]);
 
-        Nelayan::create([
+        $nelayan = Nelayan::create([
             'pengguna_id' => Auth::id(),
             'nama' => $request->nama,
             'nomor_hp' => $request->nomor_hp,
         ]);
 
-        return redirect()->route('nelayan.index')->with('success', 'Nelayan berhasil ditambahkan!');
+        // ALUR BARU: Kembali ke halaman asal (home/tambah penjualan) 
+        // sambil membawa ID dan Nama nelayan yang baru dibuat
+        return redirect()->route('penjualan.create')->with([
+            'nelayan_baru_id' => $nelayan->nelayan_id,
+            'nelayan_baru_nama' => $nelayan->nama,
+            'success' => 'Nelayan berhasil ditambahkan!'
+        ]);
     }
 
     // Menghapus data nelayan

@@ -19,7 +19,7 @@
             Simpan Data Nelayan
         </button>
         
-        <a href="{{ route('nelayan.index') }}" class="btn btn-light btn-lg btn-block mt-3" style="border-radius: 15px;">
+        <a href="{{ url()->previous() }}" class="btn btn-light btn-lg btn-block mt-3" style="border-radius: 15px;">
             Batal
         </a>
     </form>

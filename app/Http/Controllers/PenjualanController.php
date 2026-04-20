@@ -50,7 +50,16 @@ class PenjualanController extends Controller
 
         $penjualan->update(['total_harga' => $total_keseluruhan]);
 
-        return redirect()->route('home')->with('success', 'Data penjualan berhasil disimpan!');
+        // ALUR BARU: Cek tombol apa yang ditekan user
+        // JURUS PAMUNGKAS: Selalu kembali ke home, tapi bawa link PDF jika cetak ditekan
+        if ($request->aksi_transaksi == 'cetak') {
+            return redirect()->route('home')->with([
+                'success' => 'Data tersimpan! Menyiapkan karcis...',
+                'buka_pdf' => route('penjualan.cetak', $penjualan->penjualan_id)
+            ]);
+        } else {
+            return redirect()->route('home')->with('success', 'Data penjualan berhasil disimpan!');
+        }
     }
 
     // Menampilkan detail transaksi (seperti struk)
@@ -145,6 +154,6 @@ class PenjualanController extends Controller
 
         $pdf = Pdf::loadView('penjualan.pdf', compact('penjualan'));
 
-        return $pdf->stream('transaksi.pdf');
+        return $pdf->stream('Karcis_Ikan_'.$penjualan->penjualan_id.'.pdf');
     }
 }

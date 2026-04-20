@@ -56,6 +56,28 @@
     .btn-batal:hover {
         color: white;
     }
+
+    /* Desain Khusus Kartu Tambah Nelayan */
+    .btn-tambah-baru {
+        background-color: #f4fbff !important; /* Warna biru super muda */
+        border: 2px dashed #5bc0de !important; /* Garis putus-putus biru */
+        color: #17a2b8 !important; /* Teks biru */
+    }
+    
+    .btn-tambah-baru:active {
+        background-color: #eaf6fd !important;
+        border-color: #17a2b8 !important;
+    }
+
+    .icon-box-tambah {
+        font-size: 28px;
+        color: #5bc0de;
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 45px;
+    }
     
     /* 3. ANIMASI PINDAH HALAMAN */
     .step-section { display: none; animation: fadeIn 0.3s ease-in-out; }
@@ -76,6 +98,12 @@
                 {{ $n->nama }}
             </div>
             @endforeach
+        </div>
+        <div class="btn-kotak btn-tambah-baru shadow-sm" onclick="window.location.href='{{ route('nelayan.create') }}'">
+            <div class="icon-box-tambah">
+                <i class="bi bi-person-plus-fill"></i>
+            </div>
+            <span class="font-weight-bold">Nelayan Baru</span>
         </div>
         <div class="btn-bawah">
             <a href="{{ route('home') }}" class="btn-batal">
@@ -164,9 +192,15 @@
     <div id="step-4" class="step-section">
         <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
         
-        <button onclick="kirimKeDatabaseLaravel()" class="btn btn-primary btn-lg btn-block font-weight-bold mb-4 shadow" style="border-radius: 10px; background-color: #007bff;">
-            <i class="fas fa-print"></i> Cetak & Simpan Transaksi
-        </button>
+        <div class="d-flex mb-4" style="gap: 10px;">
+            <button onclick="kirimKeDatabaseLaravel('simpan')" class="btn btn-outline-success font-weight-bold shadow-sm" style="flex: 1; border-radius: 10px; border-width: 2px;">
+                <i class="bi bi-floppy-fill mr-1"></i> Simpan Saja
+            </button>
+
+            <button onclick="kirimKeDatabaseLaravel('cetak')" class="btn btn-primary font-weight-bold shadow-sm text-white" style="flex: 1; border-radius: 10px;">
+                <i class="bi bi-printer-fill mr-1"></i> Cetak Karcis
+            </button>
+        </div>
 
         <table class="info-table mb-4">
             <tr><td>Tanggal</td><td>{{ date('d M Y') }}</td></tr>
@@ -207,6 +241,7 @@
     @csrf
     <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
     <input type="hidden" name="nelayan_id" id="input-rahasia-nelayan">
+    <input type="hidden" name="aksi_transaksi" id="input-aksi-transaksi" value="simpan">
     
     <!-- <input type="hidden" name="status_pembayaran" id="input-rahasia-status">  -->
     
@@ -448,5 +483,20 @@ function editIkan(index) {
     
     pindahKeStep(3);
 }
+
+// PENANGKAP PESAN DARI CONTROLLER
+    document.addEventListener("DOMContentLoaded", function() {
+        @if(session('nelayan_baru_id'))
+            // Jika ada pesan nelayan baru dari Controller, langsung jalankan fungsi pilihNelayan
+            let idBaru = {{ session('nelayan_baru_id') }};
+            let namaBaru = "{{ session('nelayan_baru_nama') }}";
+            
+            // Panggil fungsi yang sudah kamu buat sebelumnya
+            pilihNelayan(idBaru, namaBaru);
+            
+            // Opsional: Tampilkan alert kecil agar user tahu datanya berhasil
+            // alert('Berhasil menambahkan ' + namaBaru + ', silakan lanjut pilih pengepul!');
+        @endif
+    });
 </script>
 @endsection

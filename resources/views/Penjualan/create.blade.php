@@ -193,11 +193,11 @@
         <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
         
         <div class="d-flex mb-4" style="gap: 10px;">
-            <button onclick="kirimKeDatabaseLaravel('simpan')" class="btn btn-outline-success font-weight-bold shadow-sm" style="flex: 1; border-radius: 10px; border-width: 2px;">
+            <button type="button" onclick="kirimKeDatabaseLaravel('simpan')" class="btn btn-outline-success font-weight-bold shadow-sm" style="flex: 1; border-radius: 10px; border-width: 2px;">
                 <i class="bi bi-floppy-fill mr-1"></i> Simpan Saja
             </button>
 
-            <button onclick="kirimKeDatabaseLaravel('cetak')" class="btn btn-primary font-weight-bold shadow-sm text-white" style="flex: 1; border-radius: 10px;">
+            <button type="button" onclick="kirimKeDatabaseLaravel('cetak')" class="btn btn-primary font-weight-bold shadow-sm text-white" style="flex: 1; border-radius: 10px;">
                 <i class="bi bi-printer-fill mr-1"></i> Cetak Karcis
             </button>
         </div>
@@ -241,10 +241,7 @@
     @csrf
     <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
     <input type="hidden" name="nelayan_id" id="input-rahasia-nelayan">
-    <input type="hidden" name="aksi_transaksi" id="input-aksi-transaksi" value="simpan">
-    
-    <!-- <input type="hidden" name="status_pembayaran" id="input-rahasia-status">  -->
-    
+    <input type="hidden" name="aksi_transaksi" id="input-aksi-transaksi">
     <input type="hidden" name="biaya_admin" id="input-admin-hidden">
     <div id="tempat-input-ikan-rahasia"></div>
 </form>
@@ -413,17 +410,17 @@
 }
     // 8. TAHAP FINAL: KIRIM KE DATABASE LARAVEL
     // Fungsi ini dipanggil saat tombol Biru Cetak ditekan
-    function kirimKeDatabaseLaravel() {
+    function kirimKeDatabaseLaravel(aksi) {
         if (memori.daftar_belanja.length === 0) {
             alert("Keranjang masih kosong!");
             return;
         }
 
+        // TANGKAP SINYAL TOMBOL: Masukkan pilihan 'simpan' atau 'cetak' ke form
+        document.getElementById('input-aksi-transaksi').value = aksi;
+
         // A. Isi ID Nelayan ke form rahasia
         document.getElementById('input-rahasia-nelayan').value = memori.nelayan_id;
-
-        // TAMBAHKAN BARIS INI: Ambil status Lunas/Belum Lunas yang dipilih user
-        // document.getElementById('input-rahasia-status').value = document.getElementById('pilihan-status').value;
 
         // B. Buat inputan rahasia untuk setiap ikan di keranjang
         let areaInputRahasia = document.getElementById('tempat-input-ikan-rahasia');

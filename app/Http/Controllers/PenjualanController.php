@@ -52,12 +52,15 @@ class PenjualanController extends Controller
 
         // ALUR BARU: Cek tombol apa yang ditekan user
         // JURUS PAMUNGKAS: Selalu kembali ke home, tapi bawa link PDF jika cetak ditekan
+        // ALUR PERCABANGAN
         if ($request->aksi_transaksi == 'cetak') {
+            // Jika pilih Cetak: Kembali ke Home dan bawa URL PDF-nya
             return redirect()->route('home')->with([
                 'success' => 'Data tersimpan! Menyiapkan karcis...',
-                'buka_pdf' => route('penjualan.cetak', $penjualan->penjualan_id)
+                'url_karcis_pdf' => route('penjualan.cetak', $penjualan->penjualan_id)
             ]);
         } else {
+            // Jika pilih Simpan Saja: Kembali ke Home biasa
             return redirect()->route('home')->with('success', 'Data penjualan berhasil disimpan!');
         }
     }
@@ -154,6 +157,6 @@ class PenjualanController extends Controller
 
         $pdf = Pdf::loadView('penjualan.pdf', compact('penjualan'));
 
-        return $pdf->stream('Karcis_Ikan_'.$penjualan->penjualan_id.'.pdf');
+        return $pdf->download('Karcis_Ikan_'.$penjualan->penjualan_id.'.pdf');
     }
 }

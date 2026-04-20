@@ -109,11 +109,11 @@
         <div class="text-center text-muted mt-4">Belum ada riwayat penjualan.</div>
     @endif
 </div>
-@if(session('buka_pdf'))
+@if(session('url_karcis_pdf'))
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Otomatis membuka tab baru ke link PDF yang dikirim dari Controller
-        window.open("{{ session('buka_pdf') }}", "_blank");
+    document.addEventListener("DOMContentLoaded", function() {    
+        // Pemicu Auto-Download tanpa membuka tab baru
+        window.location.href = "{{ session('url_karcis_pdf') }}";
     });
 </script>
 @endif

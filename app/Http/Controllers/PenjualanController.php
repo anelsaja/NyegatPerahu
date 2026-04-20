@@ -119,6 +119,7 @@ class PenjualanController extends Controller
         $penjualan->update([
             'nelayan_id' => $request->nelayan_id,
             'tanggal' => $request->tanggal,
+            'biaya_admin' => $request->biaya_admin ?? 0
         ]);
 
         // B. HAPUS SEMUA rincian ikan yang lama (Trik paling aman)

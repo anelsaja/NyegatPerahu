@@ -346,68 +346,142 @@
         }
     }
 
-    // 7. MENGGAMBAR TAMPILAN STRUK DI STEP 4
+// 7. MENGGAMBAR TAMPILAN STRUK DI STEP 4
     function gambarUlangKeranjangBelanja() {
-    let areaLayar = document.getElementById('area-keranjang-belanja');
-    areaLayar.innerHTML = '';
+        let areaLayar = document.getElementById('area-keranjang-belanja');
+        areaLayar.innerHTML = '';
 
-    let lemariPengepul = {};
-    totalSemuaGlobal = 0; // reset total
+        let lemariPengepul = {};
+        totalSemuaGlobal = 0; // reset total
 
-    memori.daftar_belanja.forEach(function(ikan) {
-        if (!lemariPengepul[ikan.pengepul]) {
-            lemariPengepul[ikan.pengepul] = [];
-        }
-        lemariPengepul[ikan.pengepul].push(ikan);
-    });
-
-    for (let namaPengepul in lemariPengepul) {
-        let totalHarga = 0;
-
-        // Ambil status dari ikan pertama dalam grup pengepul ini
-        let statusTampil = lemariPengepul[namaPengepul][0].status;
-        
-        // Tentukan warna badge: Lunas (Success/Hijau), Belum Lunas (Warning/Kuning)
-        let warnaBadge = (statusTampil === 'Lunas') ? 'badge-success' : 'badge-warning';
-
-        let desainHTML = `
-            <div class="mb-4 border-bottom pb-2">
-                <h6 class="font-weight-bold d-inline-block">Pengepul: ${namaPengepul}</h6>
-                
-                <span class="badge ${warnaBadge} float-right rounded-pill px-2">
-                    ${statusTampil}
-                </span>
-
-                <table class="info-table mt-1">
-        `;
-
-        lemariPengepul[namaPengepul].forEach(function(ikan) {
-            desainHTML += `<tr><td class="text-dark">${ikan.jenis}</td><td>Rp ${ikan.harga.toLocaleString('id-ID')}</td></tr>`;
-            totalHarga += ikan.harga;
+        memori.daftar_belanja.forEach(function(ikan) {
+            if (!lemariPengepul[ikan.pengepul]) {
+                lemariPengepul[ikan.pengepul] = [];
+            }
+            lemariPengepul[ikan.pengepul].push(ikan);
         });
 
-        totalSemuaGlobal += totalHarga; // akumulasi total semua
+        for (let namaPengepul in lemariPengepul) {
+            let totalHarga = 0;
 
-        desainHTML += `
-                <tr>
-                    <td class="text-right text-muted pt-2">Total:</td>
-                    <td class="pt-2 text-info" style="font-size: 15px;">
-                        Rp ${totalHarga.toLocaleString('id-ID')}
-                    </td>
-                </tr>
-                </table>
-            </div>
-        `;
+            // Ambil status dari ikan pertama dalam grup pengepul ini
+            let statusTampil = lemariPengepul[namaPengepul][0].status;
+            
+            // Tentukan warna badge
+            let warnaBadge = (statusTampil === 'Lunas') ? 'badge-success' : 'badge-warning';
 
-        areaLayar.innerHTML += desainHTML;
+            // DESAIN BARU: Menggunakan d-flex agar Tombol Edit, Hapus, & Badge sejajar rapi
+            let desainHTML = `
+                <div class="mb-4 border-bottom pb-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="font-weight-bold mb-0 text-primary">👤 ${namaPengepul}</h6>
+                        <div>
+                            <span class="badge ${warnaBadge} rounded-pill px-2 mr-1">
+                                ${statusTampil}
+                            </span>
+                            
+                            <button class="btn btn-sm btn-outline-info py-0 px-2 mr-1" style="border-radius: 6px; font-size: 12px; font-weight: bold;" onclick="editPengepul('${namaPengepul}')">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+
+                            <button class="btn btn-sm btn-outline-danger py-0 px-2" style="border-radius: 6px; font-size: 12px; font-weight: bold;" onclick="hapusPengepul('${namaPengepul}')">
+                                <i class="bi bi-trash3-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <table class="info-table mt-1">
+            `;
+
+            lemariPengepul[namaPengepul].forEach(function(ikan) {
+                desainHTML += `<tr><td class="text-dark">${ikan.jenis}</td><td>Rp ${ikan.harga.toLocaleString('id-ID')}</td></tr>`;
+                totalHarga += ikan.harga;
+            });
+
+            totalSemuaGlobal += totalHarga; // akumulasi total semua
+
+            desainHTML += `
+                    <tr>
+                        <td class="text-right text-muted pt-2 border-top">Sub-total:</td>
+                        <td class="pt-2 text-info border-top font-weight-bold" style="font-size: 15px;">
+                            Rp ${totalHarga.toLocaleString('id-ID')}
+                        </td>
+                    </tr>
+                    </table>
+                </div>
+            `;
+
+            areaLayar.innerHTML += desainHTML;
+        }
+
+        // tampilkan total semua
+        document.getElementById('total-semua').innerText = "Rp " + totalSemuaGlobal.toLocaleString('id-ID');
+
+        hitungTotalAkhir(); // langsung hitung total akhir
     }
 
-    // tampilkan total semua
-    document.getElementById('total-semua').innerText = 
-        "Rp " + totalSemuaGlobal.toLocaleString('id-ID');
+    // FUNGSI BARU: Tarik data ke Step 3 untuk diedit
+    function editPengepul(namaPengepul) {
+        // 1. Ambil data ikan milik pengepul yang mau diedit
+        let dataYangMauDiedit = memori.daftar_belanja.filter(ikan => ikan.pengepul === namaPengepul);
 
-    hitungTotalAkhir(); // langsung hitung total akhir
-}
+        // 2. HAPUS pengepul ini dari keranjang utama 
+        // (Agar saat user menekan 'Simpan' di Step 3 nanti, datanya tidak dobel/menumpuk)
+        memori.daftar_belanja = memori.daftar_belanja.filter(ikan => ikan.pengepul !== namaPengepul);
+
+        // 3. Set memori pengepul agar sistem tahu kita sedang melayani pengepul ini
+        memori.pengepul_aktif = namaPengepul;
+
+        // 4. Ubah label nama pengepul di Step 3 (Pastikan id ini sesuai dengan HTML Step 3 kamu)
+        let labelPengepul = document.getElementById('nama-pengepul-terpilih');
+        if (labelPengepul) {
+            labelPengepul.innerText = namaPengepul;
+        }
+
+        // 5. Kosongkan & Sembunyikan semua kotak input di Step 3 terlebih dahulu
+        document.querySelectorAll('.input-harga').forEach(function(kotakInput) {
+            kotakInput.style.display = 'none';
+            kotakInput.value = '';
+        });
+
+        // 6. SULAP: Munculkan dan isi kembali kotak input sesuai data yang diedit
+        dataYangMauDiedit.forEach(function(ikan) {
+            let kotakInput = document.getElementById('input-' + ikan.jenis);
+            if (kotakInput) {
+                kotakInput.style.display = 'block'; // Tampilkan kotak
+                kotakInput.value = ikan.harga;      // Isi harganya kembali
+            }
+        });
+
+        // 7. Kembalikan status Lunas/Belum Lunas ke dropdown
+        if (dataYangMauDiedit.length > 0) {
+            document.getElementById('pilihan-status').value = dataYangMauDiedit[0].status;
+        }
+
+        // 8. Pindah ke layar Step 3
+        pindahKeStep(3);
+    }
+
+    // FUNGSI BARU: Menghapus satu pengepul dari keranjang Step 4
+    function hapusPengepul(namaPengepul) {
+        // Berikan peringatan agar tidak tidak sengaja kepencet
+        let yakin = confirm(`Yakin ingin membatalkan dan menghapus transaksi untuk pengepul ${namaPengepul}?`);
+        
+        if (yakin) {
+            // 1. Buang/Saring semua ikan yang BUKAN milik pengepul yang dihapus
+            memori.daftar_belanja = memori.daftar_belanja.filter(ikan => ikan.pengepul !== namaPengepul);
+            
+            // 2. Gambar ulang layar Step 4 dengan data terbaru
+            gambarUlangKeranjangBelanja();
+            
+            // 3. Jika keranjang ternyata jadi kosong melompong, kembalikan ke Step 2 (Pilih Pengepul)
+            if (memori.daftar_belanja.length === 0) {
+                alert("Keranjang kosong. Silakan pilih pengepul kembali.");
+                pindahKeStep(2);
+            }
+        }
+    }
+    
     // 8. TAHAP FINAL: KIRIM KE DATABASE LARAVEL
     // Fungsi ini dipanggil saat tombol Biru Cetak ditekan
     function kirimKeDatabaseLaravel(aksi) {

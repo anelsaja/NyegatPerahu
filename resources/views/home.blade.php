@@ -32,13 +32,15 @@
 
     <h4 class="font-weight-bold mb-4 mt-2">Riwayat Penjualan</h4>
 
+    <h6>Cari berdasarkan tanggal</h6>
     <form action="{{ route('home') }}" method="GET" class="mb-4">
-        <div class="input-group">
-            <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}" max="{{ date('Y-m-d') }}">
-            <div class="input-group-append">
-                <button class="btn btn-secondary" type="submit">Cari</button>
-            </div>
-        </div>
+        <input type="date" 
+               name="tanggal" 
+               class="form-control form-control-lg font-weight-bold shadow-sm" 
+               style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;"
+               value="{{ request('tanggal') }}" 
+               max="{{ date('Y-m-d') }}"
+               onchange="this.form.submit()"> 
     </form>
 
     @foreach($riwayat_penjualan->sortByDesc('created_at') as $trx)

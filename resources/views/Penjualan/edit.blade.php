@@ -2,6 +2,7 @@
 @section('content')
 
 <style>
+    /* Sembunyikan navigasi bawah KHUSUS di halaman ini */
     .bottom-nav { display: none !important; }
     .mobile-container { padding-bottom: 120px !important; }
 
@@ -31,7 +32,6 @@
         border: 1px solid #eaeaea; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
 
-    /* Gaya Input Ikan seperti Card Step 3 */
     .card-input-ikan {
         background-color: #eaf6fd;
         border: 1px solid #b8daff;
@@ -89,7 +89,7 @@
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="card-input-ikan mr-2" style="flex: 1;">
-                        <input type="text" name="hasil_laut[{{ $index }}][jenis]" class="form-control form-control-sm font-weight-bold" value="{{ $item->jenis_hasil_laut }}" placeholder="Nama Ikan" required>
+                        <input type="text" list="daftar-ikan" name="hasil_laut[{{ $index }}][jenis]" class="form-control form-control-sm font-weight-bold" value="{{ $item->jenis_hasil_laut }}" placeholder="Pilih/Ketik Ikan" required autocomplete="off">
                     </div>
                     
                     <div class="input-group input-group-sm" style="flex: 1.2;">
@@ -107,19 +107,46 @@
             <i class="bi bi-plus-circle mr-1"></i> Tambah Ikan Lainnya
         </button>
 
-        <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px; background-color: #eaf6fd;">
-            <div class="card-body p-3 d-flex justify-content-between align-items-center">
-                <span class="font-weight-bold text-muted small">Total Keseluruhan:</span>
-                <strong class="text-info" style="font-size: 22px;" id="teks-total-semua">Rp 0</strong>
+        <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px; background-color: #f8fbfa;">
+            <div class="card-body p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small font-weight-bold">Total Kotor:</span>
+                    <strong class="text-secondary" id="teks-total-kotor">Rp 0</strong>
+                </div>
+
+                <div class="form-group mb-3 pb-3 border-bottom border-secondary">
+                    <label class="text-muted small font-weight-bold">Biaya Admin</label>
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text border-0 bg-transparent text-muted small">Rp</span>
+                        </div>
+                        <input type="number" name="biaya_admin" id="input-biaya-admin" class="form-control input-struk text-right text-danger" value="{{ intval($penjualan->biaya_admin) }}" oninput="hitungTotalBaru()" required>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-success font-weight-bold" style="letter-spacing: 0.5px;">TOTAL AKHIR</span>
+                    <strong class="text-success" style="font-size: 24px;" id="teks-total-akhir">Rp 0</strong>
+                </div>
             </div>
         </div>
-
         <div class="btn-bawah-ganda">
             <a href="{{ route('home') }}" class="btn btn-light text-black">Batal</a>
             <button type="submit" class="btn btn-warning font-weight-bold shadow-sm text-black">
                 <i class="bi bi-floppy-fill mr-1"></i> Simpan Edit
             </button>
         </div>
+        <datalist id="daftar-ikan">
+            <option value="Tongkol"></option>
+            <option value="Tenggiri"></option>
+            <option value="Kerapu"></option>
+            <option value="Bawal"></option>
+            <option value="Kakap Merah"></option>
+            <option value="Kembung"></option>
+            <option value="Rajungan"></option>
+            <option value="Cumi-cumi"></option>
+            <option value="Udang"></option>
+            </datalist>
     </form>
 </div>
 
@@ -151,7 +178,7 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="card-input-ikan mr-2" style="flex: 1;">
-                        <input type="text" name="hasil_laut[${urutanKe}][jenis]" class="form-control form-control-sm font-weight-bold" placeholder="Nama Ikan" required>
+                        <input type="text" list="daftar-ikan" name="hasil_laut[${urutanKe}][jenis]" class="form-control form-control-sm font-weight-bold" placeholder="Pilih/Ketik Ikan" required autocomplete="off">
                     </div>
                     
                     <div class="input-group input-group-sm" style="flex: 1.2;">
@@ -175,17 +202,31 @@
         }
     }
 
+    // FUNGSI JAVASCRIPT DIPERBARUI UNTUK MENGHITUNG ADMIN
     function hitungTotalBaru() {
-        let total = 0;
+        let totalKotor = 0;
         let semuaHarga = document.querySelectorAll('.nilai-harga');
         
+        // 1. Hitung total semua ikan
         semuaHarga.forEach(function(inputBox) {
             let angka = parseInt(inputBox.value);
             if (!isNaN(angka)) {
-                total += angka;
+                totalKotor += angka;
             }
         });
-        document.getElementById('teks-total-semua').innerText = 'Rp ' + total.toLocaleString('id-ID');
+
+        // 2. Ambil nilai biaya admin
+        let biayaAdmin = parseInt(document.getElementById('input-biaya-admin').value);
+        if (isNaN(biayaAdmin)) {
+            biayaAdmin = 0;
+        }
+
+        // 3. Hitung total akhir
+        let totalAkhir = totalKotor - biayaAdmin;
+
+        // 4. Tampilkan ke layar
+        document.getElementById('teks-total-kotor').innerText = 'Rp ' + totalKotor.toLocaleString('id-ID');
+        document.getElementById('teks-total-akhir').innerText = 'Rp ' + totalAkhir.toLocaleString('id-ID');
     }
 
     window.onload = function() {

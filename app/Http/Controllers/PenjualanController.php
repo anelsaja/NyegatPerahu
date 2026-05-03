@@ -50,18 +50,21 @@ class PenjualanController extends Controller
 
         $penjualan->update(['total_harga' => $total_keseluruhan]);
 
-        // ALUR BARU: Cek tombol apa yang ditekan user
-        // JURUS PAMUNGKAS: Selalu kembali ke home, tapi bawa link PDF jika cetak ditekan
-        // ALUR PERCABANGAN
+// AMBIL OBJEK NELAYAN (Otomatis membawa fungsi link_wa)
+        $nelayan = Nelayan::find($request->nelayan_id);
+
+        // ALUR REDIRECT
         if ($request->aksi_transaksi == 'cetak') {
-            // Jika pilih Cetak: Kembali ke Home dan bawa URL PDF-nya
             return redirect()->route('home')->with([
-                'success' => 'Data tersimpan! Menyiapkan karcis...',
-                'url_karcis_pdf' => route('penjualan.cetak', $penjualan->penjualan_id)
+                'success' => 'Data tersimpan! Karcis sedang diunduh.',
+                'url_karcis_pdf' => route('penjualan.cetak', $penjualan->penjualan_id),
+                'link_wa_nelayan' => $nelayan ? $nelayan->link_wa : null // Menggunakan Accessor dari Model
             ]);
         } else {
-            // Jika pilih Simpan Saja: Kembali ke Home biasa
-            return redirect()->route('home')->with('success', 'Data penjualan berhasil disimpan!');
+            return redirect()->route('home')->with([
+                'success' => 'Data penjualan berhasil disimpan!',
+                'link_wa_nelayan' => $nelayan ? $nelayan->link_wa : null
+            ]);
         }
     }
 

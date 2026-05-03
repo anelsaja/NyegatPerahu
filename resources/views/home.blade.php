@@ -27,7 +27,23 @@
 
 <div class="p-3">
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+    <div class="alert alert-success alert-dismissible fade show shadow-sm mt-3" role="alert" style="border-radius: 12px;">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <i class="bi bi-check-circle-fill mr-1"></i> 
+                <strong>{{ session('success') }}</strong>
+            </div>
+            
+            @if(session('link_wa_nelayan'))
+                <a href="{{ session('link_wa_nelayan') }}" target="_blank" class="btn btn-success btn-sm font-weight-bold shadow" style="border-radius: 8px; background-color: #25D366; border-color: #25D366;">
+                    <i class="bi bi-whatsapp"></i> Kirim ke WA
+                </a>
+            @endif
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     @endif
 
     <h4 class="font-weight-bold mb-4 mt-2">Riwayat Penjualan</h4>

@@ -9,10 +9,20 @@ use Illuminate\Support\Facades\Auth;
 class NelayanController extends Controller
 {
     // Menampilkan daftar nelayan
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil nelayan yang dimiliki oleh ibu nelayan yang sedang login saja
-        $nelayans = Nelayan::where('pengguna_id', Auth::id())->get();
+        // Mulai query untuk mengambil data nelayan milik pengguna (ibu-ibu) yang sedang login
+        $query = Nelayan::where('pengguna_id', Auth::id());
+
+        // Cek apakah ada input pencarian dari kolom "cari"
+        if ($request->has('cari') && $request->cari != '') {
+            // Filter berdasarkan nama yang mirip dengan yang diketik
+            $query->where('nama', 'like', '%' . $request->cari . '%');
+        }
+
+        // Ambil datanya (bisa ditambahkan paginate() jika datanya ribuan)
+        $nelayans = $query->orderBy('nama', 'asc')->get();
+
         return view('nelayan.index', compact('nelayans'));
     }
 

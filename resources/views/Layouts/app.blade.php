@@ -59,7 +59,7 @@
 </head>
 <body>
     <div class="header-nyegat">
-        <div class="title-logo">Nyegat<br><span>Perahu.</span></div>
+        <div class="title-logo">Nyegat<span>Perahu.</span></div>
     </div>
 
     <div class="mobile-container">

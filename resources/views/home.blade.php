@@ -1,28 +1,47 @@
 @extends('layouts.app')
 @section('content')
 <style>
-        /* tombol tambah FIX */
-    .btn-tambah-fixed {
-        position: fixed;
-        bottom: 100px; /* di atas bottom nav */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 98%;
-        background: #08a10b;
-        color: white;
-        border-radius: 15px;
-        padding: 20px;
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        text-decoration: none !important;
-    }
-    .btn-tambah-fixed:hover {
-    text-decoration: none !important;
-    color: white;
+    body {
+        background-color: #ffffff;
     }
 
+    /* TOMBOL TAMBAH DATA (Floating Action Button - Kanan Bawah) */
+    .btn-tambah-fab {
+        position: fixed;
+        bottom: 100px;
+        right: 20px; 
+        background: #08a10b; 
+        color: white;
+        border-radius: 50%; 
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        z-index: 1000;
+        text-decoration: none !important;
+        transition: transform 0.2s;
+    }
+    .btn-tambah-fab:hover, .btn-tambah-fab:active {
+        color: white;
+        transform: scale(0.95);
+    }
+
+    /* GAYA DAFTAR TRANSAKSI FLAT (Tanpa Card) */
+    .transaksi-item {
+        border-bottom: 1px solid #f0f2f5;
+        padding: 15px 0;
+    }
+
+    .info-link {
+        text-decoration: none !important;
+        color: inherit;
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+    }
 </style>
 
 <div class="p-3">
@@ -48,89 +67,82 @@
 
     <h4 class="font-weight-bold mb-4 mt-2">Riwayat Penjualan</h4>
 
-    <h6>Cari berdasarkan tanggal</h6>
-    <form action="{{ route('home') }}" method="GET" class="mb-4">
+    <h6>Cari berdasarkan tanggal:</h6>
+
+    <form action="{{ route('home') }}" method="GET" class="mb-2">
         <input type="date" 
                name="tanggal" 
                class="form-control form-control-lg font-weight-bold shadow-sm" 
-               style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;"
+               style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff; "
                value="{{ request('tanggal') }}" 
                max="{{ date('Y-m-d') }}"
                onchange="this.form.submit()"> 
     </form>
 
-    @foreach($riwayat_penjualan->sortByDesc('created_at') as $trx)
-    <div class="card mb-3 shadow-lg border-0" style="border-radius: 12px; background-color: #ffffff;">
-        <div class="card-body p-3">
-            <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
-                <strong class="text-dark">{{ $trx->nelayan->nama ?? 'Nelayan Dihapus' }}</strong>
-                <small class="text-muted">{{ date('d M Y', strtotime($trx->tanggal)) }}</small>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div>
-                    <div style="font-size: 13px;">Pengepul: <strong>{{ $trx->detail->pluck('nama_pengepul')->unique()->implode(', ') }}</strong></div>
-                </div>
-                <div class="text-right">
-                    <div class="text-muted" style="font-size: 11px;">Total</div>
-                    <strong class="text-info" style="font-size: 16px;">Rp {{ number_format($trx->total_harga - $trx->biaya_admin, 0, ',', '.') }}</strong>
+    <div class="mt-3">
+        @forelse($riwayat_penjualan->sortByDesc('created_at') as $trx)
+        <div class="transaksi-item">
+            
+            <div class="info-link mb-2">
+                
+                <div class="flex-grow-1 pr-2">
+                    <div class="d-flex justify-content-between align-items-baseline mb-1">
+                        <h6 class="mb-0 font-weight-bold text-dark" style="font-size: 16px;">
+                            {{ $trx->nelayan->nama ?? 'Nelayan Dihapus' }}
+                        </h6>
+                        <small class="text-muted font-weight-bold" style="font-size: 11px;">
+                            {{ date('d M Y', strtotime($trx->tanggal)) }}
+                        </small>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted text-truncate" style="max-width: 180px; font-size: 13px;">
+                            Pengepul: <strong>{{ $trx->detail->pluck('nama_pengepul')->unique()->implode(', ') }}</strong>
+                        </small>
+                        <strong class="text-success" style="font-size: 14px;">
+                            Rp {{ number_format($trx->total_harga - $trx->biaya_admin, 0, ',', '.') }}
+                        </strong>
+                    </div>
                 </div>
             </div>
             
-            <div class="d-flex mt-3 pt-2 border-top">
-
-                <!-- DETAIL (lebih besar) -->
-                <a href="{{ route('penjualan.show', $trx->penjualan_id) }}" 
-                class="btn btn-info shadow-sm py-3 mr-2" 
-                style="border-radius: 12px; font-size: 14px; flex: 2;">
-                    <i class="bi bi-eye-fill"></i><br>
-                    Detail
+            <div class="d-flex w-100" style="gap: 8px;">
+                <a href="{{ route('penjualan.show', $trx->penjualan_id) }}" class="btn btn-outline-info font-weight-bold text-center" style="border-radius: 8px; flex: 1; font-size: 13px; padding: 8px 0;">
+                    <i class="bi bi-eye-fill d-block mb-1" style="font-size: 16px;"></i> Detail
                 </a>
 
-                <!-- EDIT -->
-                <a href="{{ route('penjualan.edit', $trx->penjualan_id) }}" 
-                class="btn btn-warning shadow-sm py-3 mr-2" 
-                style="border-radius: 12px; font-size: 14px; flex: 1;">
-                    <i class="bi bi-pencil-square"></i><br>
-                    Edit
+                <a href="{{ route('penjualan.edit', $trx->penjualan_id) }}" class="btn btn-outline-warning font-weight-bold text-center" style="border-radius: 8px; flex: 1; font-size: 13px; padding: 8px 0;">
+                    <i class="bi bi-pencil-square d-block mb-1" style="font-size: 16px;"></i> Edit
                 </a>
-
-                <!-- HAPUS -->
-                <form action="{{ route('penjualan.destroy', $trx->penjualan_id) }}" 
-                    method="POST" 
-                    style="flex: 1;"
-                    onsubmit="return confirm('Yakin ingin menghapus transaksi ini beserta seluruh rinciannya?');">
+                
+                <form action="{{ route('penjualan.destroy', $trx->penjualan_id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus transaksi ini?');" style="flex: 1; margin: 0;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" 
-                            class="btn btn-danger w-100 shadow-sm py-3" 
-                            style="border-radius: 12px; font-size: 14px;">
-                        <i class="bi bi-trash"></i><br>
-                        Hapus
+                    <button type="submit" class="btn btn-outline-danger font-weight-bold text-center w-100 h-100" style="border-radius: 8px; font-size: 13px; padding: 8px 0;">
+                        <i class="bi bi-trash d-block mb-1" style="font-size: 16px;"></i> Hapus
                     </button>
                 </form>
-
             </div>
-
+            
         </div>
+        @empty
+        <div class="text-center text-muted p-4 mt-4">
+            <i class="bi bi-inbox" style="font-size: 40px; color: #ccc;"></i>
+            <p class="mt-2 font-weight-bold">Belum ada riwayat penjualan.</p>
+        </div>
+        @endforelse
     </div>
-    @endforeach
 
-    <div style="height: 240px;"></div>
+    <div style="height: 100px;"></div>
 
-    <!-- TOMBOL TAMBAH FIX -->
-    <a href="{{ route('penjualan.create') }}" class="btn-tambah-fixed">
-        <div style="font-size:30px;"><i class="bi bi-plus-square"></i></div>
-        Tambah Data Penjualan Baru
+    <a href="{{ route('penjualan.create') }}" class="btn-tambah-fab">
+        <i class="bi bi-plus-lg"></i>
     </a>
-
-    @if($riwayat_penjualan->isEmpty())
-        <div class="text-center text-muted mt-4">Belum ada riwayat penjualan.</div>
-    @endif
 </div>
+
 @if(session('url_karcis_pdf'))
 <script>
     document.addEventListener("DOMContentLoaded", function() {    
-        // Pemicu Auto-Download tanpa membuka tab baru
         window.location.href = "{{ session('url_karcis_pdf') }}";
     });
 </script>

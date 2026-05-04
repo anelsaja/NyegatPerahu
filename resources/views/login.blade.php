@@ -95,7 +95,7 @@
 
     <!-- HEADER -->
     <div class="header-nyegat">
-        <div class="title-logo">Nyegat<br><span>Perahu.</span></div>
+        <div class="title-logo">Nyegat<span>Perahu.</span></div>
     </div>
 
     <!-- CONTENT -->
@@ -116,7 +116,7 @@
 
     <!-- FOOTER -->
     <div class="footer">
-        <p class="mb-2 font-weight-bold">Buat Akun Baru?</p>
+        <p class="mb-2 font-weight-bold">Ibu-ibu nelayan baru? Silahkan daftar</p>
         <a href="{{ route('google.login') }}" class="btn btn-daftar">Daftar</a>
     </div>
 

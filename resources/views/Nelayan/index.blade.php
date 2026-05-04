@@ -1,76 +1,149 @@
 @extends('layouts.app')
 @section('content')
 <style>
-        /* tombol tambah FIX */
-    .btn-tambah-fixed {
-        position: fixed;
-        bottom: 100px; /* di atas bottom nav */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 98%;
-        background: #08a10b;
-        color: white;
-        border-radius: 15px;
-        padding: 20px;
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        text-decoration: none !important;
+    body {
+        background-color: #ffffff;
     }
-    .btn-tambah-fixed:hover {
-    text-decoration: none !important;
-    color: white;
-}
+
+    /* TOMBOL TAMBAH DATA (Floating Action Button) */
+    .btn-tambah-fab {
+        position: fixed;
+        bottom: 100px;
+        right: 20px; 
+        background: #08a10b; 
+        color: white;
+        border-radius: 50%; 
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        z-index: 1000;
+        text-decoration: none !important;
+        transition: transform 0.2s;
+    }
+    .btn-tambah-fab:hover, .btn-tambah-fab:active {
+        color: white;
+        transform: scale(0.95);
+    }
+
+    /* GAYA DAFTAR FLAT */
+    .list-item {
+        border-bottom: 1px solid #f0f2f5;
+        padding: 15px 0;
+    }
+
+    /* Foto Profil Bundar */
+    .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #08a10b; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: bold;
+        color: #fff;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    /* Pembungkus Info */
+    .info-wrapper {
+        display: flex;
+        align-items: center;
+    }
 </style>
 
 <div class="p-3">
-    <div class="d-flex justify-content-between align-items-center mb-4 mt-2">
-        <h4 class="font-weight-bold mb-0">Data Nelayan</h4>
-    </div>
+    <h4 class="font-weight-bold mb-4 mt-2">Data Nelayan</h4>
+
+    <h6>Cari nama nelayan:</h6>
+
+    <form action="{{ route('nelayan.index') }}" method="GET" class="mb-4">
+        <div class="input-group shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; overflow: hidden;">
+            <input type="text" 
+                   name="cari" 
+                   class="form-control form-control-lg font-weight-bold border-0" 
+                   style="color: #495057; background-color: #f8fcff; box-shadow: none;"
+                   placeholder="Cari nama nelayan..." 
+                   value="{{ request('cari') }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn border-0" style="background-color: #f8fcff; color: #495057">
+                    <i class="bi bi-search font-weight-bold"></i>
+                </button>
+            </div>
+        </div>
+    </form>
 
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+    <div class="alert alert-success alert-dismissible fade show shadow-sm mb-3" role="alert" style="border-radius: 12px;">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <i class="bi bi-check-circle-fill mr-1"></i> 
+                <strong>{{ session('success') }}</strong>
+            </div>
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="padding-top: 0.5rem;">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     @endif
 
-    @foreach($nelayans as $n)
-    <div class="card mb-3 shadow-sm" style="border-radius: 15px; border-left: 5px solid #17a2b8;">
-        <div class="card-body">
-            <h5 class="font-weight-bold mb-1">{{ $n->nama }}</h5>
-            <p class="text-muted mb-3"><i class="bi bi-telephone"></i>  {{ $n->nomor_hp ?? 'Tidak ada nomor HP' }}</p>
-            <div class="d-flex justify-content-between mt-3">
-                <!-- EDIT -->
-                <a href="{{ route('nelayan.edit', $n->nelayan_id) }}" 
-                class="btn btn-warning flex-fill mr-2 shadow-sm py-3" 
-                style="border-radius: 12px; font-size: 16px;">
-                    <i class="bi bi-pencil-square"></i> Edit
+    <div>
+        @forelse($nelayans as $n)
+        <div class="list-item">
+            
+            <div class="info-wrapper mb-3">
+                <div class="avatar shadow-sm">
+                    {{ substr($n->nama, 0, 1) }}
+                </div>
+                
+                <div class="flex-grow-1 pr-2">
+                    <h6 class="mb-1 font-weight-bold text-dark" style="font-size: 16px;">
+                        {{ $n->nama }}
+                    </h6>
+                    <small class="text-muted" style="font-size: 13px;">
+                        <i class="bi bi-telephone text-info"></i> {{ $n->nomor_hp ?? 'Tidak ada nomor HP' }}
+                    </small>
+                </div>
+            </div>
+            
+            <div class="d-flex w-100" style="gap: 8px;">
+                <a href="{{ route('nelayan.edit', $n->nelayan_id) }}" class="btn btn-outline-warning font-weight-bold text-center" style="border-radius: 8px; flex: 1; font-size: 13px; padding: 8px 0;">
+                    <i class="bi bi-pencil-square d-block mb-1" style="font-size: 16px;"></i> Edit
                 </a>
-                <!-- HAPUS -->
-                <form action="{{ route('nelayan.destroy', $n->nelayan_id) }}" method="POST" class="flex-fill">
+                
+                <form action="{{ route('nelayan.destroy', $n->nelayan_id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus nelayan ini?');" style="flex: 1; margin: 0;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" 
-                            class="btn btn-danger w-100 shadow-sm py-3" 
-                            style="border-radius: 12px; font-size: 16px;"
-                            onclick="return confirm('Yakin ingin menghapus nelayan ini?')">
-                        <i class="bi bi-trash"></i> Hapus
+                    <button type="submit" class="btn btn-outline-danger font-weight-bold text-center w-100 h-100" style="border-radius: 8px; font-size: 13px; padding: 8px 0;">
+                        <i class="bi bi-trash d-block mb-1" style="font-size: 16px;"></i> Hapus
                     </button>
                 </form>
             </div>
+            
         </div>
+        @empty
+        <div class="text-center text-muted p-4 mt-4">
+            <i class="bi bi-people" style="font-size: 40px; color: #ccc;"></i>
+            <p class="mt-2 font-weight-bold">
+                {{ request('cari') ? 'Nama nelayan tidak ditemukan.' : 'Belum ada data nelayan.' }}
+            </p>
+            @if(request('cari'))
+                <a href="{{ route('nelayan.index') }}" class="btn btn-sm btn-outline-secondary mt-2" style="border-radius: 8px;">Tampilkan Semua</a>
+            @endif
+        </div>
+        @endforelse
     </div>
-    @endforeach
 
-    <div style="height: 240px;"></div>
+    <div style="height: 100px;"></div>
 
-    <!-- TOMBOL TAMBAH FIX -->
-    <a href="{{ route('nelayan.create') }}" class="btn-tambah-fixed">
-        <div style="font-size:30px;"><i class="bi bi-plus-square"></i></div>
-        Tambah Data Nelayan Baru
+    <a href="{{ route('nelayan.create') }}" class="btn-tambah-fab" title="Tambah Nelayan Baru">
+        <i class="bi bi-person-plus-fill"></i>
     </a>
-
-    @if($nelayans->isEmpty())
-        <div class="text-center text-muted mt-5">Belum ada data nelayan.</div>
-    @endif
 </div>
 @endsection

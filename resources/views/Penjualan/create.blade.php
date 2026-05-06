@@ -150,6 +150,13 @@
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
+        <div id="alert-peringatan-ikan" class="alert shadow-sm mb-3" style="display: none; border-radius: 12px; background-color: #fde8ec; border-left: 5px solid #dc3545;">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-exclamation-triangle-fill text-danger mr-2" style="font-size: 22px;"></i>
+                <span class="font-weight-bold text-dark" style="font-size: 14px;">Pilih minimal 1 ikan dan masukkan harganya ya, Bu!</span>
+            </div>
+        </div>
+
 
         <a href="javascript:void(0)" onclick="pindahKeStep(2)" class="btn-batal" style="background-color: whitesmoke; color: black;">
             <i class="bi bi-arrow-left"></i> Kembali Pilih Pengepul
@@ -160,7 +167,7 @@
         <h6 class="font-weight-bold border-bottom pb-2 mb-3">Pengepul: <span id="info-pengepul-nama" class="text-info">-</span></h6>
         
         <p class="font-weight-bold">Pilih Jenis Nama Hasil Laut</p>
-        <div class="grid-btn">
+        <div class="grid-btn" id="container-ikan">
             <div class="btn-kotak" onclick="toggleInputIkan('Blekutak')">
                 <div class="icon-box">🦑</div>Blekutak
                 <input type="number" id="input-Blekutak" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
@@ -178,6 +185,12 @@
                 <input type="number" id="input-Elek-Elekan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
         </div>
+        <div class="btn-kotak btn-tambah-baru shadow-sm mt-3 mb-4" data-toggle="modal" data-target="#modalIkanBaru">
+            <div class="icon-box-tambah">
+                <i class="bi bi-plus-circle"></i> </div>
+            <span class="font-weight-bold">Jenis Ikan Baru</span>
+        </div>
+
         <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
             <div class="card-body">
                 <label class="font-weight-bold text-muted small">Status Pembayaran</label>
@@ -224,7 +237,7 @@
 
         <div class="btn-bawah">
             <button onclick="pindahKeStep(5)" class="btn-batal" style="background-color: green;">
-                Lanjut ke Pembayaran
+                Lanjut ke biaya admin
             </button>
         </div>
     </div>
@@ -300,6 +313,41 @@
             
             <button type="button" class="btn btn-success shadow-sm font-weight-bold px-4" style="border-radius: 10px; background-color: #08a10b;" onclick="simpanPengepulBaru()">
                 Lanjut <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalIkanBaru" tabindex="-1" aria-labelledby="modalIkanLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title font-weight-bold" id="modalIkanLabel">Tambah Jenis Hasil Laut</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+          
+                <div class="modal-body pt-3">
+                    <div id="alert-ikan-kosong" class="alert shadow-sm mb-3" style="display: none; border-radius: 10px; background-color: #fde8ec; border-left: 5px solid #dc3545; padding: 10px 15px;">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-exclamation-circle-fill text-danger mr-2" style="font-size: 18px;"></i>
+                            <span class="font-weight-bold text-dark" style="font-size: 13px;">Nama ikan tidak boleh kosong ya, Bu!</span>
+                        </div>
+                    </div>
+
+            <div class="form-group mb-0">
+                <label class="text-muted small font-weight-bold">Nama Ikan / Hasil Laut</label>
+                <input type="text" id="inputIkanBaru" class="form-control form-control-lg font-weight-bold shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; background-color: #f8fcff; color: #495057;" placeholder="Contoh: Tenggiri, Cumi, Udang...">
+            </div>
+          </div>
+          
+          <div class="modal-footer border-top-0 pt-0">
+            <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 10px; color: #6c757d;">Batal</button>
+            <button type="button" class="btn btn-success shadow-sm font-weight-bold px-4" style="border-radius: 10px; background-color: #08a10b;" onclick="simpanIkanBaru()">
+                Tambahkan <i class="bi bi-check-lg"></i>
             </button>
           </div>
           
@@ -408,10 +456,66 @@
         });
 
         if (adaIkanYangDiisi === true) {
-            gambarUlangKeranjangBelanja(); // Perbarui tampilan struk
-            pindahKeStep(4); // Lanjut ke Step 4
+            // 1. Sembunyikan alert peringatan jika sebelumnya muncul
+            document.getElementById('alert-peringatan-ikan').style.display = 'none';
+            
+            // 2. Lanjutkan proses seperti biasa
+            gambarUlangKeranjangBelanja(); 
+            pindahKeStep(4); 
         } else {
-            alert("Pilih minimal 1 ikan dan masukkan harganya ya Bu!");
+            // 1. Tampilkan kotak alert merah di atas
+            let alertBox = document.getElementById('alert-peringatan-ikan');
+            alertBox.style.display = 'block';
+            
+            // 2. Gulir layar otomatis ke paling atas agar ibu nelayan pasti melihatnya
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // 3. Sembunyikan alert secara otomatis setelah 3.5 detik
+            setTimeout(function() {
+                // Efek menghilang perlahan (opsional tapi bagus untuk UX)
+                alertBox.style.display = 'none';
+            }, 3500);
+        }
+    }
+
+    // Fungsi untuk menambah kotak ikan baru secara dinamis
+    function simpanIkanBaru() {
+        let inputElement = document.getElementById('inputIkanBaru');
+        let namaIkan = inputElement.value.trim();
+        let alertKosong = document.getElementById('alert-ikan-kosong'); // Panggil elemen alert
+
+        if (namaIkan !== "") {
+            // 1. Sembunyikan alert jika sebelumnya sempat muncul
+            alertKosong.style.display = 'none';
+
+            // 2. Tutup Pop-up
+            $('#modalIkanBaru').modal('hide');
+            inputElement.value = ""; 
+
+            let idAman = namaIkan.replace(/\s+/g, '_');
+
+            let htmlKotakBaru = `
+            <div class="btn-kotak" onclick="toggleInputIkan('${idAman}')">
+                <div class="icon-box">🐟</div>${namaIkan}
+                <input type="number" id="input-${idAman}" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            </div>
+            `;
+
+            document.getElementById('container-ikan').insertAdjacentHTML('beforeend', htmlKotakBaru);
+
+        } else {
+            // MENGGANTIKAN ALERT JAVASCRIPT BAWAAN
+            
+            // 1. Munculkan peringatan merah di dalam pop-up
+            alertKosong.style.display = 'block';
+            
+            // 2. Fokuskan kursor kembali ke kolom ketikan
+            inputElement.focus();
+            
+            // 3. (Opsional) Hilangkan peringatan secara otomatis setelah 3 detik
+            setTimeout(function() {
+                alertKosong.style.display = 'none';
+            }, 3000);
         }
     }
 

@@ -79,11 +79,40 @@
         </a>
     </div>
 
-    <a href="{{ route('logout') }}" 
+    <a href="javascript:void(0)" 
        class="btn-logout-fab" 
        title="Keluar Akun"
-       onclick="return confirm('Apakah Anda yakin ingin keluar dari aplikasi?')">
+       data-toggle="modal" 
+       data-target="#modalLogout">
         <i class="bi bi-box-arrow-right" style="margin-left: 4px;"></i>
     </a>
+
+    <div class="modal fade" id="modalLogout" tabindex="-1" aria-labelledby="modalLogoutLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered"> <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
+          
+          <div class="modal-header border-bottom-0 pb-0">
+            <h5 class="modal-title font-weight-bold text-dark" id="modalLogoutLabel">Konfirmasi Keluar</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          
+          <div class="modal-body pt-3 pb-4">
+            <p class="text-muted font-weight-bold mb-0">Apakah Ibu yakin ingin keluar dari aplikasi sekarang?</p>
+          </div>
+          
+          <div class="modal-footer border-top-0 pt-0">
+            <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 10px; color: #6c757d;">
+                Batal
+            </button>
+            
+            <a href="{{ route('logout') }}" class="btn btn-danger shadow-sm font-weight-bold px-4" style="border-radius: 10px; background-color: #dc3545;">
+                Ya, Keluar <i class="bi bi-box-arrow-right ml-1"></i>
+            </a>
+          </div>
+          
+        </div>
+      </div>
+    </div>
 </div>
 @endsection

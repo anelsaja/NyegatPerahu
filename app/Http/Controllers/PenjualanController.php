@@ -58,12 +58,12 @@ class PenjualanController extends Controller
             return redirect()->route('home')->with([
                 'success' => 'Data tersimpan! Karcis sedang diunduh.',
                 'url_karcis_pdf' => route('penjualan.cetak', $penjualan->penjualan_id),
-                'link_wa_nelayan' => $nelayan ? $nelayan->link_wa : null // Menggunakan Accessor dari Model
+                'link_wa_nelayan' => $penjualan->link_wa // Menggunakan fungsi baru
             ]);
         } else {
             return redirect()->route('home')->with([
                 'success' => 'Data penjualan berhasil disimpan!',
-                'link_wa_nelayan' => $nelayan ? $nelayan->link_wa : null
+                'link_wa_nelayan' => $penjualan->link_wa // Menggunakan fungsi baru
             ]);
         }
     }

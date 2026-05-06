@@ -117,8 +117,8 @@
     <a href="{{ route('home') }}" class="btn btn-light" style="background-color: #f8f9fa;">
         <i class="bi bi-arrow-left mr-1"></i> Kembali
     </a>
-            @if($penjualan->nelayan && $penjualan->nelayan->link_wa)
-                <button onclick="cetakDanKirimWa('{{ route('penjualan.cetak', $penjualan->penjualan_id) }}', '{{ $penjualan->nelayan->link_wa }}')" 
+            @if($penjualan->link_wa)
+                <button type="button" onclick="cetakDanKirimWa('{{ route('penjualan.cetak', $penjualan->penjualan_id) }}', '{!! $penjualan->link_wa !!}')" 
                         class="btn text-white shadow-sm flex-fill font-weight-bold" 
                         style="border-radius: 10px; padding: 12px; background-color: #25D366; border: none;">
                     <i class="bi bi-printer-fill mr-1"></i> Cetak & Kirim WA
@@ -134,13 +134,13 @@
 
 <script>
     function cetakDanKirimWa(urlPdf, urlWa) {
-        // 1. Buka tab baru untuk WhatsApp
-        // (Ini harus dieksekusi duluan agar tidak diblokir oleh sistem anti-popup browser)
+        // 1. Perintahkan browser membuka tab WA baru
         window.open(urlWa, '_blank');
-
-        // 2. Download file PDF di halaman saat ini
-        // (Halaman tidak akan berubah/refresh karena file dari Controller sifatnya 'download')
-        window.location.href = urlPdf;
+        
+        // 2. Beri jeda 1 detik penuh (1000ms) lalu jalankan unduh PDF
+        setTimeout(function() {
+            window.location.href = urlPdf;
+        }, 1000);
     }
 </script>
 @endsection

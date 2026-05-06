@@ -46,7 +46,7 @@
 
 <div class="p-3">
     @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show shadow-sm mt-3" role="alert" style="border-radius: 12px;">
+    <div id="alert-sukses-wa" class="alert alert-success alert-dismissible fade show shadow-sm mt-3" role="alert" style="border-radius: 12px;">
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <i class="bi bi-check-circle-fill mr-1"></i> 
@@ -54,7 +54,11 @@
             </div>
             
             @if(session('link_wa_nelayan'))
-                <a href="{{ session('link_wa_nelayan') }}" target="_blank" class="btn btn-success btn-sm font-weight-bold shadow" style="border-radius: 8px; background-color: #25D366; border-color: #25D366;">
+                <a href="{{ session('link_wa_nelayan') }}" 
+                   target="_blank" 
+                   class="btn btn-success btn-sm font-weight-bold shadow" 
+                   style="border-radius: 8px; background-color: #25D366; border-color: #25D366;"
+                   onclick="document.getElementById('alert-sukses-wa').style.display='none';">
                     <i class="bi bi-whatsapp"></i> Kirim ke WA
                 </a>
             @endif

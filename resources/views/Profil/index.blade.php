@@ -56,6 +56,29 @@
         <p class="text-muted">{{ $pengguna->email }}</p>
     </div>
 
+    <div class="mt-5 pt-2">
+        <h6 class="font-weight-bold text-muted mb-3 pl-1" style="font-size: 13px;">Komunitas</h6>
+        
+        <a href="https://chat.whatsapp.com/MASUKKAN_LINK_GRUP_DISINI" 
+           target="_blank" 
+           class="btn btn-block shadow-sm py-3 font-weight-bold text-left d-flex align-items-center" 
+           style="background-color: #ffffff; border: 1px solid #e9ecef; border-radius: 15px; text-decoration: none;">
+            
+            <div class="d-flex align-items-center justify-content-center text-white mr-3 shadow-sm" 
+                 style="background-color: #25D366; width: 45px; height: 45px; border-radius: 12px;">
+                <i class="bi bi-whatsapp" style="font-size: 22px;"></i>
+            </div>
+            
+            <div class="flex-grow-1">
+                <span class="d-block text-dark font-weight-bold" style="font-size: 16px;">Grup WhatsApp</span>
+            </div>
+            
+            <div>
+                <i class="bi bi-chevron-right text-muted"></i>
+            </div>
+        </a>
+    </div>
+
     <a href="{{ route('logout') }}" 
        class="btn-logout-fab" 
        title="Keluar Akun"

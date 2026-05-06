@@ -133,6 +133,13 @@
             <div class="btn-kotak" onclick="pilihPengepul('Tarom')"><div class="icon-box">🚛</div>Tarom</div>
             <div class="btn-kotak" onclick="pilihPengepul('Panggang')"><div class="icon-box">🔥</div>Panggang</div>
         </div>
+
+        <div class="btn-kotak btn-tambah-baru shadow-sm mt-3" data-toggle="modal" data-target="#modalPengepulBaru">
+            <div class="icon-box-tambah">
+                <i class="bi bi-shop"></i>
+            </div>
+            <span class="font-weight-bold">Pengepul Baru</span>
+        </div>
     </div>
 
     <div id="step-3" class="step-section">
@@ -270,6 +277,35 @@
     <input type="hidden" name="biaya_admin" id="input-admin-hidden">
     <div id="tempat-input-ikan-rahasia"></div>
 </form>
+
+    <div class="modal fade" id="modalPengepulBaru" tabindex="-1" aria-labelledby="modalPengepulLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered"> <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
+          
+          <div class="modal-header border-bottom-0 pb-0">
+            <h5 class="modal-title font-weight-bold" id="modalPengepulLabel">Tambah Pengepul Baru</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          
+          <div class="modal-body pt-3">
+            <div class="form-group mb-0">
+                <label class="text-muted small font-weight-bold">Nama Pengepul</label>
+                <input type="text" id="inputPengepulBaru" class="form-control form-control-lg font-weight-bold shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; background-color: #f8fcff; color: #495057;" placeholder="Ketik nama pengepul di sini...">
+            </div>
+          </div>
+          
+          <div class="modal-footer border-top-0 pt-0">
+            <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 10px; color: #6c757d;">Batal</button>
+            
+            <button type="button" class="btn btn-success shadow-sm font-weight-bold px-4" style="border-radius: 10px; background-color: #08a10b;" onclick="simpanPengepulBaru()">
+                Lanjut <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
 
 <script>
     // 1. MEMORI APLIKASI
@@ -607,6 +643,28 @@ function editIkan(index) {
     
     pindahKeStep(3);
 }
+    // Fungsi untuk memproses pop-up
+    function simpanPengepulBaru() {
+        // 1. Ambil nilai yang diketik dari kolom input
+        let inputElement = document.getElementById('inputPengepulBaru');
+        let namaBaru = inputElement.value.trim();
+
+        // 2. Cek apakah tidak kosong
+        if (namaBaru !== "") {
+            // Tutup pop-up modal secara otomatis
+            $('#modalPengepulBaru').modal('hide');
+            
+            // Kosongkan kembali kolom input (jika pengguna kembali ke step 2 nanti)
+            inputElement.value = "";
+            
+            // Lemparkan namanya ke fungsi pilihPengepul (Otomatis masuk ke Step 3)
+            pilihPengepul(namaBaru);
+        } else {
+            // Beri peringatan kecil jika ibu nelayan lupa mengisi tapi memencet "Lanjut"
+            alert("Nama pengepul tidak boleh kosong, Bu!");
+            inputElement.focus();
+        }
+    }
 
 // PENANGKAP PESAN DARI CONTROLLER
     document.addEventListener("DOMContentLoaded", function() {

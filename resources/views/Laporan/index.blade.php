@@ -33,11 +33,12 @@
     }
 
     /* FAB PDF Merah (Tombol Bulat Melayang Kanan Bawah) */
-    .btn-pdf-fab {
+    /* FAB WA (Hijau) */
+    .btn-wa-fab {
         position: fixed;
         bottom: 100px;
         right: 20px; 
-        background: #dc3545; /* Warna Merah khas PDF */
+        background: #25D366; /* Warna Hijau WA */
         color: white;
         border-radius: 50%; 
         width: 70px;
@@ -45,13 +46,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 28px;
-        box-shadow: 0 4px 12px rgba(220,53,69,0.4);
+        font-size: 32px;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
         z-index: 1000;
-        text-decoration: none !important;
+        border: none;
+        outline: none;
         transition: transform 0.2s;
     }
-    .btn-pdf-fab:hover, .btn-pdf-fab:active {
+    .btn-wa-fab:hover, .btn-wa-fab:active {
         color: white;
         transform: scale(0.95);
     }
@@ -72,7 +74,13 @@
         </div>
         <div class="form-group mb-3">
             <label class="font-weight-bold text-muted small">Pilih Bulan & Tahun</label>
-            <input type="month" name="bulan" class="form-control form-control-lg font-weight-bold shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;" value="{{ request('bulan') }}" required>
+            <input type="month" 
+                   name="bulan" 
+                   class="form-control form-control-lg font-weight-bold shadow-sm" 
+                   style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;" 
+                   value="{{ request('bulan') }}" 
+                   max="{{ date('Y-m') }}" 
+                   required>
         </div>
 
         @if($laporan === null)
@@ -150,12 +158,56 @@
             </div>
         @endif
         
-        <a href="{{ route('laporan.pdf', ['nelayan_id' => request('nelayan_id'), 'bulan' => request('bulan')]) }}" class="btn-pdf-fab" title="Download PDF">
-            <i class="bi bi-file-earmark-pdf-fill"></i>
-        </a>
+        @php
+            // Cari data nelayan yang sedang dipilih dari dropdown
+            $nelayan_terpilih = $nelayans->where('nelayan_id', request('nelayan_id'))->first();
+            $link_wa_bulanan = null;
+
+            // Jika nelayan ketemu dan punya nomor HP, buat link WA-nya
+            if($nelayan_terpilih && !empty($nelayan_terpilih->nomor_hp)) {
+                $hp = preg_replace('/[^0-9]/', '', $nelayan_terpilih->nomor_hp);
+                if (substr($hp, 0, 1) == '0') {
+                    $hp = '62' . substr($hp, 1);
+                }
+                
+                // Format angka dan bulan
+                $rupiah_bersih = number_format($laba_bersih, 0, ',', '.');
+                $bulan_format = \Carbon\Carbon::parse(request('bulan').'-01')->locale('id')->translatedFormat('F Y');
+                
+                // Susun pesan bulanan
+                $pesan = "Halo Pak {$nelayan_terpilih->nama}, ini rekapitulasi penjualan hasil laut Bapak untuk bulan {$bulan_format}. Total pendapatan bersih Bapak di bulan ini adalah *Rp {$rupiah_bersih}*. File laporan PDF-nya silakan diunduh ya Pak. 🙏";
+                
+                $link_wa_bulanan = "https://wa.me/{$hp}?text=" . urlencode($pesan);
+            }
+        @endphp
+
+        @if($link_wa_bulanan)
+            <button type="button" 
+                    onclick="cetakDanKirimWa('{{ route('laporan.pdf', ['nelayan_id' => request('nelayan_id'), 'bulan' => request('bulan')]) }}', '{!! $link_wa_bulanan !!}')" 
+                    class="btn-wa-fab" 
+                    title="Cetak PDF & Kirim WA">
+                <i class="bi bi-whatsapp"></i>
+            </button>
+        @else
+            <a href="{{ route('laporan.pdf', ['nelayan_id' => request('nelayan_id'), 'bulan' => request('bulan')]) }}" class="btn-pdf-fab" title="Download PDF">
+                <i class="bi bi-file-earmark-pdf-fill"></i>
+            </a>
+        @endif
     @endif
     
 </div>
 
 <div style="height: 100px;"></div>
+
+<script>
+    function cetakDanKirimWa(urlPdf, urlWa) {
+        // 1. Perintahkan browser membuka tab WA baru
+        window.open(urlWa, '_blank');
+        
+        // 2. Beri jeda 1 detik lalu jalankan unduh laporan PDF
+        setTimeout(function() {
+            window.location.href = urlPdf;
+        }, 1000);
+    }
+</script>
 @endsection

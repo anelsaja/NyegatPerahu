@@ -128,19 +128,19 @@
 
         <p class="font-weight-bold">Pilih Pengepul</p>
         <div class="grid-btn">
-            <div class="btn-kotak" onclick="pilihPengepul('Kaji Arip')"><div class="icon-box">🐟</div>Kaji Arip</div>
-            <div class="btn-kotak" onclick="pilihPengepul('BBI')"><div class="icon-box">🏢</div>BBI</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Tarom')"><div class="icon-box">🚛</div>Tarom</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Pramono')"><div class="icon-box">🔥</div>Pramono</div>
-            <div class="btn-kotak" onclick="pilihPengepul('TPI Banyutowo')"><div class="icon-box">🔥</div>TPI Banyutow</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Rossa')"><div class="icon-box">🔥</div>Rossa</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Rini')"><div class="icon-box">🔥</div>Rini</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Kaji Sun')"><div class="icon-box">🔥</div>Kaji Sun</div>
-            <div class="btn-kotak" onclick="pilihPengepul('kaji Tino')"><div class="icon-box">🔥</div>Kaji Tino</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Tri')"><div class="icon-box">🔥</div>Tri</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Pi`i')"><div class="icon-box">🔥</div>Pi`i</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Agus')"><div class="icon-box">🔥</div>Agus</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Tilah Prawi')"><div class="icon-box">🔥</div>Tilah Prawi</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Kaji Arip')">Kaji Arip</div>
+            <div class="btn-kotak" onclick="pilihPengepul('BBI')">BBI</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Tarom')">Tarom</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Pramono')">Pramono</div>
+            <div class="btn-kotak" onclick="pilihPengepul('TPI Banyutowo')">TPI Banyutowo</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Rossa')">Rossa</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Rini')">Rini</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Kaji Sun')">Kaji Sun</div>
+            <div class="btn-kotak" onclick="pilihPengepul('kaji Tino')">Kaji Tino</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Tri')">Tri</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Pi`i')">Pi`i</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Agus')">Agus</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Tilah Prawi')">Tilah Prawi</div>
         </div>
 
         <div class="btn-kotak btn-tambah-baru shadow-sm mt-3" data-toggle="modal" data-target="#modalPengepulBaru">
@@ -178,43 +178,43 @@
         <p class="font-weight-bold">Pilih Jenis Nama Hasil Laut</p>
         <div class="grid-btn" id="container-ikan">
             <div class="btn-kotak" onclick="toggleInputIkan('Timbangan')">
-                <div class="icon-box">🦑</div>Timbangan
+                Timbangan
                 <input type="number" id="input-Timbangan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak" onclick="toggleInputIkan('Tebleng')">
-                <div class="icon-box">🦑</div>Tebleng
+                Tebleng
                 <input type="number" id="input-Tebleng" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak" onclick="toggleInputIkan('Kembung')">
-                <div class="icon-box">🦑</div>Kembung
+                Kembung
                 <input type="number" id="input-Kembung" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak" onclick="toggleInputIkan('Cucut')">
-                <div class="icon-box">🦑</div>Cucut
+                Cucut
                 <input type="number" id="input-Cucut" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak" onclick="toggleInputIkan('Pirek')">
-                <div class="icon-box">🦑</div>Pirek
+                Pirek
                 <input type="number" id="input-Pirek" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak" onclick="toggleInputIkan('Lelang')">
-                <div class="icon-box">🦑</div>Lelang
+                Lelang
                 <input type="number" id="input-Lelang" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak" onclick="toggleInputIkan('Blekutak')">
-                <div class="icon-box">🦑</div>Blekutak
+                Blekutak
                 <input type="number" id="input-Blekutak" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak" onclick="toggleInputIkan('Rajungan')">
-                <div class="icon-box">🦀</div>Rajungan
+                Rajungan
                 <input type="number" id="input-Rajungan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak" onclick="toggleInputIkan('Windu')">
-                <div class="icon-box">🦐</div>Windu
+                Windu
                 <input type="number" id="input-Windu" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak" onclick="toggleInputIkan('Elek-Elekan')">
-                <div class="icon-box">🐠</div>Elek-Elekan
+                Elek-Elekan
                 <input type="number" id="input-Elek-Elekan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
         </div>
@@ -261,19 +261,19 @@
 
         <h6 class="font-weight-bold pt-3 border-top mb-3">Pilih Pengepul Lainnya</h6>
         <div class="grid-btn">
-            <div class="btn-kotak" onclick="pilihPengepul('Kaji Arip')"><div class="icon-box">🐟</div>Kaji Arip</div>
-            <div class="btn-kotak" onclick="pilihPengepul('BBI')"><div class="icon-box">🏢</div>BBI</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Tarom')"><div class="icon-box">🚛</div>Tarom</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Pramono')"><div class="icon-box">🔥</div>Pramono</div>
-            <div class="btn-kotak" onclick="pilihPengepul('TPI Banyutowo')"><div class="icon-box">🔥</div>TPI Banyutow</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Rossa')"><div class="icon-box">🔥</div>Rossa</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Rini')"><div class="icon-box">🔥</div>Rini</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Kaji Sun')"><div class="icon-box">🔥</div>Kaji Sun</div>
-            <div class="btn-kotak" onclick="pilihPengepul('kaji Tino')"><div class="icon-box">🔥</div>Kaji Tino</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Tri')"><div class="icon-box">🔥</div>Tri</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Pi`i')"><div class="icon-box">🔥</div>Pi`i</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Agus')"><div class="icon-box">🔥</div>Agus</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Tilah Prawi')"><div class="icon-box">🔥</div>Tilah Prawi</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Kaji Arip')">Kaji Arip</div>
+            <div class="btn-kotak" onclick="pilihPengepul('BBI')">BBI</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Tarom')">Tarom</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Pramono')">Pramono</div>
+            <div class="btn-kotak" onclick="pilihPengepul('TPI Banyutowo')">TPI Banyutowo</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Rossa')">Rossa</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Rini')">Rini</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Kaji Sun')">Kaji Sun</div>
+            <div class="btn-kotak" onclick="pilihPengepul('kaji Tino')">Kaji Tino</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Tri')">Tri</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Pi`i')">Pi`i</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Agus')">Agus</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Tilah Prawi')">Tilah Prawi</div>
         </div>
         <div style="height: 100px;"></div>
 

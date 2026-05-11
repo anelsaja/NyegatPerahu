@@ -71,15 +71,24 @@
                 
                 <div class="d-flex justify-content-between mb-3 align-items-center border-bottom pb-2">
                     <select name="hasil_laut[{{ $index }}][pengepul]" class="form-control form-control-sm input-struk mr-2 border-0 bg-light" style="flex: 1.2;" required>
-                        <option value="Kaji Arip" {{ $item->nama_pengepul == 'Kaji Arip' ? 'selected' : '' }}>Pengepul: Kaji Arip</option>
-                        <option value="BBI" {{ $item->nama_pengepul == 'BBI' ? 'selected' : '' }}>Pengepul: BBI</option>
-                        <option value="Tarom" {{ $item->nama_pengepul == 'Tarom' ? 'selected' : '' }}>Pengepul: Tarom</option>
-                        <option value="Panggang" {{ $item->nama_pengepul == 'Panggang' ? 'selected' : '' }}>Pengepul: Panggang</option>
+                        <option value="Kaji Arip" {{ $item->nama_pengepul == 'Kaji Arip' ? 'selected' : '' }}>Kaji Arip</option>
+                        <option value="BBI" {{ $item->nama_pengepul == 'BBI' ? 'selected' : '' }}>BBI</option>
+                        <option value="Tarom" {{ $item->nama_pengepul == 'Tarom' ? 'selected' : '' }}>Tarom</option>
+                        <option value="Pramono" {{ $item->nama_pengepul == 'Pramono' ? 'selected' : '' }}>Pramono</option>
+                        <option value="TPI Banyutowo" {{ $item->nama_pengepul == 'TPI banyutowo' ? 'selected' : '' }}>TPI Banyutowo</option>
+                        <option value="Rossa" {{ $item->nama_pengepul == 'Rossa' ? 'selected' : '' }}>Rossa</option>
+                        <option value="Rini" {{ $item->nama_pengepul == 'Rini' ? 'selected' : '' }}>Rini</option>
+                        <option value="Kaji Sun" {{ $item->nama_pengepul == 'Kaji Sun' ? 'selected' : '' }}>Kaji Sun</option>
+                        <option value="Kaji Tino" {{ $item->nama_pengepul == 'Kaji Tino' ? 'selected' : '' }}>Kaji Tino</option>
+                        <option value="Tri" {{ $item->nama_pengepul == 'Tri' ? 'selected' : '' }}>Tri</option>
+                        <option value="Pii" {{ $item->nama_pengepul == 'Pii' ? 'selected' : '' }}>Pii</option>
+                        <option value="Agus" {{ $item->nama_pengepul == 'Agus' ? 'selected' : '' }}>Agus</option>
+                        <option value="Tilah Prawi" {{ $item->nama_pengepul == 'Tilah Prawi' ? 'selected' : '' }}>Tilah Prawi</option>
                     </select>
                     
-                    <select name="hasil_laut[{{ $index }}][status_pembayaran]" class="form-control form-control-sm input-struk mr-2 border-0" style="flex: 1; background-color: #fff3cd; color: #856404; font-size: 12px;" required>
-                        <option value="Lunas" {{ $item->status_pembayaran == 'Lunas' ? 'selected' : '' }}>✅ Lunas</option>
-                        <option value="Belum Lunas" {{ $item->status_pembayaran == 'Belum Lunas' ? 'selected' : '' }}>⏳ Bon</option>
+                    <select name="hasil_laut[{{ $index }}][status_pembayaran]" class="form-control form-control-sm input-struk mr-2 border-0" style="flex: 1;" required>
+                        <option value="Lunas" {{ $item->status_pembayaran == 'Lunas' ? 'selected' : '' }}>Lunas</option>
+                        <option value="Belum Lunas" {{ $item->status_pembayaran == 'Belum Lunas' ? 'selected' : '' }}>Belum Lunas</option>
                     </select>
 
                     <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('baris-ikan-{{ $index }}')">
@@ -159,17 +168,26 @@
         let kotakBaru = `
             <div class="mb-3 p-3 card-ikan" id="${idBaris}">
                 <div class="d-flex justify-content-between mb-3 align-items-center border-bottom pb-2">
-                    <select name="hasil_laut[${urutanKe}][pengepul]" class="form-control form-control-sm input-struk mr-2 border-0 bg-light w-75" required>
-                        <option value="">-- Pilih Pengepul --</option>
+                    <select name="hasil_laut[${urutanKe}][pengepul]" class="form-control form-control-sm input-struk mr-2 border-0 bg-light w-50" required>
+                        <option value="">- Pilih Pengepul -</option>
                         <option value="Kaji Arip">Kaji Arip</option>
                         <option value="BBI">BBI</option>
                         <option value="Tarom">Tarom</option>
-                        <option value="Panggang">Panggang</option>
+                        <option value="Pramono">Pramono</option>
+                        <option value="TPI Banyutowo">TPI Banyutowo</option>
+                        <option value="Rossa">Rossa</option>
+                        <option value="Rini">Rini</option>
+                        <option value="Kaji Sun">Kaji Sun</option>
+                        <option value="Kaji Tino">Kaji Tino</option>
+                        <option value="Tri">Tri</option>
+                        <option value="Pii">Pii</option>
+                        <option value="Agus">Agus</option>
+                        <option value="Tilah Prawi">Tilah Prawi</option>
                     </select>
                     
-                    <select name="hasil_laut[${urutanKe}][status_pembayaran]" class="form-control form-control-sm input-struk mr-2 border-0" style="flex: 1; background-color: #fff3cd; color: #856404; font-size: 12px;" required>
-                        <option value="Lunas">✅ Lunas</option>
-                        <option value="Belum Lunas">⏳ Bon</option>
+                    <select name="hasil_laut[${urutanKe}][status_pembayaran]" class="form-control form-control-sm input-struk mr-2 border-0" style="flex: 1;" required>
+                        <option value="Lunas">Lunas</option>
+                        <option value="Belum Lunas">Belum Lunas</option>
                     </select>
 
                     <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('${idBaris}')">

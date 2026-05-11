@@ -111,21 +111,19 @@
             </div>
             
             <div class="d-flex w-100" style="gap: 8px;">
-                <a href="{{ route('penjualan.show', $trx->penjualan_id) }}" class="btn btn-outline-info font-weight-bold text-center" style="border-radius: 8px; flex: 1; font-size: 13px; padding: 8px 0;">
+                <a href="{{ route('penjualan.show', $trx->penjualan_id) }}" class="btn btn-info font-weight-bold text-center" style="border-radius: 8px; flex: 1; font-size: 13px; padding: 8px 0;">
                     <i class="bi bi-eye-fill d-block mb-1" style="font-size: 16px;"></i> Detail
                 </a>
 
-                <a href="{{ route('penjualan.edit', $trx->penjualan_id) }}" class="btn btn-outline-warning font-weight-bold text-center" style="border-radius: 8px; flex: 1; font-size: 13px; padding: 8px 0;">
+                <a href="{{ route('penjualan.edit', $trx->penjualan_id) }}" class="btn btn-warning font-weight-bold text-center" style="border-radius: 8px; flex: 1; font-size: 13px; padding: 8px 0;">
                     <i class="bi bi-pencil-square d-block mb-1" style="font-size: 16px;"></i> Edit
                 </a>
                 
-                <form action="{{ route('penjualan.destroy', $trx->penjualan_id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus transaksi ini?');" style="flex: 1; margin: 0;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-outline-danger font-weight-bold text-center w-100 h-100" style="border-radius: 8px; font-size: 13px; padding: 8px 0;">
+                <div style="flex: 1; margin: 0;">
+                    <button type="button" onclick="siapkanHapus('{{ route('penjualan.destroy', $trx->penjualan_id) }}')" class="btn btn-danger font-weight-bold text-center w-100 h-100" style="border-radius: 8px; font-size: 13px; padding: 8px 0; background-color: #dc3545; border: none;">
                         <i class="bi bi-trash d-block mb-1" style="font-size: 16px;"></i> Hapus
                     </button>
-                </form>
+                </div>
             </div>
             
         </div>
@@ -144,6 +142,39 @@
     </a>
 </div>
 
+<div class="modal fade" id="modalHapusTransaksi" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
+          
+          <div class="modal-header border-bottom-0 pb-0">
+            <h5 class="modal-title font-weight-bold text-dark">Hapus Transaksi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          
+          <div class="modal-body pt-3 pb-4">
+            <p class="text-muted font-weight-bold mb-0">Apakah Ibu yakin ingin menghapus data penjualan ini?</p>
+          </div>
+          
+          <div class="modal-footer border-top-0 pt-0">
+            <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 10px; color: #6c757d;">
+                Batal
+            </button>
+            
+            <form id="formHapusAjaib" method="POST" style="margin: 0;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger shadow-sm font-weight-bold px-4" style="border-radius: 10px; background-color: #dc3545;">
+                    Ya, Hapus <i class="bi bi-trash ml-1"></i>
+                </button>
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
 @if(session('url_karcis_pdf'))
 <script>
     document.addEventListener("DOMContentLoaded", function() {    
@@ -151,4 +182,13 @@
     });
 </script>
 @endif
+<script>
+    function siapkanHapus(urlHapusData) {
+        // 1. Suntikkan alamat rute data yang akan dihapus ke dalam Form Pop-up
+        document.getElementById('formHapusAjaib').action = urlHapusData;
+        
+        // 2. Munculkan Pop-up secara visual
+        $('#modalHapusTransaksi').modal('show');
+    }
+</script>
 @endsection

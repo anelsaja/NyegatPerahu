@@ -131,7 +131,16 @@
             <div class="btn-kotak" onclick="pilihPengepul('Kaji Arip')"><div class="icon-box">🐟</div>Kaji Arip</div>
             <div class="btn-kotak" onclick="pilihPengepul('BBI')"><div class="icon-box">🏢</div>BBI</div>
             <div class="btn-kotak" onclick="pilihPengepul('Tarom')"><div class="icon-box">🚛</div>Tarom</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Panggang')"><div class="icon-box">🔥</div>Panggang</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Pramono')"><div class="icon-box">🔥</div>Pramono</div>
+            <div class="btn-kotak" onclick="pilihPengepul('TPI Banyutowo')"><div class="icon-box">🔥</div>TPI Banyutow</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Rossa')"><div class="icon-box">🔥</div>Rossa</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Rini')"><div class="icon-box">🔥</div>Rini</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Kaji Sun')"><div class="icon-box">🔥</div>Kaji Sun</div>
+            <div class="btn-kotak" onclick="pilihPengepul('kaji Tino')"><div class="icon-box">🔥</div>Kaji Tino</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Tri')"><div class="icon-box">🔥</div>Tri</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Pi`i')"><div class="icon-box">🔥</div>Pi`i</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Agus')"><div class="icon-box">🔥</div>Agus</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Tilah Prawi')"><div class="icon-box">🔥</div>Tilah Prawi</div>
         </div>
 
         <div class="btn-kotak btn-tambah-baru shadow-sm mt-3" data-toggle="modal" data-target="#modalPengepulBaru">
@@ -168,6 +177,30 @@
         
         <p class="font-weight-bold">Pilih Jenis Nama Hasil Laut</p>
         <div class="grid-btn" id="container-ikan">
+            <div class="btn-kotak" onclick="toggleInputIkan('Timbangan')">
+                <div class="icon-box">🦑</div>Timbangan
+                <input type="number" id="input-Timbangan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            </div>
+            <div class="btn-kotak" onclick="toggleInputIkan('Tebleng')">
+                <div class="icon-box">🦑</div>Tebleng
+                <input type="number" id="input-Tebleng" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            </div>
+            <div class="btn-kotak" onclick="toggleInputIkan('Kembung')">
+                <div class="icon-box">🦑</div>Kembung
+                <input type="number" id="input-Kembung" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            </div>
+            <div class="btn-kotak" onclick="toggleInputIkan('Cucut')">
+                <div class="icon-box">🦑</div>Cucut
+                <input type="number" id="input-Cucut" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            </div>
+            <div class="btn-kotak" onclick="toggleInputIkan('Pirek')">
+                <div class="icon-box">🦑</div>Pirek
+                <input type="number" id="input-Pirek" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            </div>
+            <div class="btn-kotak" onclick="toggleInputIkan('Lelang')">
+                <div class="icon-box">🦑</div>Lelang
+                <input type="number" id="input-Lelang" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            </div>
             <div class="btn-kotak" onclick="toggleInputIkan('Blekutak')">
                 <div class="icon-box">🦑</div>Blekutak
                 <input type="number" id="input-Blekutak" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
@@ -231,7 +264,16 @@
             <div class="btn-kotak" onclick="pilihPengepul('Kaji Arip')"><div class="icon-box">🐟</div>Kaji Arip</div>
             <div class="btn-kotak" onclick="pilihPengepul('BBI')"><div class="icon-box">🏢</div>BBI</div>
             <div class="btn-kotak" onclick="pilihPengepul('Tarom')"><div class="icon-box">🚛</div>Tarom</div>
-            <div class="btn-kotak" onclick="pilihPengepul('Panggang')"><div class="icon-box">🔥</div>Panggang</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Pramono')"><div class="icon-box">🔥</div>Pramono</div>
+            <div class="btn-kotak" onclick="pilihPengepul('TPI Banyutowo')"><div class="icon-box">🔥</div>TPI Banyutow</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Rossa')"><div class="icon-box">🔥</div>Rossa</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Rini')"><div class="icon-box">🔥</div>Rini</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Kaji Sun')"><div class="icon-box">🔥</div>Kaji Sun</div>
+            <div class="btn-kotak" onclick="pilihPengepul('kaji Tino')"><div class="icon-box">🔥</div>Kaji Tino</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Tri')"><div class="icon-box">🔥</div>Tri</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Pi`i')"><div class="icon-box">🔥</div>Pi`i</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Agus')"><div class="icon-box">🔥</div>Agus</div>
+            <div class="btn-kotak" onclick="pilihPengepul('Tilah Prawi')"><div class="icon-box">🔥</div>Tilah Prawi</div>
         </div>
         <div style="height: 100px;"></div>
 
@@ -270,9 +312,6 @@
         </div>
 
         <div class="d-flex mb-4" style="gap: 10px;">
-            <button type="button" onclick="kirimKeDatabaseLaravel('simpan')" class="btn btn-outline-success font-weight-bold shadow-sm" style="flex: 1; border-radius: 10px; border-width: 2px;">
-                <i class="bi bi-floppy-fill mr-1"></i> Simpan Saja
-            </button>
 
             <button type="button" onclick="kirimKeDatabaseLaravel('cetak')" class="btn btn-primary font-weight-bold shadow-sm text-white" style="flex: 1; border-radius: 10px;">
                 <i class="bi bi-printer-fill mr-1"></i> Cetak Karcis

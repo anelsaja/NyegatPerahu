@@ -99,12 +99,13 @@
             </div>
             @endforeach
         </div>
-        <div class="btn-kotak btn-tambah-baru shadow-sm" onclick="window.location.href='{{ route('nelayan.create') }}'">
+        <div class="btn-kotak btn-tambah-baru shadow-sm" onclick="window.location.href='{{ route('nelayan.create', ['asal' => 'penjualan']) }}'">
             <div class="icon-box-tambah">
                 <i class="bi bi-person-plus-fill"></i>
             </div>
             <span class="font-weight-bold">Nelayan Baru</span>
         </div>
+        <div style="height: 120px;"></div>
         <div class="btn-bawah">
             <a href="{{ route('home') }}" class="btn-batal">
                 <i class="bi bi-x-circle"></i>

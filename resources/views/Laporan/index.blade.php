@@ -1,30 +1,10 @@
 @extends('layouts.app')
 @section('content')
 <style>
-    body {
-        background-color: #ffffff;
-    }
-
     /* GAYA DAFTAR FLAT */
     .list-item {
         border-bottom: 1px solid #f0f2f5;
         padding: 15px 0;
-    }
-
-    /* Foto Profil Bundar (Di sini kita gunakan untuk TANGGAL) */
-    .avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-color: #08a10b; /* Warna hijau konsisten */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        font-weight: bold;
-        color: #fff;
-        margin-right: 15px;
-        flex-shrink: 0;
     }
 
     .info-wrapper {
@@ -32,7 +12,6 @@
         align-items: center;
     }
 
-    /* FAB PDF Merah (Tombol Bulat Melayang Kanan Bawah) */
     /* FAB WA (Hijau) */
     .btn-wa-fab {
         position: fixed;
@@ -64,7 +43,7 @@
 
     <form action="{{ route('laporan.index') }}" method="GET" class="mb-4">
         <div class="form-group mb-3">
-            <label class="font-weight-bold text-muted small">Pilih Nelayan</label>
+            <label class="font-weight-bold">Nama Nelayan</label>
             <select name="nelayan_id" class="form-control form-control-lg font-weight-bold shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;" required>
                 <option value="">-- Pilih Nelayan --</option>
                 @foreach($nelayans as $n)
@@ -73,7 +52,7 @@
             </select>
         </div>
         <div class="form-group mb-3">
-            <label class="font-weight-bold text-muted small">Pilih Bulan & Tahun</label>
+            <label class="font-weight-bold">Bulan & Tahun</label>
             <input type="month" 
                    name="bulan" 
                    class="form-control form-control-lg font-weight-bold shadow-sm" 
@@ -95,13 +74,13 @@
     </form>
 
     @if($laporan !== null)
-        <hr class="my-4" style="border-color: #f0f2f5;">
+        <hr class="mb-4" style="border-color: black">
 
         <h6 class="font-weight-bold mb-3 text-dark">Hasil Rekapitulasi</h6>
         
         @if($laporan->isEmpty())
             <div class="text-center text-muted p-4 mt-2">
-                <i class="bi bi-inbox" style="font-size: 40px; color: #ccc;"></i>
+                <i class="bi bi-inbox" style="font-size: 50px; color: #ccc;"></i>
                 <p class="mt-2 font-weight-bold">Tidak ada transaksi di bulan ini.</p>
             </div>
         @else
@@ -115,7 +94,7 @@
                     <span class="font-weight-bold text-danger">- Rp {{ number_format($total_admin, 0, ',', '.') }}</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-2 pt-1">
-                    <span class="text-success font-weight-bold" style="font-size: 15px;">Laba Bersih</span>
+                    <span class="text-success font-weight-bold" style="font-size: 15px;">Total Pendapatan</span>
                     <strong class="text-success" style="font-size: 20px;">Rp {{ number_format($laba_bersih, 0, ',', '.') }}</strong>
                 </div>
             </div>
@@ -130,18 +109,23 @@
                     <div class="list-item">
                         
                         <div class="info-wrapper mb-2">
-                            
                             <div class="flex-grow-1 pr-2">
-                                <div class="d-flex justify-content-between align-items-baseline mb-1">
+                                
+                                <div class="d-flex justify-content-between align-items-baseline mb-2">
                                     <h6 class="mb-0 font-weight-bold text-dark" style="font-size: 16px;">
                                         {{ date('d M Y', strtotime($lap->tanggal)) }}
                                     </h6>
                                 </div>
                                 
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-muted text-truncate" style="max-width: 170px; font-size: 13px;">
-                                        Pengepul: <strong>{{ $lap->detail->pluck('nama_pengepul')->unique()->implode(', ') }}</strong>
-                                    </small>
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="text-muted" style="font-size: 13px;">
+                                        <span class="d-block mb-1">Pengepul:</span>
+                                        @foreach($lap->detail->pluck('nama_pengepul')->unique() as $pengepul)
+                                            <strong class="d-block text-dark mb-1" style="padding-left: 8px; border-left: 2px solid #08a10b;">
+                                                {{ $pengepul }}
+                                            </strong>
+                                        @endforeach
+                                    </div>
                                     <strong class="text-success" style="font-size: 14px;">
                                         Rp {{ number_format($bersih_harian, 0, ',', '.') }}
                                     </strong>
@@ -175,7 +159,7 @@
                 $bulan_format = \Carbon\Carbon::parse(request('bulan').'-01')->locale('id')->translatedFormat('F Y');
                 
                 // Susun pesan bulanan
-                $pesan = "Halo Pak {$nelayan_terpilih->nama}, ini rekapitulasi penjualan hasil laut Bapak untuk bulan {$bulan_format}. Total pendapatan bersih Bapak di bulan ini adalah *Rp {$rupiah_bersih}*. File laporan PDF-nya silakan diunduh ya Pak. 🙏";
+                $pesan = "Halo Pak {$nelayan_terpilih->nama}, ini rekapitulasi penjualan hasil laut Bapak untuk bulan {$bulan_format}. Total pendapatan bersihnya adalah *Rp {$rupiah_bersih}*. File laporan PDF-nya silakan diunduh ya Pak.";
                 
                 $link_wa_bulanan = "https://wa.me/{$hp}?text=" . urlencode($pesan);
             }
@@ -194,10 +178,9 @@
             </a>
         @endif
     @endif
-    
 </div>
 
-<div style="height: 100px;"></div>
+<div style="height: 180px;"></div>
 
 <script>
     function cetakDanKirimWa(urlPdf, urlWa) {

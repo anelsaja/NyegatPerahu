@@ -48,11 +48,21 @@ class NelayanController extends Controller
 
         // ALUR BARU: Kembali ke halaman asal (home/tambah penjualan) 
         // sambil membawa ID dan Nama nelayan yang baru dibuat
-        return redirect()->route('penjualan.create')->with([
+        if ($request->asal == 'penjualan') {
+            // Jika datang dari penjualan, kembalikan ke form penjualan (Step 1)
+           return redirect()->route('penjualan.create')->with([
             'nelayan_baru_id' => $nelayan->nelayan_id,
             'nelayan_baru_nama' => $nelayan->nama,
-            'success' => 'Nelayan berhasil ditambahkan!'
-        ]);
+            'success' => 'Nelayan berhasil ditambahkan! silakan pilih!']);
+        } else {
+            // Jika datang dari menu nelayan biasa, kembalikan ke tabel nelayan
+            return redirect()->route('nelayan.index')->with('success', 'Data nelayan berhasil disimpan!');
+        }
+        // return redirect()->route('penjualan.create')->with([
+        //     'nelayan_baru_id' => $nelayan->nelayan_id,
+        //     'nelayan_baru_nama' => $nelayan->nama,
+        //     'success' => 'Nelayan berhasil ditambahkan!'
+        // ]);
     }
 
     // Menghapus data nelayan

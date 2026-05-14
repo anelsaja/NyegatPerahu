@@ -1,9 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <style>
-    body {
-        background-color: #ffffff;
-    }
 
     /* TOMBOL TAMBAH DATA (Floating Action Button) */
     .btn-tambah-fab {
@@ -64,11 +61,11 @@
     <h6>Cari nama nelayan:</h6>
 
     <form action="{{ route('nelayan.index') }}" method="GET" class="mb-4">
-        <div class="input-group shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; overflow: hidden;">
+        <div class="input-group shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff; overflow: hidden;">
             <input type="text" 
                    name="cari" 
                    class="form-control form-control-lg font-weight-bold border-0" 
-                   style="color: #495057; background-color: #f8fcff; box-shadow: none;"
+                   style="color: #495057; background-color: #f8fcff; box-shadow: none; font-size: 1.15rem;"
                    placeholder="Cari nama nelayan..." 
                    value="{{ request('cari') }}">
             <div class="input-group-append">

@@ -142,38 +142,30 @@
     </a>
 </div>
 
-<div class="modal fade" id="modalHapusTransaksi" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
-          
-          <div class="modal-header border-bottom-0 pb-0">
-            <h5 class="modal-title font-weight-bold text-dark">Hapus Transaksi</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          
-          <div class="modal-body pt-3 pb-4">
-            <p class="text-muted font-weight-bold mb-0">Apakah Ibu yakin ingin menghapus data penjualan ini?</p>
-          </div>
-          
-          <div class="modal-footer border-top-0 pt-0">
-            <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 10px; color: #6c757d;">
-                Batal
-            </button>
-            
-            <form id="formHapusAjaib" method="POST" style="margin: 0;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger shadow-sm font-weight-bold px-4" style="border-radius: 10px; background-color: #dc3545;">
-                    Ya, Hapus <i class="bi bi-trash ml-1"></i>
+<div class="modal fade" id="modalHapusTransaksi">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold text-dark">Hapus Transaksi</h5>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted">Apakah Ibu yakin ingin menghapus data Transaksi ini?</p>
+            </div>
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 12px; color: #6c757d; width: 120px;">
+                    Batal
                 </button>
-            </form>
-          </div>
-          
+                <form id="formHapusAjaib" method="POST" style="margin: 0;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger shadow-sm font-weight-bold" style="border-radius: 12px; background-color: #dc3545; width: 120px;">
+                        Hapus
+                    </button>
+                </form>
+            </div>
         </div>
-      </div>
     </div>
+</div>
 
 @if(session('url_karcis_pdf'))
 <script>

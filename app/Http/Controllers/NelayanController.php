@@ -69,7 +69,7 @@ class NelayanController extends Controller
     public function destroy($id)
     {
         Nelayan::where('nelayan_id', $id)->where('pengguna_id', Auth::id())->delete();
-        return redirect()->route('nelayan.index')->with('success', 'Data nelayan dihapus!');
+        return redirect()->route('nelayan.index')->with('success', 'Data nelayan berhasil dihapus!');
     }
 
     // Menampilkan halaman form edit

@@ -2,29 +2,65 @@
 @section('content')
 
 <style>
-    /* 1. PENGATURAN TAMPILAN DASAR */
-    .bottom-nav { display: none !important; } /* Sembunyikan menu bawah */
-    .mobile-container { padding-bottom: 100px !important; } /* Ruang untuk tombol Batal */
-
-    .header-nyegat { background-color: #d8efff; padding: 15px; text-align: center; }
-    .title-logo { font-weight: 900; font-size: 20px; color: #333; line-height: 1.2; }
-    .title-logo span { color: #5bc0de; }
+    .bottom-nav {
+        display: none !important;
+    }
     
-    .info-table { width: 100%; margin-bottom: 15px; font-size: 13px; }
-    .info-table td { padding: 4px 0; border-bottom: 1px dashed #eee; }
-    .info-table td:last-child { text-align: right; font-weight: bold; }
+    .info-table {
+        width: 100%;
+        font-size: 13px;
+    }
+
+    .info-table td {
+        padding: 4px 0;
+        border-bottom: 1px dashed #ccc;
+    }
+
+    .info-table td:last-child {
+        text-align: right;
+        font-weight: bold;
+    }
     
     /* 2. DESAIN TOMBOL KOTAK (NELAYAN & PENGEPUL) */
-    .grid-btn { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-    .btn-kotak { 
-        background-color: #e0e0e0; border-radius: 15px; padding: 15px 10px; 
-        text-align: center; border: 3px solid transparent; cursor: pointer; transition: 0.2s; color: #333; font-weight: bold;
+    .grid-btn {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
     }
-    .btn-kotak:active { transform: scale(0.95); background-color: #d0d0d0; }
-    .icon-box { width: 50px; height: 50px; border: 3px solid #333; border-radius: 8px; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 24px;}
+
+    .btn-kotak { 
+        background-color: #e0e0e0;
+        border-radius: 15px;
+        padding: 15px 10px; 
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .btn-kotak:active {
+        transform: scale(0.95);
+    }
+
+    .icon-box {
+        width: 50px;
+        height: 50px;
+        border: 3px solid #333;
+        border-radius: 15px;
+        margin: 0 auto 10px auto;
+        font-size: 24px;
+    }
     
     /* Input harga disembunyikan di awal */
-    .input-harga { display: none; width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; margin-top: 10px; text-align: right; font-weight: bold;}
+    .input-harga {
+        display: none;
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        margin-top: 10px;
+        text-align: left;
+        font-weight: bold;
+    }
     
     /* Container hanya untuk posisi */
     .btn-bawah { 
@@ -40,8 +76,6 @@
     .btn-batal {
         display: block;
         width: 100%;
-        background: red;
-        color: white;
         border-radius: 15px;
         padding: 18px;
         font-size: 16px;
@@ -50,23 +84,15 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         text-decoration: none !important;
         border: none;
-    }
-
-    /* Hover */
-    .btn-batal:hover {
-        color: white;
+        background-color: whitesmoke;
+        color: black;
     }
 
     /* Desain Khusus Kartu Tambah Nelayan */
     .btn-tambah-baru {
-        background-color: #f4fbff !important; /* Warna biru super muda */
-        border: 2px dashed #5bc0de !important; /* Garis putus-putus biru */
-        color: #17a2b8 !important; /* Teks biru */
-    }
-    
-    .btn-tambah-baru:active {
-        background-color: #eaf6fd !important;
-        border-color: #17a2b8 !important;
+        background-color: #f4fbff !important;
+        border: 2px dashed #5bc0de !important;
+        color: #17a2b8 !important;
     }
 
     .icon-box-tambah {
@@ -75,22 +101,25 @@
         margin-bottom: 8px;
         display: flex;
         justify-content: center;
-        align-items: center;
-        height: 45px;
     }
     
     /* 3. ANIMASI PINDAH HALAMAN */
-    .step-section { display: none; animation: fadeIn 0.3s ease-in-out; }
-    .step-section.active { display: block; } /* Hanya yang punya class 'active' yang tampil */
+    .step-section {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .step-section.active {
+        display: block;
+    } /* Hanya yang punya class 'active' yang tampil */
+
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
 <div class="p-3">
-    
     <div id="step-1" class="step-section active">
-        <h4 class="font-weight-bold mb-4 mt-2">Tambah Data Penjualan</h4>
+        <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
         <p class="font-weight-bold">Pilih Nelayan</p>
-        
         <div class="grid-btn">
             @foreach($nelayans as $n)
             <div class="btn-kotak" onclick="pilihNelayan({{ $n->nelayan_id }}, `{{ $n->nama }}`)">
@@ -107,7 +136,7 @@
         </div>
         <div style="height: 120px;"></div>
         <div class="btn-bawah">
-            <a href="{{ route('home') }}" class="btn-batal">
+            <a href="{{ route('home') }}" class="btn btn-danger btn-lg w-100 rounded-pill fw-bold shadow" style="font-size: 20px; font-weight: bold;">
                 <i class="bi bi-x-circle"></i>
                 <span>Batal</span>
             </a>
@@ -117,12 +146,12 @@
     <div id="step-2" class="step-section">
         <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
         <table class="info-table mb-4">
-            <tr><td>Tanggal</td><td>{{ date('d M Y') }}</td></tr>
-            <tr><td>Nama Nelayan</td><td id="info-nelayan-nama">-</td></tr>
+            <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
+            <tr><td>Nama Nelayan</td><td id="info-nelayan-nama"></td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
         
-        <a href="javascript:void(0)" onclick="pindahKeStep(1)" class="btn-batal" style="background-color: whitesmoke; color: black;">
+        <a href="javascript:void(0)" onclick="pindahKeStep(1)" class="btn-batal">
             <i class="bi bi-arrow-left"></i> Kembali Pilih Nelayan
         </a>
         <div style="height: 20px;"></div>
@@ -150,13 +179,14 @@
             </div>
             <span class="font-weight-bold">Pengepul Baru</span>
         </div>
+        <div style="height: 20px;"></div>
     </div>
 
     <div id="step-3" class="step-section">
         <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
         <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ date('d M Y') }}</td></tr>
-            <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
+            <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks"></td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 

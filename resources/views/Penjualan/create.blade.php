@@ -103,6 +103,29 @@
         justify-content: center;
     }
     
+    .btn-status {
+        flex: 1;
+        padding: 14px;
+        border-radius: 15px;
+        text-align: center;
+        font-weight: bold;
+        background-color: #f1f1f1;
+    }
+
+    /* Tombol aktif lunas */
+    .btn-status.lunas-aktif {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #28a745;
+    }
+
+    /* Tombol aktif belum lunas */
+    .btn-status.belum-aktif {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-color: #dc3545;
+    }
+
     /* 3. ANIMASI PINDAH HALAMAN */
     .step-section {
         display: none;
@@ -180,7 +203,7 @@
             </div>
             <span class="font-weight-bold">Tambah Pengepul Baru</span>
         </div>
-        <div style="height: 20px;"></div>
+        <div style="height: 70px;"></div>
     </div>
 
     <div id="step-3" class="step-section">
@@ -255,11 +278,23 @@
 
         <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
             <div class="card-body">
-                <label class="font-weight-bold text-muted small">Status Pembayaran</label>
-                <select name="status_pembayaran" id="pilihan-status" class="form-control border-0 bg-light" style="border-radius: 10px; font-weight: bold;">
-                    <option value="Lunas">Lunas</option>
-                    <option value="Belum Lunas">Belum Lunas</option>
-                </select>
+                <label class="font-weight-bold text-muted small d-block mb-3">Status Pembayaran</label>
+                <div class="d-flex" style="gap: 10px;">
+                    <!-- Tombol Lunas -->
+                    <div id="btn-status-lunas"
+                        class="btn-status lunas-aktif"
+                        onclick="pilihStatus('Lunas')">
+                        Lunas
+                    </div>
+                    <!-- Tombol Belum Lunas -->
+                    <div id="btn-status-belum"
+                        class="btn-status"
+                        onclick="pilihStatus('Belum Lunas')">
+                        Belum Lunas
+                    </div>
+                </div>
+                <!-- input hidden -->
+                <input type="hidden" id="pilihan-status" value="Lunas">
             </div>
         </div>
 
@@ -413,6 +448,32 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalHapusPengepul" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title font-weight-bold text-danger">Hapus Transaksi</h5>
+            </div>
+
+            <div class="modal-body pt-3">
+                <div class="alert shadow-sm mb-3" style="border-radius: 15px; background-color: #fde8ec; border-left: 5px solid #dc3545; padding: 10px 15px;">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-exclamation-circle-fill text-danger mr-2" style="font-size: 18px;"></i>
+                        <span class="font-weight-bold text-dark" style="font-size: 13px;">
+                            Yakin ingin menghapus transaksi pengepul <b id="namaPengepulHapus"></b> ?
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 15px; padding: 10px 15px;">Batal</button>
+                <button type="button" class="btn btn-danger shadow-sm font-weight-bold px-4" style="border-radius: 15px; padding: 10px 15px;" onclick="konfirmasiHapusPengepul()">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // 1. MEMORI APLIKASI
 // Ini seperti buku catatan sementara sebelum data dikirim ke Database
@@ -468,7 +529,41 @@ function pilihPengepul(namaPengepul) {
     pindahKeStep(3);
 }
 
-// 5. STEP 3 (Pilih Kotak Ikan)
+// 5. STEP 2 (Tambah Pengepul Baru)
+function simpanPengepulBaru() {
+    // 1. Ambil nilai yang diketik dari kolom input
+    let inputElement = document.getElementById('inputPengepulBaru');
+    let namaBaru = inputElement.value.trim();
+    let alertKosong = document.getElementById('alert-pengepul-kosong');
+
+    // 2. Cek apakah tidak kosong
+    if (namaBaru !== "") {
+        // 1. Sembunyikan alert jika sebelumnya sempat muncul
+        alertKosong.style.display = 'none';
+            
+        // Tutup pop-up modal secara otomatis
+        $('#modalPengepulBaru').modal('hide');
+            
+        // Kosongkan kembali kolom input (jika pengguna kembali ke step 2 nanti)
+        inputElement.value = "";
+            
+        // Lemparkan namanya ke fungsi pilihPengepul (Otomatis masuk ke Step 3)
+        pilihPengepul(namaBaru);
+    } else {       
+        // 1. Munculkan peringatan merah di dalam pop-up
+        alertKosong.style.display = 'block';
+            
+        // 2. Fokuskan kursor kembali ke kolom ketikan
+        inputElement.focus();
+            
+        // 3. (Opsional) Hilangkan peringatan secara otomatis setelah 3 detik
+        setTimeout(function() {
+            alertKosong.style.display = 'none';
+        }, 3000);
+    }
+}
+
+// 6. STEP 3 (Pilih Kotak Ikan)
 // Tugasnya: Memunculkan atau menyembunyikan kolom input harga (Rp)
 function toggleInputIkan(namaIkan) {
     let kotakInput = document.getElementById('input-' + namaIkan);
@@ -482,7 +577,66 @@ function toggleInputIkan(namaIkan) {
     }
 }
 
-// 6. STEP 3 (Tambahkan Data)
+// 7. STEP 3 (Tambah Jenis Ikan Baru)
+function simpanIkanBaru() {
+    let inputElement = document.getElementById('inputIkanBaru');
+    let namaIkan = inputElement.value.trim();
+    let alertKosong = document.getElementById('alert-ikan-kosong'); // Panggil elemen alert
+
+    if (namaIkan !== "") {
+        // 1. Sembunyikan alert jika sebelumnya sempat muncul
+        alertKosong.style.display = 'none';
+
+        // 2. Tutup Pop-up
+        $('#modalIkanBaru').modal('hide');
+        inputElement.value = ""; 
+
+        let idAman = namaIkan.replace(/\s+/g, '_');
+
+        let htmlKotakBaru = `
+        <div class="btn-kotak" onclick="toggleInputIkan('${idAman}')">
+            ${namaIkan} <span class="text-success font-weight-bold">*</span>
+            <input type="number" id="input-${idAman}" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+        </div>
+        `;
+
+        document.getElementById('container-ikan').insertAdjacentHTML('beforeend', htmlKotakBaru);
+    } else {
+        // 1. Munculkan peringatan merah di dalam pop-up
+        alertKosong.style.display = 'block';
+            
+        // 2. Fokuskan kursor kembali ke kolom ketikan
+        inputElement.focus();
+            
+        // 3. (Opsional) Hilangkan peringatan secara otomatis setelah 3 detik
+        setTimeout(function() {
+            alertKosong.style.display = 'none';
+        }, 3000);
+    }
+}
+
+function pilihStatus(status) {
+
+    // Simpan nilai
+    document.getElementById('pilihan-status').value = status;
+
+    // Ambil tombol
+    let btnLunas = document.getElementById('btn-status-lunas');
+    let btnBelum = document.getElementById('btn-status-belum');
+
+    // Reset semua class aktif
+    btnLunas.classList.remove('lunas-aktif');
+    btnBelum.classList.remove('belum-aktif');
+
+    // Tambahkan class sesuai pilihan
+    if (status === 'Lunas') {
+        btnLunas.classList.add('lunas-aktif');
+    } else {
+        btnBelum.classList.add('belum-aktif');
+    }
+}
+
+// 6. STEP 3 (Tambahkan Data ini)
 function simpanKeKeranjang() {
     let adaIkanYangDiisi = false;
     // Ambil status yang dipilih (Lunas / Belum Lunas)
@@ -536,44 +690,6 @@ function simpanKeKeranjang() {
     }
 }
 
-// Fungsi untuk menambah kotak ikan baru secara dinamis
-function simpanIkanBaru() {
-    let inputElement = document.getElementById('inputIkanBaru');
-    let namaIkan = inputElement.value.trim();
-    let alertKosong = document.getElementById('alert-ikan-kosong'); // Panggil elemen alert
-
-    if (namaIkan !== "") {
-        // 1. Sembunyikan alert jika sebelumnya sempat muncul
-        alertKosong.style.display = 'none';
-
-        // 2. Tutup Pop-up
-        $('#modalIkanBaru').modal('hide');
-        inputElement.value = ""; 
-
-        let idAman = namaIkan.replace(/\s+/g, '_');
-
-        let htmlKotakBaru = `
-        <div class="btn-kotak" onclick="toggleInputIkan('${idAman}')">
-            <div class="icon-box">🐟</div>${namaIkan}
-            <input type="number" id="input-${idAman}" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
-        </div>
-        `;
-
-        document.getElementById('container-ikan').insertAdjacentHTML('beforeend', htmlKotakBaru);
-    } else {
-        // 1. Munculkan peringatan merah di dalam pop-up
-        alertKosong.style.display = 'block';
-            
-        // 2. Fokuskan kursor kembali ke kolom ketikan
-        inputElement.focus();
-            
-        // 3. (Opsional) Hilangkan peringatan secara otomatis setelah 3 detik
-        setTimeout(function() {
-            alertKosong.style.display = 'none';
-        }, 3000);
-    }
-}
-
 // 7. MENGGAMBAR TAMPILAN STRUK DI STEP 4
 function gambarUlangKeranjangBelanja() {
     let areaLayar = document.getElementById('area-keranjang-belanja');
@@ -602,27 +718,40 @@ function gambarUlangKeranjangBelanja() {
         let desainHTML = `
             <div class="mb-4 border-bottom pb-2">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="font-weight-bold mb-0 text-primary">👤 ${namaPengepul}</h6>
-                    <div>
-                        <span class="badge ${warnaBadge} rounded-pill px-2 mr-1">
+
+                    <!-- Kiri: Nama pengepul + status -->
+                    <div class="d-flex align-items-center flex-wrap">
+                        <h6 class="font-weight-bold mb-0 mr-2">
+                            <i class="bi bi-shop"></i> ${namaPengepul}
+                        </h6>
+
+                        <span class="badge ${warnaBadge} rounded-pill px-2">
                             ${statusTampil}
                         </span>
-                            
-                        <button class="btn btn-sm btn-outline-info py-0 px-2 mr-1" style="border-radius: 6px; font-size: 12px; font-weight: bold;" onclick="editPengepul('${namaPengepul}')">
+                    </div>
+
+                    <!-- Kanan: tombol edit & hapus -->
+                    <div>
+                        <button class="btn btn-sm btn-warning py-0 px-2 mr-1"
+                            style="border-radius: 15px; font-size: 15px; font-weight: bold;"
+                            onclick="editPengepul('${namaPengepul}')">
                             <i class="bi bi-pencil-square"></i>
                         </button>
 
-                        <button class="btn btn-sm btn-outline-danger py-0 px-2" style="border-radius: 6px; font-size: 12px; font-weight: bold;" onclick="hapusPengepul('${namaPengepul}')">
+                        <button class="btn btn-sm btn-danger py-0 px-2"
+                            style="border-radius: 15px; font-size: 15px; font-weight: bold;"
+                            onclick="hapusPengepul('${namaPengepul}')">
                             <i class="bi bi-trash3-fill"></i>
                         </button>
                     </div>
+
                 </div>
 
                 <table class="info-table mt-1">
         `;
 
         lemariPengepul[namaPengepul].forEach(function(ikan) {
-            desainHTML += `<tr><td class="text-dark">${ikan.jenis}</td><td>Rp ${ikan.harga.toLocaleString('id-ID')}</td></tr>`;
+            desainHTML += `<tr><td>${ikan.jenis}</td><td>Rp ${ikan.harga.toLocaleString('id-ID')}</td></tr>`;
             totalHarga += ikan.harga;
         });
 
@@ -647,7 +776,6 @@ function gambarUlangKeranjangBelanja() {
     hitungTotalAkhir(); // langsung hitung total akhir
 }
 
-// FUNGSI BARU: Tarik data ke Step 3 untuk diedit
 function editPengepul(namaPengepul) {
     // 1. Ambil data ikan milik pengepul yang mau diedit
     let dataYangMauDiedit = memori.daftar_belanja.filter(ikan => ikan.pengepul === namaPengepul);
@@ -689,23 +817,35 @@ function editPengepul(namaPengepul) {
     pindahKeStep(3);
 }
 
-// FUNGSI BARU: Menghapus satu pengepul dari keranjang Step 4
+let pengepulYangAkanDihapus = null;
+
 function hapusPengepul(namaPengepul) {
-    // Berikan peringatan agar tidak tidak sengaja kepencet
-    let yakin = confirm(`Yakin ingin membatalkan dan menghapus transaksi untuk pengepul ${namaPengepul}?`);
-        
-    if (yakin) {
-        // 1. Buang/Saring semua ikan yang BUKAN milik pengepul yang dihapus
-        memori.daftar_belanja = memori.daftar_belanja.filter(ikan => ikan.pengepul !== namaPengepul);
-            
-        // 2. Gambar ulang layar Step 4 dengan data terbaru
-        gambarUlangKeranjangBelanja();
-            
-        // 3. Jika keranjang ternyata jadi kosong melompong, kembalikan ke Step 2 (Pilih Pengepul)
-        if (memori.daftar_belanja.length === 0) {
-            alert("Keranjang kosong. Silakan pilih pengepul kembali.");
-            pindahKeStep(2);
-        }
+
+    pengepulYangAkanDihapus = namaPengepul;
+
+    // Isi nama pengepul ke modal
+    document.getElementById('namaPengepulHapus').innerText = namaPengepul;
+
+    // Tampilkan modal
+    $('#modalHapusPengepul').modal('show');
+}
+
+function konfirmasiHapusPengepul() {
+
+    // Hapus data pengepul
+    memori.daftar_belanja = memori.daftar_belanja.filter(
+        ikan => ikan.pengepul !== pengepulYangAkanDihapus
+    );
+
+    // Tutup modal
+    $('#modalHapusPengepul').modal('hide');
+
+    // Refresh tampilan
+    gambarUlangKeranjangBelanja();
+
+    // Jika keranjang kosong
+    if (memori.daftar_belanja.length === 0) {
+        pindahKeStep(2);
     }
 }
     
@@ -774,69 +914,6 @@ function hitungTotalAkhir() {
     memori.biaya_admin = nilaiAdmin;
 }
 
-// Fungsi untuk menghapus ikan dari keranjang sebelum simpan
-function hapusIkan(index) {
-    if(confirm("Hapus data ikan ini?")) {
-        memori.daftar_belanja.splice(index, 1); // Hapus 1 data dari array
-        gambarUlangKeranjangBelanja();
-        
-        // Jika keranjang kosong, balik ke step 3
-        if(memori.daftar_belanja.length === 0) pindahKeStep(3);
-    }
-}
-
-// Fungsi untuk edit (mengembalikan data ke input step 3)
-function editIkan(index) {
-    let ikan = memori.daftar_belanja[index];
-    memori.pengepul_aktif = ikan.pengepul;
-    
-    // Tampilkan input harga di step 3 dan isi nilainya
-    let inputIkan = document.getElementById('input-' + ikan.jenis);
-    if(inputIkan) {
-        inputIkan.style.display = 'block';
-        inputIkan.value = ikan.harga;
-    }
-    
-    // Hapus data lama di keranjang agar tidak double saat disimpan ulang
-    memori.daftar_belanja.splice(index, 1);
-    
-    pindahKeStep(3);
-}
-
-// Fungsi untuk memproses pop-up
-function simpanPengepulBaru() {
-    // 1. Ambil nilai yang diketik dari kolom input
-    let inputElement = document.getElementById('inputPengepulBaru');
-    let namaBaru = inputElement.value.trim();
-    let alertKosong = document.getElementById('alert-pengepul-kosong');
-
-    // 2. Cek apakah tidak kosong
-    if (namaBaru !== "") {
-        // 1. Sembunyikan alert jika sebelumnya sempat muncul
-        alertKosong.style.display = 'none';
-            
-        // Tutup pop-up modal secara otomatis
-        $('#modalPengepulBaru').modal('hide');
-            
-        // Kosongkan kembali kolom input (jika pengguna kembali ke step 2 nanti)
-        inputElement.value = "";
-            
-        // Lemparkan namanya ke fungsi pilihPengepul (Otomatis masuk ke Step 3)
-        pilihPengepul(namaBaru);
-    } else {       
-        // 1. Munculkan peringatan merah di dalam pop-up
-        alertKosong.style.display = 'block';
-            
-        // 2. Fokuskan kursor kembali ke kolom ketikan
-        inputElement.focus();
-            
-        // 3. (Opsional) Hilangkan peringatan secara otomatis setelah 3 detik
-        setTimeout(function() {
-            alertKosong.style.display = 'none';
-        }, 3000);
-    }
-}
-
 // PENANGKAP PESAN DARI CONTROLLER
 document.addEventListener("DOMContentLoaded", function() {
     @if(session('nelayan_baru_id'))
@@ -846,9 +923,6 @@ document.addEventListener("DOMContentLoaded", function() {
             
         // Panggil fungsi yang sudah kamu buat sebelumnya
         pilihNelayan(idBaru, namaBaru);
-            
-        // Opsional: Tampilkan alert kecil agar user tahu datanya berhasil
-        // alert('Berhasil menambahkan ' + namaBaru + ', silakan lanjut pilih pengepul!');
     @endif
 });
 </script>

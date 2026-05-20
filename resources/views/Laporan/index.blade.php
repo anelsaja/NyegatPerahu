@@ -36,6 +36,43 @@
         color: white;
         transform: scale(0.95);
     }
+
+    /* Gaya khusus saat kartu nelayan diklik / aktif */
+    .btn-kotak.active {
+        border-color: #007bff !important; /* Warna biru, sesuaikan dengan tema aplikasimu */
+        background-color: #e9f2ff !important;
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+    }
+    
+    .btn-kotak.active .icon-box {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+
+    .grid-btn {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .icon-box {
+        width: 50px;
+        height: 50px;
+        border: 3px solid #333;
+        border-radius: 15px;
+        margin: 0 auto 10px auto;
+        font-size: 24px;
+    }
+
+    .btn-kotak { 
+        background-color: #e0e0e0;
+        border-radius: 15px;
+        padding: 15px 10px; 
+        text-align: center;
+        font-weight: bold;
+    }
+    
 </style>
 
 <div class="p-3">
@@ -44,12 +81,19 @@
     <form action="{{ route('laporan.index') }}" method="GET" class="mb-4">
         <div class="form-group mb-3">
             <label class="font-weight-bold">Nama Nelayan</label>
-            <select name="nelayan_id" class="form-control form-control-lg font-weight-bold shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;" required>
-                <option value="">-- Pilih Nelayan --</option>
-                @foreach($nelayans as $n)
-                    <option value="{{ $n->nelayan_id }}" {{ request('nelayan_id') == $n->nelayan_id ? 'selected' : '' }}>{{ $n->nama }}</option>
-                @endforeach
-            </select>
+            <div class="form-group mb-3">
+                <input type="hidden" name="nelayan_id" id="input_nelayan_id" value="{{ request('nelayan_id') }}" required>
+                <div class="grid-btn">
+                    @foreach($nelayans as $n)
+                        <div class="btn-kotak {{ request('nelayan_id') == $n->nelayan_id ? 'active' : '' }}" 
+                            id="kartu-nelayan-{{ $n->nelayan_id }}" 
+                            onclick="pilihNelayanLaporan({{ $n->nelayan_id }})">  
+                            <div class="icon-box">👤</div>
+                            <span class="font-weight-bold">{{ $n->nama }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
         <div class="form-group mb-3">
             <label class="font-weight-bold">Bulan & Tahun</label>
@@ -191,6 +235,20 @@
         setTimeout(function() {
             window.location.href = urlPdf;
         }, 1000);
+    }
+
+    function pilihNelayanLaporan(nelayanId) {
+        // 1. Masukkan ID nelayan yang dipilih ke dalam input tersembunyi
+        document.getElementById('input_nelayan_id').value = nelayanId;
+
+        // 2. Hapus class 'active' dari SEMUA kartu nelayan
+        let semuaKartu = document.querySelectorAll('.grid-btn .btn-kotak');
+        semuaKartu.forEach(function(kartu) {
+            kartu.classList.remove('active');
+        });
+
+        // 3. Tambahkan class 'active' HANYA ke kartu yang baru saja diklik
+        document.getElementById('kartu-nelayan-' + nelayanId).classList.add('active');
     }
 </script>
 @endsection

@@ -8,6 +8,18 @@
 </style>
 
 <div class="p-3">
+    @if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" style="border-radius: 12px; background-color: #fde8ec; border: 1px solid #f8c9d2; color: #dc3545;">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-triangle-fill mr-2" style="font-size: 1.2rem;"></i> 
+            <strong style="font-size: 14px;">{{ session('error') }}</strong>
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="padding-top: 0.6rem;">
+            <span aria-hidden="true" style="color: #dc3545;">&times;</span>
+        </button>
+    </div>
+    @endif
+    
     <h4 class="font-weight-bold mb-4 mt-2">Tambah Nelayan Baru</h4>
 
     <form action="{{ route('nelayan.store') }}" method="POST" enctype="multipart/form-data">

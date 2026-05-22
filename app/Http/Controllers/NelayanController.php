@@ -42,6 +42,18 @@ class NelayanController extends Controller
             'foto_profil' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        // 2. LOGIKA ANTI-DUPLIKAT (Baru)
+        // Cek apakah di akun pengguna ini sudah ada nelayan dengan nama DAN nomor HP yang persis sama
+        $duplikat = Nelayan::where('pengguna_id', Auth::id())
+                            ->where('nama', $request->nama)
+                            ->where('nomor_hp', $request->nomor_hp)
+                            ->exists();
+
+        if ($duplikat) {
+            // Jika ada, kembalikan ke form sebelumnya beserta input yang sudah diketik dan pesan error
+            return back()->withInput()->with('error', 'Gagal! Nelayan dengan nama dan nomor HP tersebut sudah pernah ditambahkan.');
+        }
+
         // 2. Siapkan wadah data dasar
         $data = [
             'pengguna_id' => Auth::id(),
@@ -106,6 +118,18 @@ class NelayanController extends Controller
             'nomor_hp' => 'required|string|max:15',
             'foto_profil' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        // 2. LOGIKA ANTI-DUPLIKAT UNTUK EDIT (Baru)
+        // Cek apakah nama dan no HP ini sudah dipakai oleh nelayan LAIN (kecuali nelayan yang sedang diedit ini)
+        $duplikat = Nelayan::where('pengguna_id', Auth::id())
+                            ->where('nama', $request->nama)
+                            ->where('nomor_hp', $request->nomor_hp)
+                            ->where('nelayan_id', '!=', $id) // <-- Kunci pembedanya ada di sini
+                            ->exists();
+
+        if ($duplikat) {
+            return back()->withInput()->with('error', 'Gagal update! Nama dan nomor HP tersebut sudah dipakai oleh data nelayan Anda yang lain.');
+        }
 
         // Cari data nelayan berdasarkan ID dan pastikan itu milik ibu yang sedang login
         $nelayan = Nelayan::where('nelayan_id', $id)

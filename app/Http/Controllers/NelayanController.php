@@ -35,34 +35,48 @@ class NelayanController extends Controller
     // Menyimpan nelayan baru
     public function store(Request $request)
     {
+        // 1. Validasi Input
         $request->validate([
             'nama' => 'required|string|max:255',
-            'nomor_hp' => 'nullable|string|max:15',
+            'nomor_hp' => 'required|string|max:15',
+            'foto_profil' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $nelayan = Nelayan::create([
+        // 2. Siapkan wadah data dasar
+        $data = [
             'pengguna_id' => Auth::id(),
             'nama' => $request->nama,
             'nomor_hp' => $request->nomor_hp,
-        ]);
+        ];
 
-        // ALUR BARU: Kembali ke halaman asal (home/tambah penjualan) 
+        // 3. Logika Proses Upload Foto (Jika Ada)
+        if ($request->hasFile('foto_profil')) {
+            $file = $request->file('foto_profil');
+            // Buat nama file unik agar tidak bentrok jika namanya sama
+            $nama_file = time() . '_' . $file->getClientOriginalName();
+            // Pindahkan file ke folder public/images/nelayan/
+            $file->move(public_path('images/nelayan'), $nama_file);
+            
+            // Masukkan nama file tersebut ke dalam wadah data
+            $data['foto_profil'] = $nama_file;
+        }
+
+        // 4. Eksekusi simpan ke database (menggunakan wadah $data yang sudah disiapkan)
+        $nelayan = Nelayan::create($data);
+
+        // 5. ALUR BARU: Kembali ke halaman asal (home/tambah penjualan) 
         // sambil membawa ID dan Nama nelayan yang baru dibuat
         if ($request->asal == 'penjualan') {
             // Jika datang dari penjualan, kembalikan ke form penjualan (Step 1)
            return redirect()->route('penjualan.create')->with([
             'nelayan_baru_id' => $nelayan->nelayan_id,
             'nelayan_baru_nama' => $nelayan->nama,
-            'success' => 'Nelayan berhasil ditambahkan! silakan pilih!']);
+            'success' => 'Nelayan berhasil ditambahkan! silakan pilih!'
+           ]);
         } else {
             // Jika datang dari menu nelayan biasa, kembalikan ke tabel nelayan
             return redirect()->route('nelayan.index')->with('success', 'Data nelayan berhasil disimpan!');
         }
-        // return redirect()->route('penjualan.create')->with([
-        //     'nelayan_baru_id' => $nelayan->nelayan_id,
-        //     'nelayan_baru_nama' => $nelayan->nama,
-        //     'success' => 'Nelayan berhasil ditambahkan!'
-        // ]);
     }
 
     // Menghapus data nelayan
@@ -86,19 +100,44 @@ class NelayanController extends Controller
     // Menyimpan perubahan data ke database
     public function update(Request $request, $id)
     {
+        // 1. Validasi Input (Wajib menyertakan aturan untuk foto_profil)
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'nomor_hp' => 'required|string|max:15',
+            'foto_profil' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        // Cari data nelayan berdasarkan ID dan pastikan itu milik ibu yang sedang login
         $nelayan = Nelayan::where('nelayan_id', $id)
                     ->where('pengguna_id', Auth::id())
                     ->firstOrFail();
 
-        // Update nama nelayan (Tambahkan kolom lain di bawah 'nama' jika di tabelmu ada no_hp/alamat)
-        $nelayan->update([
+        // 2. Siapkan wadah data awal untuk di-update
+        $data = [
             'nama' => $request->nama,
             'nomor_hp' => $request->nomor_hp,
-        ]);
+        ];
+
+        // 3. Logika Proses Upload & Penggantian Foto Profil
+        if ($request->hasFile('foto_profil')) {
+            
+            // JIKA ADA FOTO LAMA: Hapus filenya dari folder public agar memori tidak penuh
+            if ($nelayan->foto_profil && file_exists(public_path('images/nelayan/' . $nelayan->foto_profil))) {
+                unlink(public_path('images/nelayan/' . $nelayan->foto_profil));
+            }
+
+            // PROSES SIMPAN FOTO BARU
+            $file = $request->file('foto_profil');
+            $nama_file = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images/nelayan'), $nama_file);
+            
+            // Masukkan nama file baru ke dalam array data yang akan di-update
+            $data['foto_profil'] = $nama_file;
+        }
+
+        // 4. Jalankan perintah update dengan array data yang sudah matang
+        $nelayan->update($data);
 
         return redirect()->route('nelayan.index')->with('success', 'Data Nelayan berhasil diperbarui!');
     }
-
-    
-    
 }

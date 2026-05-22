@@ -11,9 +11,29 @@
 
     <h4 class="font-weight-bold mb-4 mt-2">Edit Data Nelayan</h4>
 
-    <form action="{{ route('nelayan.update', $nelayan->nelayan_id) }}" method="POST">
+    <form action="{{ route('nelayan.update', $nelayan->nelayan_id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
+
+        <div class="form-group mb-4 text-center">
+            <label class="font-weight-bold d-block text-left">Foto Profil</label>
+            
+            <div class="mb-3">
+                @if($nelayan->foto_profil)
+                    <img src="{{ asset('images/nelayan/' . $nelayan->foto_profil) }}" alt="Foto Profil" class="shadow-sm" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 3px solid #08a10b;">
+                @else
+                    <div class="shadow-sm d-inline-flex align-items-center justify-content-center" style="width: 100px; height: 100px; border-radius: 50%; background-color: #08a10b; color: white; font-size: 35px; font-weight: bold; border: 3px solid #eaf6fd;">
+                        {{ substr($nelayan->nama, 0, 1) }}
+                    </div>
+                @endif
+            </div>
+
+            <div class="custom-file text-left">
+                <input type="file" name="foto_profil" class="custom-file-input" id="fotoProfil" accept="image/*">
+                <label class="custom-file-label" for="fotoProfil" style="border-radius: 12px; border: 2px solid #eaf6fd;">Ganti Foto (Opsional)...</label>
+            </div>
+            <small class="text-muted text-left d-block mt-1">Biarkan kosong jika tidak ingin mengubah foto.</small>
+        </div>
 
         <div class="form-group mb-4">
             <label class="font-weight-bold">Nama Nelayan<span class="text-danger">*</span></label>
@@ -34,4 +54,11 @@
         </a>
     </form>
 </div>
+<script>
+    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+        var fileName = document.getElementById("fotoProfil").files[0].name;
+        var nextSibling = e.target.nextElementSibling;
+        nextSibling.innerText = fileName;
+    });
+</script>
 @endsection

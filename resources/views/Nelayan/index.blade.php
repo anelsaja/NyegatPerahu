@@ -91,8 +91,12 @@
         @forelse($nelayans as $n)
         <div class="list-item">
             <div class="info-wrapper mb-3">
-                <div class="avatar">
-                    {{ substr($n->nama, 0, 1) }}
+            <div class="avatar" style="overflow: hidden; padding: 0;">
+                    @if($n->foto_profil)
+                        <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    @else
+                        {{ substr($n->nama, 0, 1) }}
+                    @endif
                 </div>
                 <div class="flex-grow-1">
                     <h6 class="mb-1 font-weight-bold text-dark" style="font-size: 17px;">

@@ -10,9 +10,17 @@
 <div class="p-3">
     <h4 class="font-weight-bold mb-4 mt-2">Tambah Nelayan Baru</h4>
 
-    <form action="{{ route('nelayan.store') }}" method="POST">
+    <form action="{{ route('nelayan.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="asal" value="{{ request('asal') }}">
+        <div class="form-group mb-4">
+            <label class="font-weight-bold text-dark">Foto Profil (Opsional)</label>
+            <div class="custom-file">
+                <input type="file" name="foto_profil" class="custom-file-input" id="fotoProfil" accept="image/*">
+                <label class="custom-file-label" for="fotoProfil" style="border-radius: 12px; border: 2px solid #eaf6fd;">Pilih Foto...</label>
+            </div>
+            <small class="text-muted">Format: JPG, JPEG, PNG. Maksimal 2MB.</small>
+        </div>
         <div class="form-group mb-4">
             <label class="font-weight-bold">Nama Nelayan <span class="text-danger">*</span></label>
             <input type="text" name="nama" class="form-control form-control-lg shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;" placeholder="Masukkan nama" required>
@@ -36,7 +44,12 @@
                 Batal
             </a>
         @endif
-
     </form>
 </div>
+<script>
+    $('.custom-file-input').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+</script>
 @endsection

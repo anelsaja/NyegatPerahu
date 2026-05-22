@@ -16,8 +16,9 @@ class CreateNelayanTable extends Migration
         Schema::create('nelayan', function (Blueprint $table) {
             $table->bigIncrements('nelayan_id');
             $table->unsignedBigInteger('pengguna_id');
+            $table->string('foto_profil')->nullable();
             $table->string('nama');
-            $table->string('nomor_hp')->nullable(); // Menggunakan Nomor HP
+            $table->string('nomor_hp');
             $table->timestamps();
 
             $table->foreign('pengguna_id')->references('pengguna_id')->on('pengguna')->onDelete('cascade');

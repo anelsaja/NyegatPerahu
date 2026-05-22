@@ -49,6 +49,12 @@
         margin: 0 auto 10px auto;
         font-size: 24px;
     }
+
+    .icon-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    }
     
     /* Input harga disembunyikan di awal */
     .input-harga {
@@ -147,7 +153,14 @@
         <div class="grid-btn">
             @foreach($nelayans as $n)
             <div class="btn-kotak" onclick="pilihNelayan({{ $n->nelayan_id }}, `{{ $n->nama }}`)">
-                <div class="icon-box">👤</div>
+                
+                <div class="icon-box" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                    @if($n->foto_profil)
+                        <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    @else
+                        <span style="font-size: 20px;">👤</span>
+                    @endif
+                </div>
                 {{ $n->nama }}
             </div>
             @endforeach

@@ -65,6 +65,12 @@
         font-size: 24px;
     }
 
+    .icon-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    }
+
     .btn-kotak { 
         background-color: #e0e0e0;
         border-radius: 15px;
@@ -84,14 +90,22 @@
             <div class="form-group mb-3">
                 <input type="hidden" name="nelayan_id" id="input_nelayan_id" value="{{ request('nelayan_id') }}" required>
                 <div class="grid-btn">
-                    @foreach($nelayans as $n)
-                        <div class="btn-kotak {{ request('nelayan_id') == $n->nelayan_id ? 'active' : '' }}" 
-                            id="kartu-nelayan-{{ $n->nelayan_id }}" 
-                            onclick="pilihNelayanLaporan({{ $n->nelayan_id }})">  
-                            <div class="icon-box">👤</div>
-                            <span class="font-weight-bold">{{ $n->nama }}</span>
+                @foreach($nelayans as $n)
+                    <div class="btn-kotak {{ request('nelayan_id') == $n->nelayan_id ? 'active' : '' }}" 
+                         id="kartu-nelayan-{{ $n->nelayan_id }}" 
+                         onclick="pilihNelayanLaporan({{ $n->nelayan_id }})">
+                        
+                        <div class="icon-box" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                            @if($n->foto_profil)
+                                <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            @else
+                                <span style="font-size: 20px;">👤</span>
+                            @endif
                         </div>
-                    @endforeach
+                        
+                        <span class="font-weight-bold">{{ $n->nama }}</span>
+                    </div>
+                @endforeach
                 </div>
             </div>
         </div>

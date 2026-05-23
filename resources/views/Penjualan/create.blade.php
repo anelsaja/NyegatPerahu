@@ -156,7 +156,7 @@
 
         <div class="grid-btn">
             @foreach($nelayans as $n)
-            <div class="btn-kotak" onclick="pilihNelayan({{ $n->nelayan_id }}, `{{ $n->nama }}`)">
+            <div class="btn-kotak" onclick="pilihNelayan({{ $n->nelayan_id }}, '{{ $n->nama }}', '{{ $n->nomor_hp ?? '' }}')">
                 <div class="icon-box" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
                     @if($n->foto_profil)
                         <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
@@ -188,7 +188,7 @@
         <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
         <table class="info-table mb-4">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
-            <tr><td>Nama Nelayan</td><td id="info-nelayan-nama">-</td></tr>
+            <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
@@ -344,6 +344,13 @@
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
+             <div class="form-group mb-0 pt-2 mb-4 border-top">
+                <label class="font-weight-bold text-dark">Catatan</label>
+                <textarea id="input-catatan" class="form-control text-left" rows="3" 
+                          style="border-radius: 12px; border: 2px solid #eaf6fd; background-color: #f8fcff; font-size: 14px;" 
+                          placeholder="(opsional)"></textarea>
+            </div>
+
         <div class="card p-3 shadow-sm mb-4" style="border-radius: 15px;">
             <div class="d-flex justify-content-between mb-3">
                 <span class="text-muted">Total Tangkapan</span>
@@ -373,6 +380,7 @@
     <input type="hidden" name="nelayan_id" id="input-rahasia-nelayan">
     <input type="hidden" name="aksi_transaksi" id="input-aksi-transaksi">
     <input type="hidden" name="biaya_admin" id="input-admin-hidden">
+    <input type="hidden" name="catatan" id="input-catatan-hidden">
     <div id="tempat-input-ikan-rahasia"></div>
 </form>
 
@@ -432,25 +440,35 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalHapusPengepul" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalWaPerItem" tabindex="-1" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
-            <div class="modal-header border-bottom-0 pb-0">
-                <h5 class="modal-title font-weight-bold text-danger">Hapus Transaksi</h5>
-            </div>
-            <div class="modal-body pt-3">
-                <div class="alert shadow-sm mb-3" style="border-radius: 15px; background-color: #fde8ec; border-left: 5px solid #dc3545; padding: 10px 15px;">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-exclamation-circle-fill text-danger mr-2" style="font-size: 18px;"></i>
-                        <span class="font-weight-bold text-dark" style="font-size: 13px;">
-                            Yakin ingin menghapus transaksi pengepul <b id="namaPengepulHapus"></b> ?
-                        </span>
-                    </div>
+            <div class="modal-body pt-4 pb-4 text-center">
+                
+                <div class="mb-3">
+                    <i class="bi bi-question-circle-fill text-primary" style="font-size: 60px; filter: drop-shadow(0px 4px 6px rgba(0,123,255,0.3));"></i>
                 </div>
-            </div>
-            <div class="modal-footer border-top-0 pt-0">
-                <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 15px; padding: 10px 15px;">Batal</button>
-                <button type="button" class="btn btn-danger shadow-sm font-weight-bold px-4" style="border-radius: 15px; padding: 10px 15px;" onclick="konfirmasiHapusPengepul()">Hapus</button>
+                
+                <h5 class="font-weight-bold text-dark mb-2">Kunci & Kirim Pesan?</h5>
+                
+                <p class="text-muted mb-2" style="font-size: 14px;">
+                    Rincian penjualan <b id="namaNelayanWa" class="text-dark"></b> ke <b id="namaPengepulWa" class="text-primary"></b>:
+                </p>
+
+                <div id="rincianIkanWa" class="text-left bg-light p-3 rounded mb-3 mx-2 shadow-sm" style="font-size: 13px; border: 1px dashed #ccc;">
+                    </div>
+
+                <p class="text-muted mb-4" style="font-size: 14px;">
+                    *Sudah yakin data ini benar? Data yang dikunci tidak dapat diubah lagi di keranjang.
+                </p>
+                
+                <a href="#" id="tombolKirimWaItem" class="btn btn-block btn-success shadow-sm font-weight-bold py-3 mb-2" style="border-radius: 15px; color: white; font-size: 16px;" onclick="eksekusiSimpanKeranjang()">
+                    Yakin
+                </a>
+                
+                <button type="button" class="btn btn-block btn-light font-weight-bold py-3" data-dismiss="modal" style="border-radius: 15px; color: black; font-size: 16px;">
+                    Batal
+                </button>
             </div>
         </div>
     </div>
@@ -462,11 +480,12 @@
 // ==========================================
 let memori = {
     nelayan_id: null,
+    nelayan_nama: '',
+    nelayan_hp: '',
     pengepul_aktif: '',
     daftar_belanja: [] 
 };
 let totalSemuaGlobal = 0;
-let pengepulYangAkanDihapus = null;
 
 // ==========================================
 // 2. KONTROL HALAMAN (STEP)
@@ -483,10 +502,18 @@ function pindahKeStep(nomor) {
 // ==========================================
 // 3. FUNGSI STEP 1: NELAYAN
 // ==========================================
-function pilihNelayan(id, nama) {
+// ==========================================
+// 3. FUNGSI STEP 1: NELAYAN
+// ==========================================
+function pilihNelayan(id, nama, hp) {
     memori.nelayan_id = id;
-    document.getElementById('info-nelayan-nama').innerText = nama;
+    memori.nelayan_nama = nama;
+    memori.nelayan_hp = hp || ''; 
+    
+    // Baris yang error (getElementById) sudah dihapus.
+    // Cukup gunakan querySelectorAll untuk mengubah nama di SEMUA step sekaligus.
     document.querySelectorAll('.info-nelayan-nama-teks').forEach(teks => teks.innerText = nama);
+    
     pindahKeStep(2);
 }
 
@@ -530,8 +557,17 @@ function simpanIkanBaru() {
 
 function lanjutKePengepul() {
     let adaIkan = false;
+    let adaLelang = false; // 1. Tambahan variabel penanda ikan lelang
+
     document.querySelectorAll('.input-harga').forEach(input => {
-        if (input.value && parseInt(input.value) > 0) adaIkan = true;
+        if (input.value && parseInt(input.value) > 0) {
+            adaIkan = true;
+            
+            // 2. Cek jika kotak yang sedang diisi adalah kotak "Lelang"
+            if (input.id === 'input-Lelang') {
+                adaLelang = true;
+            }
+        }
     });
 
     if (!adaIkan) {
@@ -542,6 +578,21 @@ function lanjutKePengepul() {
     }
     
     document.getElementById('alert-peringatan-ikan').style.display = 'none';
+
+    // 3. LOGIKA OTOMATISASI PENGEPUL
+    if (adaLelang) {
+        // Jika ada ikan Lelang, otomatis cari kotak 'TPI Banyutowo' dan klik secara sistem
+        document.querySelectorAll('.item-pengepul').forEach(el => {
+            if (el.innerText.trim() === 'TPI Banyutowo') {
+                pilihPengepulUI(el, 'TPI Banyutowo');
+            }
+        });
+    } else {
+        // Jika tidak ada ikan lelang, bersihkan status pengepul (kembali netral)
+        memori.pengepul_aktif = '';
+        document.querySelectorAll('.item-pengepul').forEach(el => el.classList.remove('active'));
+    }
+
     pindahKeStep(3);
 }
 
@@ -550,11 +601,7 @@ function lanjutKePengepul() {
 // ==========================================
 function pilihPengepulUI(elemenKotak, nama) {
     memori.pengepul_aktif = nama;
-    
-    // Reset semua kotak
     document.querySelectorAll('.item-pengepul').forEach(el => el.classList.remove('active'));
-    
-    // Nyalakan kotak yang diklik
     elemenKotak.classList.add('active');
     document.getElementById('alert-pengepul').style.display = 'none';
 }
@@ -572,7 +619,6 @@ function simpanPengepulBaru() {
         let htmlBaru = `<div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, '${namaBaru}')">${namaBaru}</div>`;
         document.getElementById('container-pengepul').insertAdjacentHTML('beforeend', htmlBaru);
         
-        // Otomatis pilih pengepul yang baru ditambahkan
         let kotakBaru = document.getElementById('container-pengepul').lastElementChild;
         pilihPengepulUI(kotakBaru, namaBaru);
     } else {       
@@ -597,46 +643,116 @@ function pilihStatus(status) {
     }
 }
 
+// Variabel penampung sementara sebelum pengguna menekan "Yakin"
+let keranjangSementara = []; 
+
+// Fungsi 1: Dipanggil saat menekan "+ Tambahkan Data Ini"
 function validasiDanSimpan() {
     if (!memori.pengepul_aktif || memori.pengepul_aktif === '') {
         document.getElementById('alert-pengepul').style.display = 'block';
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         return;
     }
-    
-    simpanKeKeranjang(); 
-}
 
-// ==========================================
-// 6. KERANJANG (MEMASUKKAN DATA & MENGGAMBAR TAMPILAN)
-// ==========================================
-function simpanKeKeranjang() {
     let statusDipilih = document.getElementById('pilihan-status').value;
-        
+    keranjangSementara = []; // Kosongkan penampung
+    let daftarIkanBaru = [];
+    let totalHargaBaru = 0;
+
+    // Kumpulkan data (tapi jangan sembunyikan inputannya dulu)
     document.querySelectorAll('.input-harga').forEach(function(kotakInput) {
         if (kotakInput.style.display === 'block' && kotakInput.value !== '') {
-            let namaIkan = kotakInput.id.replace('input-', ''); 
+            let namaIkan = kotakInput.id.replace('input-', '').replace(/_/g, ' '); 
             let hargaIkan = parseInt(kotakInput.value); 
                 
-            memori.daftar_belanja.push({
+            keranjangSementara.push({
                 pengepul: memori.pengepul_aktif,
                 jenis: namaIkan,
                 harga: hargaIkan,
-                status: statusDipilih
+                status: statusDipilih,
+                idKotak: kotakInput.id // Simpan ID kotaknya untuk dibersihkan nanti
             });
-                
-            // Sembunyikan untuk transaksi berikutnya
-            kotakInput.style.display = 'none';
-            kotakInput.value = '';
+
+            daftarIkanBaru.push(`- ${namaIkan}: Rp ${hargaIkan.toLocaleString('id-ID')}`);
+            totalHargaBaru += hargaIkan;
         }
     });
 
-    // Reset UI Pengepul untuk input berikutnya
+    if (keranjangSementara.length === 0) return; // Batal jika tidak ada harga yang diisi
+
+    let pengepulYangBarusan = memori.pengepul_aktif;
+
+    // Rakit Tampilan Rincian (Struk Modal)
+    let rincianHtml = '<ul class="pl-3 mb-2" style="color: #495057;">';
+    daftarIkanBaru.forEach(ikan => {
+        rincianHtml += `<li class="mb-1">${ikan.replace('- ', '')}</li>`;
+    });
+    rincianHtml += '</ul>';
+    rincianHtml += `<div class="border-top pt-2 mt-2 d-flex justify-content-between">
+                        <span class="text-muted">Total:</span> 
+                        <strong class="text-success" style="font-size: 15px;">Rp ${totalHargaBaru.toLocaleString('id-ID')}</strong>
+                    </div>`;
+    rincianHtml += `<div class="d-flex justify-content-between mt-1">
+                        <span class="text-muted">Status:</span> 
+                        <strong class="${statusDipilih === 'Lunas' ? 'text-success' : 'text-danger'}">${statusDipilih}</strong>
+                    </div>`;
+
+    document.getElementById('namaNelayanWa').innerText = memori.nelayan_nama;
+    document.getElementById('namaPengepulWa').innerText = pengepulYangBarusan;
+    document.getElementById('rincianIkanWa').innerHTML = rincianHtml;
+
+    // Rakit Tautan WA (Jika nelayan punya nomor HP)
+    let tombolYakin = document.getElementById('tombolKirimWaItem');
+    if (memori.nelayan_hp && memori.nelayan_hp.trim() !== '') {
+        let hp = memori.nelayan_hp.replace(/\D/g, '');
+        if (hp.startsWith('0')) hp = '62' + hp.substring(1);
+
+        let teksWa = `Halo Pak *${memori.nelayan_nama}*, hasil tangkapan Anda telah kami jual ke pengepul *${pengepulYangBarusan}*:\n`;
+        teksWa += daftarIkanBaru.join('\n');
+        teksWa += `\n\n*Total Uang:* Rp ${totalHargaBaru.toLocaleString('id-ID')}\n\nTerima kasih!`;
+
+        tombolYakin.href = `https://wa.me/${hp}?text=${encodeURIComponent(teksWa)}`;
+        tombolYakin.target = "_blank"; // Buka WA di tab baru
+    } else {
+        // Jika tidak ada nomor HP, matikan fitur tautan WA-nya
+        tombolYakin.removeAttribute("href");
+        tombolYakin.removeAttribute("target");
+    }
+
+    // Tampilkan Modal Validasi
+    $('#modalWaPerItem').modal('show');
+}
+
+// ==========================================
+// 6. KERANJANG (MEMASUKKAN DATA & MENGGAMBAR)
+// ==========================================
+// Fungsi 2: Dipanggil KHUSUS saat tombol "Yakin" di modal ditekan
+function eksekusiSimpanKeranjang() {
+    // 1. Pindahkan data ke memori permanen
+    keranjangSementara.forEach(ikan => {
+        memori.daftar_belanja.push({
+            pengepul: ikan.pengepul,
+            jenis: ikan.jenis,
+            harga: ikan.harga,
+            status: ikan.status
+        });
+
+        // 2. Sekarang baru kita bersihkan kotak input di layarnya
+        let kotakTerkait = document.getElementById(ikan.idKotak);
+        if(kotakTerkait) {
+            kotakTerkait.style.display = 'none';
+            kotakTerkait.value = '';
+        }
+    });
+
+    // 3. Reset status UI pengepul
     memori.pengepul_aktif = '';
     document.querySelectorAll('.item-pengepul').forEach(el => el.classList.remove('active'));
 
+    // 4. Perbarui gambar keranjang dan lompat ke Step 4
     gambarUlangKeranjangBelanja(); 
-    pindahKeStep(4); 
+    $('#modalWaPerItem').modal('hide');
+    pindahKeStep(4);
 }
 
 function gambarUlangKeranjangBelanja() {
@@ -658,6 +774,7 @@ function gambarUlangKeranjangBelanja() {
         let statusTampil = lemariPengepul[namaPengepul][0].status;
         let warnaBadge = (statusTampil === 'Lunas') ? 'badge-success' : 'badge-danger';
 
+        // DESAIN BARU: Tanpa tombol Edit & Hapus (Read-Only)
         let desainHTML = `
             <div class="mb-4 border-bottom pb-2">
                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -668,14 +785,6 @@ function gambarUlangKeranjangBelanja() {
                         <span class="badge ${warnaBadge} rounded-pill px-2 py-1">
                             ${statusTampil}
                         </span>
-                    </div>
-                    <div>
-                        <button class="btn btn-sm btn-warning py-1 px-2 mr-1" style="border-radius: 10px; font-weight: bold;" onclick="editPengepul('${namaPengepul}')">
-                            <i class="bi bi-pencil-square"></i> Edit
-                        </button>
-                        <button class="btn btn-sm btn-danger py-1 px-2" style="border-radius: 10px; font-weight: bold;" onclick="hapusPengepul('${namaPengepul}')">
-                            <i class="bi bi-trash3-fill"></i> Hapus
-                        </button>
                     </div>
                 </div>
                 <table class="info-table mt-1">
@@ -705,52 +814,9 @@ function gambarUlangKeranjangBelanja() {
     hitungTotalAkhir(); 
 }
 
-// ==========================================
-// 7. EDIT & HAPUS TRANSAKSI
-// ==========================================
-function editPengepul(namaPengepul) {
-    let dataYangMauDiedit = memori.daftar_belanja.filter(ikan => ikan.pengepul === namaPengepul);
-    memori.daftar_belanja = memori.daftar_belanja.filter(ikan => ikan.pengepul !== namaPengepul);
-
-    // Aktifkan UI pengepul di Step 3
-    memori.pengepul_aktif = namaPengepul;
-    document.querySelectorAll('.item-pengepul').forEach(el => {
-        el.classList.remove('active');
-        if (el.innerText.trim() === namaPengepul) el.classList.add('active');
-    });
-
-    // Reset dan Isi Ikan di Step 2
-    document.querySelectorAll('.input-harga').forEach(kotak => { kotak.style.display = 'none'; kotak.value = ''; });
-    dataYangMauDiedit.forEach(ikan => {
-        let kotakInput = document.getElementById('input-' + ikan.jenis);
-        if (kotakInput) {
-            kotakInput.style.display = 'block';
-            kotakInput.value = ikan.harga;
-        }
-    });
-
-    if (dataYangMauDiedit.length > 0) pilihStatus(dataYangMauDiedit[0].status);
-    
-    // Kembalikan ke Step 2 agar mereka bisa mengedit ikan terlebih dahulu
-    pindahKeStep(2);
-}
-
-function hapusPengepul(namaPengepul) {
-    pengepulYangAkanDihapus = namaPengepul;
-    document.getElementById('namaPengepulHapus').innerText = namaPengepul;
-    $('#modalHapusPengepul').modal('show');
-}
-
-function konfirmasiHapusPengepul() {
-    memori.daftar_belanja = memori.daftar_belanja.filter(ikan => ikan.pengepul !== pengepulYangAkanDihapus);
-    $('#modalHapusPengepul').modal('hide');
-    gambarUlangKeranjangBelanja();
-    
-    if (memori.daftar_belanja.length === 0) pindahKeStep(2);
-}
 
 // ==========================================
-// 8. TAHAP AKHIR & SUBMIT DATABASE
+// 7. TAHAP AKHIR & SUBMIT DATABASE
 // ==========================================
 function hitungTotalAkhir() {
     let kotor = typeof totalSemuaGlobal !== 'undefined' ? totalSemuaGlobal : 0;
@@ -789,6 +855,10 @@ function kirimKeDatabaseLaravel(aksi) {
     let admin = document.getElementById('input-admin').value || 0;
     document.getElementById('input-admin-hidden').value = admin;
 
+    // KODE BARU: Ambil teks catatan dari textarea dan masukkan ke input hidden
+    let catatanTeks = document.getElementById('input-catatan').value || '';
+    document.getElementById('input-catatan-hidden').value = catatanTeks;
+
     document.getElementById('form-rahasia').submit();
 }
 
@@ -797,7 +867,7 @@ document.addEventListener("DOMContentLoaded", function() {
     @if(session('nelayan_baru_id'))
         let idBaru = {{ session('nelayan_baru_id') }};
         let namaBaru = "{{ session('nelayan_baru_nama') }}";
-        pilihNelayan(idBaru, namaBaru);
+        pilihNelayan(idBaru, namaBaru, "");
     @endif
 });
 </script>

@@ -21,6 +21,7 @@ class CreatePenjualanTable extends Migration
             // nama_pengepul dihapus dari sini
             $table->decimal('total_harga', 15, 2);
             $table->decimal('biaya_admin', 15, 2)->default(0); // Kolom Biaya Admin
+            $table->text('catatan')->nullable();
             // $table->enum('status_pembayaran', ['Lunas', 'Belum Lunas']);
             $table->timestamps();
 

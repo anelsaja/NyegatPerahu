@@ -118,7 +118,7 @@
         </div>
         @empty
         <div class="text-center text-muted p-4 mt-4">
-            <i class="bi bi-people" style="font-size: 40px; color: #ccc;"></i>
+            <i class="bi bi-person-x" style="font-size: 40px; color: #ccc;"></i>
             <p class="mt-2 font-weight-bold">
                 {{ request('cari') ? 'Nama nelayan tidak ditemukan.' : 'Belum ada data nelayan.' }}
             </p>

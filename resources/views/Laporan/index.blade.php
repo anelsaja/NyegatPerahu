@@ -85,12 +85,12 @@
     <h4 class="font-weight-bold mb-4 mt-2">Laporan Bulanan</h4>
 
     <form action="{{ route('laporan.index') }}" method="GET" class="mb-4">
-        <div class="form-group mb-3">
+<div class="form-group mb-3">
             <label class="font-weight-bold">Nama Nelayan</label>
-            <div class="form-group mb-3">
-                <input type="hidden" name="nelayan_id" id="input_nelayan_id" value="{{ request('nelayan_id') }}" required>
-                <div class="grid-btn">
-                @foreach($nelayans as $n)
+            <input type="hidden" name="nelayan_id" id="input_nelayan_id" value="{{ request('nelayan_id') }}" required>
+            
+            <div class="grid-btn">
+                @forelse($nelayans as $n)
                     <div class="btn-kotak {{ request('nelayan_id') == $n->nelayan_id ? 'active' : '' }}" 
                          id="kartu-nelayan-{{ $n->nelayan_id }}" 
                          onclick="pilihNelayanLaporan({{ $n->nelayan_id }})">
@@ -105,10 +105,15 @@
                         
                         <span class="font-weight-bold">{{ $n->nama }}</span>
                     </div>
-                @endforeach
-                </div>
+                @empty
+                    <div class="text-center text-muted p-4 w-100" style="grid-column: span 2;">
+                        <i class="bi bi-person-x" style="font-size: 40px; color: #ccc;"></i>
+                        <p class="mt-2 font-weight-bold mb-2">Belum ada data nelayan.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
+
         <div class="form-group mb-3">
             <label class="font-weight-bold">Bulan & Tahun</label>
             <input type="month" 

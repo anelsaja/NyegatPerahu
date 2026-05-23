@@ -27,6 +27,7 @@ class PenjualanController extends Controller
             'tanggal' => $request->tanggal,
             'total_harga' => 0, 
             'biaya_admin' => $request->biaya_admin ?? 0,
+            'catatan' => $request->catatan,
             // 'status_pembayaran' => $request->status_pembayaran,
         ]);
 

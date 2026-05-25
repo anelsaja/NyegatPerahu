@@ -286,18 +286,24 @@
             <span class="font-weight-bold">Tambah Pengepul Baru</span>
         </div>
 
+        <p id="alert-pengepul" class="text-danger text-muted" style="display:none;"><i class="bi bi-x-circle"></i> Silakan pilih Pengepul terlebih dahulu!</p>
+
         <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
             <div class="card-body">
-                <label class="font-weight-bold text-muted small d-block mb-3">Status Pembayaran</label>
+                <label class="font-weight-bold text-muted small d-block mb-3">Status Pembayaran <span class="text-danger">*</span></label>
+                
                 <div class="d-flex" style="gap: 10px;">
-                    <div id="btn-status-lunas" class="btn-status lunas-aktif" onclick="pilihStatus('Lunas')">Lunas</div>
-                    <div id="btn-status-belum" class="btn-status" onclick="pilihStatus('Belum Lunas')">Belum Lunas</div>
+                    <div id="btn-status-lunas" class="btn-status" onclick="pilihStatus('Lunas')">Lunas</div>
+                    <div id="btn-status-belum" class="btn-status" onclick="pilihStatus('Hutang')">Hutang</div>
                 </div>
-                <input type="hidden" id="pilihan-status" value="Lunas">
+                
+                <input type="hidden" id="pilihan-status" value="">
+
+                <p id="alert-status" class="text-danger text-muted mt-3 mb-0" style="display:none; font-size: 13px;">
+                    <i class="bi bi-exclamation-circle text-danger mr-1"></i> Silakan pilih status Lunas atau Hutang!
+                </p>
             </div>
         </div>
-
-        <p id="alert-pengepul" class="text-danger font-weight-bold" style="display:none;"><i class="bi bi-x-circle"></i> Silakan pilih Pengepul terlebih dahulu!</p>
 
         <div style="height: 120px;"></div>
         <div class="btn-bawah">
@@ -324,8 +330,9 @@
             </div>
         </div>
 
-        <button onclick="pindahKeStep(2)" class="btn btn-block mb-4 p-3 font-weight-bold" style="border-radius: 15px; border: 2px dashed #007bff; color: #007bff; background-color: #f4fbff;">
-            <i class="bi bi-plus-circle"></i> Tambah Data Ikan/Pengepul Lainnya
+        <button onclick="pindahKeStep(2)" class="btn-kotak btn-block btn-tambah-baru shadow-sm mt-3 mb-4">
+            <div class="icon-box-tambah"><i class="bi bi-plus-circle"></i></div>
+            <span class="font-weight-bold">Tambah Data Lainnya</span>
         </button>
 
         <div style="height: 100px;"></div>
@@ -344,12 +351,12 @@
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
-             <div class="form-group mb-0 pt-2 mb-4 border-top">
-                <label class="font-weight-bold text-dark">Catatan</label>
-                <textarea id="input-catatan" class="form-control text-left" rows="3" 
-                          style="border-radius: 12px; border: 2px solid #eaf6fd; background-color: #f8fcff; font-size: 14px;" 
+        <div class="form-group mb-0 pt-2 mb-4">
+            <label class="font-weight-bold text-dark">Catatan</label>
+            <textarea id="input-catatan" class="form-control text-left" rows="3" 
+                          style="border-radius: 12px; border: 2px solid #eaf6fd; font-size: 14px;" 
                           placeholder="(opsional)"></textarea>
-            </div>
+        </div>
 
         <div class="card p-3 shadow-sm mb-4" style="border-radius: 15px;">
             <div class="d-flex justify-content-between mb-3">
@@ -456,19 +463,22 @@
                 </p>
 
                 <div id="rincianIkanWa" class="text-left bg-light p-3 rounded mb-3 mx-2 shadow-sm" style="font-size: 13px; border: 1px dashed #ccc;">
-                    </div>
+                </div>
 
                 <p class="text-muted mb-4" style="font-size: 14px;">
                     *Sudah yakin data ini benar? Data yang dikunci tidak dapat diubah lagi di keranjang.
                 </p>
                 
-                <a href="#" id="tombolKirimWaItem" class="btn btn-block btn-success shadow-sm font-weight-bold py-3 mb-2" style="border-radius: 15px; color: white; font-size: 16px;" onclick="eksekusiSimpanKeranjang()">
-                    Yakin
-                </a>
-                
-                <button type="button" class="btn btn-block btn-light font-weight-bold py-3" data-dismiss="modal" style="border-radius: 15px; color: black; font-size: 16px;">
-                    Batal
-                </button>
+                <div class="d-flex px-2" style="gap: 10px;">
+                    <button type="button" class="btn btn-light text-secondary font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" data-dismiss="modal" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd; font-size: 16px;">
+                        Batal
+                    </button>
+                    
+                    <a href="#" id="tombolKirimWaItem" class="btn btn-success font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; font-size: 16px; color: white; text-decoration: none;" onclick="eksekusiSimpanKeranjang()">
+                        Yakin
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
@@ -641,6 +651,9 @@ function pilihStatus(status) {
     } else {
         btnBelum.classList.add('belum-aktif');
     }
+
+    // Sembunyikan alert peringatan status jika pengguna sudah memilih
+    document.getElementById('alert-status').style.display = 'none';
 }
 
 // Variabel penampung sementara sebelum pengguna menekan "Yakin"
@@ -648,13 +661,36 @@ let keranjangSementara = [];
 
 // Fungsi 1: Dipanggil saat menekan "+ Tambahkan Data Ini"
 function validasiDanSimpan() {
+    let apakahValid = true;
+
+    // 1. Cek apakah Pengepul sudah dipilih
     if (!memori.pengepul_aktif || memori.pengepul_aktif === '') {
         document.getElementById('alert-pengepul').style.display = 'block';
+        apakahValid = false;
+    } else {
+        document.getElementById('alert-pengepul').style.display = 'none';
+    }
+
+    // 2. Cek apakah Status Pembayaran (Lunas/Hutang) sudah dipilih
+    let statusDipilih = document.getElementById('pilihan-status').value;
+    let alertStatus = document.getElementById('alert-status');
+    if (statusDipilih === '') {
+        if(alertStatus) alertStatus.style.display = 'block';
+        apakahValid = false;
+    } else {
+        if(alertStatus) alertStatus.style.display = 'none';
+    }
+
+    // Jika ada yang belum diisi (tidak valid), gulir layar ke bawah agar ibu nelayan melihat error-nya, lalu hentikan proses
+    if (!apakahValid) {
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         return;
     }
 
-    let statusDipilih = document.getElementById('pilihan-status').value;
+    // ========================================================
+    // JIKA SEMUA VALIDASI LOLOS, LANJUTKAN PROSES KERANJANG
+    // ========================================================
+    
     keranjangSementara = []; // Kosongkan penampung
     let daftarIkanBaru = [];
     let totalHargaBaru = 0;
@@ -678,7 +714,7 @@ function validasiDanSimpan() {
         }
     });
 
-    if (keranjangSementara.length === 0) return; // Batal jika tidak ada harga yang diisi
+    if (keranjangSementara.length === 0) return; // Batal jika tidak ada harga yang diisi sama sekali
 
     let pengepulYangBarusan = memori.pengepul_aktif;
 
@@ -707,9 +743,9 @@ function validasiDanSimpan() {
         let hp = memori.nelayan_hp.replace(/\D/g, '');
         if (hp.startsWith('0')) hp = '62' + hp.substring(1);
 
-        let teksWa = `Halo Pak *${memori.nelayan_nama}*, hasil tangkapan Anda telah kami jual ke pengepul *${pengepulYangBarusan}*:\n`;
+        let teksWa = `Halo Pak *${memori.nelayan_nama}*, hasil tangkapan Anda telah kami jual ke pengepul *${pengepulYangBarusan}*:\n\n`;
         teksWa += daftarIkanBaru.join('\n');
-        teksWa += `\n\n*Total Uang:* Rp ${totalHargaBaru.toLocaleString('id-ID')}\n\nTerima kasih!`;
+        teksWa += `\n\n*Total Uang:* Rp ${totalHargaBaru.toLocaleString('id-ID')}\nTerima kasih!`;
 
         tombolYakin.href = `https://wa.me/${hp}?text=${encodeURIComponent(teksWa)}`;
         tombolYakin.target = "_blank"; // Buka WA di tab baru
@@ -719,7 +755,7 @@ function validasiDanSimpan() {
         tombolYakin.removeAttribute("target");
     }
 
-    // Tampilkan Modal Validasi
+    // Tampilkan Modal Validasi Akhir sebelum dikunci
     $('#modalWaPerItem').modal('show');
 }
 

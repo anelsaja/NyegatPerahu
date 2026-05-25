@@ -6,15 +6,34 @@
         display: none !important;
     }
 
-    .info-table { width: 100%; margin-bottom: 15px; font-size: 13px; }
-    .info-table td { padding: 4px 0; border-bottom: 1px dashed #eee; }
-    .info-table td:last-child { text-align: right; font-weight: bold; }
+    .info-table {
+        width: 100%;
+        font-size: 13px;
+    }
+
+    .info-table td {
+        padding: 4px 0;
+        border-bottom: 1px dashed #ccc;
+    }
+
+    .info-table td:last-child {
+        text-align: right;
+        font-weight: bold;
+    }
 
     .input-struk {
-        border: 1px solid #e0e0e0; background-color: #fafafa;
-        border-radius: 8px; font-size: 14px; font-weight: bold;
+        border: 1px solid #e0e0e0;
+        background-color: #fafafa;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
     }
-    .input-struk:focus { background-color: #fff; border-color: #5bc0de; box-shadow: none; }
+
+    .input-struk:focus {
+        background-color: #fff;
+        border-color: #5bc0de;
+        box-shadow: none;
+    }
     
     .card-ikan {
         background-color: #ffffff; border-radius: 12px; 
@@ -54,17 +73,15 @@
     <form action="{{ route('penjualan.update', $penjualan->penjualan_id) }}" method="POST">
         @csrf
         @method('PUT')
-
         <input type="hidden" name="tanggal" value="{{ $penjualan->tanggal }}">
         <input type="hidden" name="nelayan_id" value="{{ $penjualan->nelayan_id }}">
-
         <table class="info-table mb-4">
-            <tr><td class="text-muted">Tanggal</td><td>{{ date('d M Y', strtotime($penjualan->tanggal)) }}</td></tr>
+            <tr><td class="text-muted">Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td class="text-muted">Nama Nelayan</td><td>{{ $penjualan->nelayan->nama ?? '-' }}</td></tr>
             <tr><td class="text-muted">Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
-        <h6 class="font-weight-bold mt-4 mb-3 pb-2 border-bottom">Rincian Tangkapan & Pembayaran</h6>
+        <h6 class="font-weight-bold mt-4 pb-2">Rincian Tangkapan & Pembayaran</h6>
 
         @php
             // MANTRA AJAIB: Kelompokkan data ikan berdasarkan nama pengepulnya
@@ -79,9 +96,7 @@
                 // Buat ID unik untuk JavaScript (menghilangkan spasi pada nama)
                 $idPengepul = str_replace([' ', "'", '"', '.', ','], '_', $namaPengepul);
             @endphp
-            
             <div class="mb-4 p-3 card-ikan shadow-sm" style="border-top: 4px solid #5bc0de;" id="card-{{ $idPengepul }}">
-                
                 <div class="d-flex justify-content-between mb-3 align-items-center border-bottom pb-3">
                     <div class="d-flex align-items-center">
                         <span class="bg-light text-muted mr-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px; border-radius: 8px;">
@@ -92,10 +107,10 @@
                     
                     <div class="d-flex align-items-center">
                         <select class="form-control form-control-sm input-struk border-0 shadow-sm {{ $statusPertama == 'Lunas' ? 'bg-success text-white' : 'bg-danger text-white' }}" 
-                                style="width: 110px;"
+                                style="width: 100px;"
                                 onchange="ubahStatusGrup('{{ $idPengepul }}', this.value); this.className = 'form-control form-control-sm input-struk border-0 shadow-sm text-white ' + (this.value === 'Lunas' ? 'bg-success' : 'bg-danger')">
                             <option value="Lunas" class="bg-light text-dark" {{ $statusPertama == 'Lunas' ? 'selected' : '' }}>Lunas</option>
-                            <option value="Belum Lunas" class="bg-light text-dark" {{ $statusPertama == 'Belum Lunas' ? 'selected' : '' }}>Belum Lunas</option>
+                            <option value="Hutang" class="bg-light text-dark" {{ $statusPertama == 'Hutang' ? 'selected' : '' }}>Hutang</option>
                         </select>
 
                         <button type="button" class="btn btn-sm text-danger font-weight-bold p-1 ml-2" onclick="hapusPengepulUtuh('card-{{ $idPengepul }}', '{{ $namaPengepul }}')">
@@ -277,7 +292,7 @@
                             style="width: 100px;"
                             onchange="ubahStatusGrup('${idPengepulBaru}', this.value); this.className = 'form-control form-control-sm input-struk border-0 shadow-sm text-white ' + (this.value === 'Lunas' ? 'bg-success' : 'bg-danger')">
                         <option value="Lunas" class="bg-light text-dark">Lunas</option>
-                        <option value="Belum Lunas" class="bg-light text-dark">Belum Lunas</option>
+                        <option value="Hutang" class="bg-light text-dark">Hutang</option>
                     </select>
 
                     <button type="button" class="btn btn-sm text-danger font-weight-bold p-1 ml-2" onclick="hapusPengepulUtuh('card-${idPengepulBaru}', 'Pengepul Ini')">

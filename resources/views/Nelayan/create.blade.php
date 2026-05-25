@@ -5,6 +5,18 @@
     .bottom-nav {
         display: none !important;
     }
+
+    .btn-bawah-ganda { 
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%; 
+        padding: 12px;
+        display: flex;
+        gap: 10px;
+        background-color: #ffffff;
+        border-top: 2px solid #f0f0f0;
+    }
 </style>
 
 <div class="p-3">
@@ -43,19 +55,20 @@
             <input type="number" name="nomor_hp" class="form-control form-control-lg shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;" placeholder="08123456789" required>
         </div>
 
-        <button type="submit" class="btn btn-success btn-lg btn-block p-3 font-weight-bold" style="border-radius: 15px;">
-            Simpan Data Nelayan
-        </button>
-        
-        @if(request('asal') == 'penjualan')
-            <a href="{{ route('penjualan.create') }}" class="btn btn-light btn-lg btn-block mt-3 font-weight-bold" style="border-radius: 15px;">
-                Batal
-            </a>
-        @else
-            <a href="{{ route('nelayan.index') }}" class="btn btn-light btn-lg btn-block mt-3 font-weight-bold" style="border-radius: 15px;">
-                Batal
-            </a>
-        @endif
+        <div class="btn-bawah-ganda">
+             @if(request('asal') == 'penjualan')
+                <a href="{{ route('penjualan.create') }}" class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">
+                    Batal
+                </a>
+            @else
+                <a href="{{ route('nelayan.index') }}" class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">
+                    Batal
+                </a>
+            @endif
+            <button type="submit" class="btn btn-success btn-lg font-weight-bold shadow-sm m-0" style="border-radius: 15px; flex: 1; padding: 16px 0;">
+                Tambah
+            </button>
+        </div>
     </form>
 </div>
 <script>

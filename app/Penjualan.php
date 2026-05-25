@@ -11,7 +11,7 @@ class Penjualan extends Model
     
     protected $fillable = [
         'pengguna_id', 'nelayan_id', 'tanggal', 
-        'total_harga', 'biaya_admin', 'status_pembayaran'
+        'total_harga', 'biaya_admin', 'status_pembayaran', 'catatan'
     ];
 
     // Relasi ke Nelayan

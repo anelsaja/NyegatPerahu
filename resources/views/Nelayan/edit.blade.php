@@ -5,6 +5,18 @@
     .bottom-nav {
         display: none !important;
     }
+
+    .btn-bawah-ganda { 
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%; 
+        padding: 12px;
+        display: flex;
+        gap: 10px;
+        background-color: #ffffff;
+        border-top: 2px solid #f0f0f0;
+    }
 </style>
 
 <div class="p-3">
@@ -28,8 +40,6 @@
         @method('PUT')
 
         <div class="form-group mb-4 text-center">
-            <label class="font-weight-bold d-block text-left">Foto Profil</label>
-            
             <div class="mb-3">
                 @if($nelayan->foto_profil)
                     <img src="{{ asset('images/nelayan/' . $nelayan->foto_profil) }}" alt="Foto Profil" class="shadow-sm" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 3px solid #08a10b;">
@@ -57,13 +67,14 @@
             <input type="number" name="nomor_hp" class="form-control form-control-lg shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;" value="{{ $nelayan->nomor_hp }}" required>
         </div>
 
-        <button type="submit" class="btn btn-warning btn-lg btn-block p-3 font-weight-bold" style="border-radius: 15px;">
-            Simpan Edit
-        </button>
-        
-        <a href="{{ route('nelayan.index') }}" class="btn btn-light text-secondary btn-lg btn-block mt-3 font-weight-bold" style="border-radius: 15px;">
-            Batal
-        </a>
+        <div class="btn-bawah-ganda">
+            <a href="{{ route('nelayan.index') }}" class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">
+                Batal
+            </a>
+            <button type="submit" class="btn btn-warning btn-lg font-weight-bold shadow-sm m-0" style="border-radius: 15px; flex: 1; padding: 16px 0;">
+                Simpan Edit
+            </button>
+        </div>
     </form>
 </div>
 <script>

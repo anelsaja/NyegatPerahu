@@ -28,7 +28,6 @@ class PenjualanController extends Controller
             'total_harga' => 0, 
             'biaya_admin' => $request->biaya_admin ?? 0,
             'catatan' => $request->catatan,
-            // 'status_pembayaran' => $request->status_pembayaran,
         ]);
 
         $total_keseluruhan = 0;
@@ -51,7 +50,7 @@ class PenjualanController extends Controller
 
         $penjualan->update(['total_harga' => $total_keseluruhan]);
 
-// AMBIL OBJEK NELAYAN (Otomatis membawa fungsi link_wa)
+        // AMBIL OBJEK NELAYAN (Otomatis membawa fungsi link_wa)
         $nelayan = Nelayan::find($request->nelayan_id);
 
         // ALUR REDIRECT
@@ -123,7 +122,8 @@ class PenjualanController extends Controller
         $penjualan->update([
             'nelayan_id' => $request->nelayan_id,
             'tanggal' => $request->tanggal,
-            'biaya_admin' => $request->biaya_admin ?? 0
+            'biaya_admin' => $request->biaya_admin ?? 0,
+            'catatan' => $request->catatan
         ]);
 
         // B. HAPUS SEMUA rincian ikan yang lama (Trik paling aman)

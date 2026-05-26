@@ -351,7 +351,7 @@
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
-        <div class="form-group mb-0 pt-2 mb-4">
+        <div class="form-group mb-0 mb-4">
             <label class="font-weight-bold text-dark">Catatan</label>
             <textarea id="input-catatan" class="form-control text-left" rows="3" 
                           style="border-radius: 12px; border: 2px solid #eaf6fd; font-size: 14px;" 
@@ -903,7 +903,10 @@ document.addEventListener("DOMContentLoaded", function() {
     @if(session('nelayan_baru_id'))
         let idBaru = {{ session('nelayan_baru_id') }};
         let namaBaru = "{{ session('nelayan_baru_nama') }}";
-        pilihNelayan(idBaru, namaBaru, "");
+        let hpBaru = "{{ session('nelayan_baru_hp') ?? '' }}"; // <-- Tangkap dari Controller
+        
+        // Masukkan hpBaru ke dalam fungsi
+        pilihNelayan(idBaru, namaBaru, hpBaru);
     @endif
 });
 </script>

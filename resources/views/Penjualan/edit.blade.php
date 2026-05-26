@@ -65,6 +65,20 @@
         background-color: #ffffff;
         border-top: 2px solid #f0f0f0;
     }
+
+    .btn-tambah-baru {
+        background-color: #f4fbff !important;
+        border: 2px dashed #5bc0de !important;
+        color: #17a2b8 !important;
+    }
+
+    .icon-box-tambah {
+        font-size: 28px;
+        color: #5bc0de;
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: center;
+    }
 </style>
 
 <div class="p-3">
@@ -131,10 +145,7 @@
                         </div>
                         
                         <div class="input-group input-group-sm mr-2" style="flex: 1.2; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text border-0 bg-light text-muted small font-weight-bold">Rp</span>
-                            </div>
-                            <input type="number" name="hasil_laut[{{ $urutanKe }}][harga]" class="form-control input-struk text-right text-info nilai-harga border-0 w-100 bg-white" value="{{ intval($item->harga) }}" oninput="hitungTotalBaru()" required style="font-size: 15px;">
+                            <input type="number" name="hasil_laut[{{ $urutanKe }}][harga]" class="form-control input-struk text-right text-info nilai-harga border-0 w-100 bg-white" value="{{ intval($item->harga) }}" oninput="hitungTotalBaru()" required style="font-size: 15px;" placeholder="Rp">
                         </div>
 
                         <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('baris-ikan-{{ $urutanKe }}', 'card-{{ $idPengepul }}')">
@@ -152,8 +163,11 @@
             @endforeach
         </div>
 
-        <button type="button" id="btn-tambah-pengepul-baru" class="btn btn-block font-weight-bold mb-4 py-3 shadow-sm" style="border-radius: 12px; border: 2px dashed #007bff; color: #007bff; background-color: #f4fbff;">
-            <i class="bi bi-shop mr-1"></i> Jual ke Pengepul Lainnya
+        <button type="button" id="btn-tambah-pengepul-baru" class="btn-kotak btn-block btn-tambah-baru shadow-sm">
+            <div class="icon-box-tambah">
+                <i class="bi bi-shop mr-1"></i>
+            </div>
+            <span class="font-weight-bold">Tambah Data Baru</span>
         </button>
 
         <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px; background-color: #ffffff;">
@@ -248,10 +262,7 @@
                 </div>
                 
                 <div class="input-group input-group-sm mr-2" style="flex: 1.2; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text border-0 bg-light text-muted small font-weight-bold">Rp</span>
-                    </div>
-                    <input type="number" name="hasil_laut[${urutanKe}][harga]" class="form-control input-struk text-right text-info nilai-harga border-0 w-100 bg-white" placeholder="Harga" oninput="hitungTotalBaru()" required style="font-size: 15px;">
+                    <input type="number" name="hasil_laut[${urutanKe}][harga]" class="form-control input-struk text-right text-info nilai-harga border-0 w-100 bg-white" placeholder="Rp" oninput="hitungTotalBaru()" required style="font-size: 15px;">
                 </div>
 
                 <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('${idBaris}', 'card-${idPengepul}')">
@@ -311,10 +322,7 @@
                     </div>
                     
                     <div class="input-group input-group-sm mr-2" style="flex: 1.2; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text border-0 bg-light text-muted small font-weight-bold">Rp</span>
-                        </div>
-                        <input type="number" name="hasil_laut[${urutanKe}][harga]" class="form-control input-struk text-right text-info nilai-harga border-0 w-100 bg-white" placeholder="Harga" oninput="hitungTotalBaru()" required style="font-size: 15px;">
+                        <input type="number" name="hasil_laut[${urutanKe}][harga]" class="form-control input-struk text-right text-info nilai-harga border-0 w-100 bg-white" placeholder="Rp" oninput="hitungTotalBaru()" required style="font-size: 15px;">
                     </div>
 
                     <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('baris-ikan-${urutanKe}', 'card-${idPengepulBaru}')">

@@ -83,6 +83,7 @@ class NelayanController extends Controller
            return redirect()->route('penjualan.create')->with([
             'nelayan_baru_id' => $nelayan->nelayan_id,
             'nelayan_baru_nama' => $nelayan->nama,
+            'nelayan_baru_hp' => $nelayan->nomor_hp,
             'success' => 'Nelayan berhasil ditambahkan! silakan pilih!'
            ]);
         } else {

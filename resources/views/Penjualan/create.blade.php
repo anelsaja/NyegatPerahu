@@ -35,11 +35,6 @@
         padding: 15px 10px; 
         text-align: center;
         font-weight: bold;
-        transition: all 0.2s;
-    }
-
-    .btn-kotak:active {
-        transform: scale(0.95);
     }
 
     /* Pengepul Aktif */
@@ -82,8 +77,27 @@
         bottom: 40px;
         left: 50%;
         transform: translateX(-50%);
-        width: 95%;
-        z-index: 999;
+        padding: 18px;
+        display: block;
+        width: 92%;
+        border-radius: 15px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Isi tombol/link */
+    .btn-isi-bawah {
+        display: block;
+        width: 100%;
+        background: transparent;
+        border: none;
+        color: white;
+        text-decoration: none !important;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
     }
 
     .btn-kembali {
@@ -105,9 +119,13 @@
         background-color: #f4fbff !important;
         border: 2px dashed #5bc0de !important;
         color: #17a2b8 !important;
+        border-radius: 15px;
+        padding: 15px 10px; 
+        text-align: center;
+        font-weight: bold;
     }
 
-    .icon-box-tambah {
+    .card-tambah-baru {
         font-size: 28px;
         color: #5bc0de;
         margin-bottom: 8px;
@@ -157,11 +175,11 @@
         <div class="grid-btn">
             @foreach($nelayans as $n)
             <div class="btn-kotak" onclick="pilihNelayan({{ $n->nelayan_id }}, '{{ $n->nama }}', '{{ $n->nomor_hp ?? '' }}')">
-                <div class="icon-box" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                <div class="icon-box">
                     @if($n->foto_profil)
-                        <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}">
                     @else
-                        <span style="font-size: 20px;">👤</span>
+                        <span style="font-size: 20px;"><i class="bi bi-person-fill"></i></span>
                     @endif
                 </div>
                 {{ $n->nama }}
@@ -169,24 +187,24 @@
             @endforeach
         </div>
         
-        <div class="btn-kotak btn-tambah-baru shadow-sm" onclick="window.location.href='{{ route('nelayan.create', ['asal' => 'penjualan']) }}'">
-            <div class="icon-box-tambah">
+        <div class="btn-tambah-baru shadow-sm" onclick="window.location.href='{{ route('nelayan.create', ['asal' => 'penjualan']) }}'">
+            <div class="card-tambah-baru">
                 <i class="bi bi-person-plus-fill"></i>
             </div>
             <span class="font-weight-bold">Tambah Nelayan Baru</span>
         </div>
         <div style="height: 120px;"></div>
 
-        <div class="btn-bawah">
-            <a href="{{ route('home') }}" class="btn-kembali" style="background-color: red; color: white;">
-                <i class="bi bi-x-circle"></i> Batal
+        <div class="btn-bawah" style="background-color: red;">
+            <a href="{{ route('home') }}" class="btn-isi-bawah" style="text-decoration: none !important; color: white;">
+                Batal
             </a>
         </div>
     </div>
 
     <div id="step-2" class="step-section">
         <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
-        <table class="info-table mb-4">
+        <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
@@ -200,7 +218,7 @@
         
         <div id="alert-peringatan-ikan" class="alert shadow-sm mb-3" style="display: none; border-radius: 15px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
             <div class="d-flex align-items-center">
-                <i class="bi bi-exclamation-triangle-fill text-danger mr-2" style="font-size: 22px;"></i>
+                <i class="bi bi-exclamation-circle-fill text-danger mr-2" style="font-size: 22px;"></i>
                 <span style="font-size: 14px;">Silakan pilih minimal 1 ikan dan masukkan harganya</span>
             </div>
         </div>
@@ -238,15 +256,17 @@
             </div>
         </div>
         
-        <div class="btn-kotak btn-tambah-baru shadow-sm mt-3 mb-4" data-toggle="modal" data-target="#modalIkanBaru">
-            <div class="icon-box-tambah"><i class="bi bi-plus-circle"></i></div>
+        <div class="btn-tambah-baru shadow-sm" data-toggle="modal" data-target="#modalIkanBaru">
+            <div class="card-tambah-baru">
+                <i class="bi bi-plus-circle"></i>
+            </div>
             <span class="font-weight-bold">Tambah Jenis Ikan Baru</span>
         </div>
-
         <div style="height: 120px;"></div>
-        <div class="btn-bawah">
-            <button onclick="lanjutKePengepul()" class="btn-kembali" style="background-color: #007bff; color: white;">
-                Lanjut Pilih Pengepul <i class="bi bi-arrow-right ml-1"></i>
+
+        <div class="btn-bawah" style="background-color: #0056b2;">
+            <button onclick="lanjutKePengepul()" class="btn-isi-bawah" style="text-decoration: none !important; color: white;">
+                Lanjut Pilih Pengepul
             </button>
         </div>
     </div>
@@ -264,6 +284,13 @@
         </a>
 
         <p class="font-weight-bold">Pilih Pengepul</p>
+
+        <div id="alert-pengepul" class="alert shadow-sm mb-3" style="display: none; border-radius: 15px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-exclamation-circle-fill text-danger mr-2" style="font-size: 22px;"></i>
+                <span style="font-size: 14px;">Silakan pilih pengepul terlebih dahulu!</span>
+            </div>
+        </div>
         
         <div class="grid-btn" id="container-pengepul">
             <div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, 'Kaji Arip')">Kaji Arip</div>
@@ -280,13 +307,20 @@
             <div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, 'Agus')">Agus</div>
             <div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, 'Tilah Prawi')">Tilah Prawi</div>
         </div>
-        
-        <div class="btn-kotak btn-tambah-baru shadow-sm mt-3 mb-4" data-toggle="modal" data-target="#modalPengepulBaru">
-            <div class="icon-box-tambah"><i class="bi bi-shop"></i></div>
+
+        <div class="btn-tambah-baru shadow-sm mb-3" data-toggle="modal" data-target="#modalPengepulBaru">
+            <div class="card-tambah-baru">
+                <i class="bi bi-shop"></i>
+            </div>
             <span class="font-weight-bold">Tambah Pengepul Baru</span>
         </div>
 
-        <p id="alert-pengepul" class="text-danger text-muted" style="display:none;"><i class="bi bi-x-circle"></i> Silakan pilih Pengepul terlebih dahulu!</p>
+        <div id="alert-status" class="alert shadow-sm mb-3" style="display: none; border-radius: 15px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-exclamation-circle-fill text-danger mr-2" style="font-size: 22px;"></i>
+                <span style="font-size: 14px;">Silakan pilih status Lunas atau Hutang!</span>
+            </div>
+        </div>
 
         <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
             <div class="card-body">
@@ -299,23 +333,20 @@
                 
                 <input type="hidden" id="pilihan-status" value="">
 
-                <p id="alert-status" class="text-danger text-muted mt-3 mb-0" style="display:none; font-size: 13px;">
-                    <i class="bi bi-exclamation-circle text-danger mr-1"></i> Silakan pilih status Lunas atau Hutang!
-                </p>
             </div>
         </div>
-
         <div style="height: 120px;"></div>
-        <div class="btn-bawah">
-            <button onclick="validasiDanSimpan()" class="btn-kembali" style="background-color: green; color: white;">
-                + Tambahkan Data Ini
+
+        <div class="btn-bawah" style="background-color: green;">
+            <button onclick="validasiDanSimpan()" class="btn-isi-bawah" style="text-decoration: none !important; color: white;">
+                Tambahkan Data Ini
             </button>
         </div>
     </div>
 
     <div id="step-4" class="step-section">
         <h4 class="font-weight-bold mb-3 mt-2">Keranjang Penjualan</h4>
-        <table class="info-table mb-4">
+        <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
@@ -330,12 +361,14 @@
             </div>
         </div>
 
-        <button onclick="pindahKeStep(2)" class="btn-kotak btn-block btn-tambah-baru shadow-sm mt-3 mb-4">
-            <div class="icon-box-tambah"><i class="bi bi-plus-circle"></i></div>
+        <button onclick="pindahKeStep(2)" class="btn-block btn-tambah-baru shadow-sm">
+            <div class="card-tambah-baru">
+                <i class="bi bi-plus-circle"></i>
+            </div>
             <span class="font-weight-bold">Tambah Data Lainnya</span>
         </button>
-
-        <div style="height: 100px;"></div>
+        <div style="height: 120px;"></div>
+        
         <div class="btn-bawah">
             <button onclick="pindahKeStep(5)" class="btn-kembali" style="background-color: green; color: white;">
                 Lanjut ke Biaya Admin <i class="bi bi-arrow-right ml-1"></i>
@@ -345,7 +378,7 @@
 
     <div id="step-5" class="step-section">
         <h4 class="font-weight-bold mb-3 mt-2">Ringkasan Akhir</h4>
-        <table class="info-table mb-4">
+        <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
@@ -391,34 +424,6 @@
     <div id="tempat-input-ikan-rahasia"></div>
 </form>
 
-<div class="modal fade" id="modalPengepulBaru" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">  
-            <div class="modal-header border-bottom-0 pb-0">
-                <h5 class="modal-title font-weight-bold">Tambah Pengepul Baru</h5>
-            </div>
-            <div class="modal-body pt-3">
-                <div id="alert-pengepul-kosong" class="alert shadow-sm mb-3" style="display: none; border-radius: 15px; background-color: #fde8ec; border-left: 5px solid #dc3545; padding: 10px 15px;">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-exclamation-circle-fill text-danger mr-2" style="font-size: 18px;"></i>
-                        <span class="font-weight-bold text-dark" style="font-size: 13px;">Nama pengepul tidak boleh kosong!</span>
-                    </div>
-                </div>
-                <div class="form-group mb-0">
-                    <label class="text-muted small font-weight-bold">Nama Pengepul</label>
-                    <input type="text" id="inputPengepulBaru" class="form-control shadow-sm" style="border-radius: 15px; border: 2px solid #eaf6fd; background-color: #f8fcff;" placeholder="Masukkan nama pengepul">
-                </div>
-            </div>
-            <div class="modal-footer border-top-0 pt-0">
-                <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 15px; padding: 10px 15px;">Batal</button>
-                <button type="button" class="btn btn-success shadow-sm font-weight-bold px-4" style="border-radius: 15px; background-color: #08a10b; padding: 10px 15px;" onclick="simpanPengepulBaru()">
-                    Tambah
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="modalIkanBaru" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
@@ -426,10 +431,10 @@
                 <h5 class="modal-title font-weight-bold">Tambah Jenis Ikan Baru</h5>
             </div>
             <div class="modal-body pt-3">
-                <div id="alert-ikan-kosong" class="alert shadow-sm mb-3" style="display: none; border-radius: 15px; background-color: #fde8ec; border-left: 5px solid #dc3545; padding: 10px 15px;">
+                <div id="alert-ikan-kosong" class="alert shadow-sm mb-3" style="display: none; border-radius: 15px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-exclamation-circle-fill text-danger mr-2" style="font-size: 18px;"></i>
-                        <span class="font-weight-bold text-dark" style="font-size: 13px;">Nama ikan tidak boleh kosong!</span>
+                        <span style="font-size: 13px;">Nama jenis ikan tidak boleh kosong!</span>
                     </div>
                 </div>
                 <div class="form-group mb-0">
@@ -443,6 +448,34 @@
                     Tambah
                 </button>
             </div> 
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalPengepulBaru" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">  
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title font-weight-bold">Tambah Pengepul Baru</h5>
+            </div>
+            <div class="modal-body pt-3">
+                <div id="alert-pengepul-kosong" class="alert shadow-sm mb-3" style="display: none; border-radius: 15px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-exclamation-circle-fill text-danger mr-2" style="font-size: 18px;"></i>
+                        <span style="font-size: 13px;">Nama pengepul tidak boleh kosong!</span>
+                    </div>
+                </div>
+                <div class="form-group mb-0">
+                    <label class="text-muted small font-weight-bold">Nama Pengepul</label>
+                    <input type="text" id="inputPengepulBaru" class="form-control shadow-sm" style="border-radius: 15px; border: 2px solid #eaf6fd; background-color: #f8fcff;" placeholder="Masukkan nama pengepul">
+                </div>
+            </div>
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 15px; padding: 10px 15px;">Batal</button>
+                <button type="button" class="btn btn-success shadow-sm font-weight-bold px-4" style="border-radius: 15px; background-color: #08a10b; padding: 10px 15px;" onclick="simpanPengepulBaru()">
+                    Tambah
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -665,20 +698,34 @@ function validasiDanSimpan() {
 
     // 1. Cek apakah Pengepul sudah dipilih
     if (!memori.pengepul_aktif || memori.pengepul_aktif === '') {
-        document.getElementById('alert-pengepul').style.display = 'block';
+        let alertPengepul = document.getElementById('alert-pengepul');
+        if (alertPengepul) {
+            alertPengepul.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth'});
+            setTimeout(() => { alertPengepul.style.display = 'none';}, 3000);
+        }
         apakahValid = false;
+        // hentikan pengecekan berikutnya
+        return;
     } else {
         document.getElementById('alert-pengepul').style.display = 'none';
     }
 
-    // 2. Cek apakah Status Pembayaran (Lunas/Hutang) sudah dipilih
+    // 2. Cek apakah Status Pembayaran sudah dipilih
     let statusDipilih = document.getElementById('pilihan-status').value;
     let alertStatus = document.getElementById('alert-status');
     if (statusDipilih === '') {
-        if(alertStatus) alertStatus.style.display = 'block';
+        if (alertStatus) {
+            alertStatus.style.display = 'block';
+            // scroll ke bagian status pembayaran
+            alertStatus.scrollIntoView({ behavior: 'smooth', block: 'center'});
+            setTimeout(() => { alertStatus.style.display = 'none';}, 3000);
+        }
         apakahValid = false;
     } else {
-        if(alertStatus) alertStatus.style.display = 'none';
+        if (alertStatus) {
+            alertStatus.style.display = 'none';
+        }
     }
 
     // Jika ada yang belum diisi (tidak valid), gulir layar ke bawah agar ibu nelayan melihat error-nya, lalu hentikan proses

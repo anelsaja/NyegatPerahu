@@ -45,16 +45,19 @@
         box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
     }
 
-    .icon-box {
-        width: 50px;
-        height: 50px;
+    .fotoprofil {
+        width: 60px;
+        height: 60px;
         border: 3px solid #333;
         border-radius: 15px;
         margin: 0 auto 10px auto;
         font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .icon-box img {
+    .fotoprofil img {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -98,6 +101,16 @@
         font-size: 16px;
         font-weight: bold;
         cursor: pointer;
+    }
+
+    .btn-isi-bawah:focus,
+    .btn-isi-bawah:active,
+    .btn-isi-bawah:visited {
+        color: white;
+        text-decoration: none !important;
+        outline: none;
+        box-shadow: none;
+        border: none;
     }
 
     .btn-kembali {
@@ -175,11 +188,11 @@
         <div class="grid-btn">
             @foreach($nelayans as $n)
             <div class="btn-kotak" onclick="pilihNelayan({{ $n->nelayan_id }}, '{{ $n->nama }}', '{{ $n->nomor_hp ?? '' }}')">
-                <div class="icon-box">
+                <div class="fotoprofil">
                     @if($n->foto_profil)
                         <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}">
                     @else
-                        <span style="font-size: 20px;"><i class="bi bi-person-fill"></i></span>
+                        <i class="bi bi-person-fill" style="font-size: 20px;"></i>
                     @endif
                 </div>
                 {{ $n->nama }}
@@ -196,7 +209,7 @@
         <div style="height: 120px;"></div>
 
         <div class="btn-bawah" style="background-color: red;">
-            <a href="{{ route('home') }}" class="btn-isi-bawah" style="text-decoration: none !important; color: white;">
+            <a href="{{ route('home') }}" class="btn-isi-bawah">
                 Batal
             </a>
         </div>
@@ -265,7 +278,7 @@
         <div style="height: 120px;"></div>
 
         <div class="btn-bawah" style="background-color: #0056b2;">
-            <button onclick="lanjutKePengepul()" class="btn-isi-bawah" style="text-decoration: none !important; color: white;">
+            <button onclick="lanjutKePengepul()" class="btn-isi-bawah">
                 Lanjut Pilih Pengepul
             </button>
         </div>
@@ -325,20 +338,17 @@
         <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
             <div class="card-body">
                 <label class="font-weight-bold text-muted small d-block mb-3">Status Pembayaran <span class="text-danger">*</span></label>
-                
                 <div class="d-flex" style="gap: 10px;">
                     <div id="btn-status-lunas" class="btn-status" onclick="pilihStatus('Lunas')">Lunas</div>
                     <div id="btn-status-belum" class="btn-status" onclick="pilihStatus('Hutang')">Hutang</div>
                 </div>
-                
                 <input type="hidden" id="pilihan-status" value="">
-
             </div>
         </div>
         <div style="height: 120px;"></div>
 
         <div class="btn-bawah" style="background-color: green;">
-            <button onclick="validasiDanSimpan()" class="btn-isi-bawah" style="text-decoration: none !important; color: white;">
+            <button onclick="validasiDanSimpan()" class="btn-isi-bawah">
                 Tambahkan Data Ini
             </button>
         </div>
@@ -369,9 +379,9 @@
         </button>
         <div style="height: 120px;"></div>
         
-        <div class="btn-bawah">
-            <button onclick="pindahKeStep(5)" class="btn-kembali" style="background-color: green; color: white;">
-                Lanjut ke Biaya Admin <i class="bi bi-arrow-right ml-1"></i>
+        <div class="btn-bawah" style="background-color: green;">
+            <button onclick="pindahKeStep(5)" class="btn-isi-bawah">
+                Lanjut ke Biaya Admin
             </button>
         </div>
     </div>
@@ -384,14 +394,14 @@
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
-        <div class="form-group mb-0 mb-4">
+        <div class="form-group mb-0 mb-3">
             <label class="font-weight-bold text-dark">Catatan</label>
             <textarea id="input-catatan" class="form-control text-left" rows="3" 
-                          style="border-radius: 12px; border: 2px solid #eaf6fd; font-size: 14px;" 
+                          style="border-radius: 15px; border: 2px solid #eaf6fd; font-size: 16px;" 
                           placeholder="(opsional)"></textarea>
         </div>
 
-        <div class="card p-3 shadow-sm mb-4" style="border-radius: 15px;">
+        <div class="card p-3 shadow-sm mb-3" style="border-radius: 15px;">
             <div class="d-flex justify-content-between mb-3">
                 <span class="text-muted">Total Tangkapan</span>
                 <strong id="teks-total-kotor-step5">Rp 0</strong>
@@ -406,9 +416,15 @@
             </div>
         </div>
 
-        <div class="d-flex mb-4" style="gap: 10px;">
-            <button type="button" onclick="kirimKeDatabaseLaravel('cetak')" class="btn-kembali" style="flex: 1; background-color: blue; color: white;">
-                <i class="bi bi-printer-fill mr-1"></i> Cetak Karcis & Simpan
+        <div class="btn-bawah" style="background-color: green;">
+            <button onclick="pindahKeStep(5)" class="btn-isi-bawah">
+                Lanjut ke Biaya Admin
+            </button>
+        </div>
+
+        <div class="btn-bawah" style="background-color: blue;">
+            <button type="button" onclick="kirimKeDatabaseLaravel('cetak')" class="btn-isi-bawah">
+                Buat Karcis & Simpan
             </button>
         </div>
     </div>
@@ -425,7 +441,7 @@
 </form>
 
 <div class="modal fade" id="modalIkanBaru" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
         <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
             <div class="modal-header border-bottom-0 pb-0">
                 <h5 class="modal-title font-weight-bold">Tambah Jenis Ikan Baru</h5>
@@ -453,7 +469,7 @@
 </div>
 
 <div class="modal fade" id="modalPengepulBaru" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
         <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">  
             <div class="modal-header border-bottom-0 pb-0">
                 <h5 class="modal-title font-weight-bold">Tambah Pengepul Baru</h5>
@@ -481,7 +497,7 @@
 </div>
 
 <div class="modal fade" id="modalWaPerItem" tabindex="-1" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
         <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
             <div class="modal-body pt-4 pb-4 text-center">
                 

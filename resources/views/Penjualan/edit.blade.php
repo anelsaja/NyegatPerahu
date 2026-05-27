@@ -70,9 +70,13 @@
         background-color: #f4fbff !important;
         border: 2px dashed #5bc0de !important;
         color: #17a2b8 !important;
+        border-radius: 15px;
+        padding: 15px 10px; 
+        text-align: center;
+        font-weight: bold;
     }
 
-    .icon-box-tambah {
+    .card-tambah-baru {
         font-size: 28px;
         color: #5bc0de;
         margin-bottom: 8px;
@@ -157,44 +161,63 @@
                 </div>
 
                 <button type="button" class="btn btn-sm btn-outline-info mt-2 font-weight-bold w-100" style="border-radius: 8px; border-style: dashed;" onclick="tambahIkanKeGrupPengepul('{{ $namaPengepul }}', '{{ $idPengepul }}')">
-                    <i class="bi bi-plus-circle"></i> Tambah Ikan Lainnya
+                    <div class="card-tambah-baru">
+                        <i class="bi bi-plus-circle" style="font-size: 20px;"></i>
+                    </div>
+                    <span class="font-weight-bold">Tambah Ikan Lainnya</span>
+                    <!-- <i class="bi bi-plus-circle"></i> Tambah Ikan Lainnya -->
                 </button>
             </div>
             @endforeach
         </div>
 
-        <button type="button" id="btn-tambah-pengepul-baru" class="btn-kotak btn-block btn-tambah-baru shadow-sm">
-            <div class="icon-box-tambah">
+        <button type="button" id="btn-tambah-pengepul-baru" class="btn-block btn-tambah-baru shadow-sm mb-3">
+            <div class="card-tambah-baru">
                 <i class="bi bi-shop mr-1"></i>
             </div>
             <span class="font-weight-bold">Tambah Data Baru</span>
         </button>
 
+        <div class="form-group mb-3">
+            <label class="font-weight-bold text-dark">Catatan</label>
+            <textarea 
+                name="catatan"
+                class="form-control text-left"
+                rows="3"
+                style="border-radius: 15px; border: 2px solid #eaf6fd; font-size: 16px;"
+                placeholder="(opsional)"
+                >{{ $penjualan->catatan ?? '' }}</textarea>
+        </div>
+
         <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px; background-color: #ffffff;">
             <div class="card-body p-3">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted small font-weight-bold">Total Tangkapan:</span>
-                    <strong class="text-dark" id="teks-total-kotor" style="font-size: 16px;">Rp 0</strong>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">Total Tangkapan</span>
+                    <strong id="teks-total-kotor" style="font-size: 16px;">Rp 0</strong>
                 </div>
-
-                <div class="form-group mb-3 pb-3 border-bottom border-light">
-                    <label class="text-muted small font-weight-bold">Biaya Admin</label>
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text border-0 bg-light text-muted small">Rp</span>
-                        </div>
-                        <input type="number" name="biaya_admin" id="input-biaya-admin" class="form-control input-struk text-right text-danger" value="{{ intval($penjualan->biaya_admin) }}" oninput="hitungTotalBaru()" required>
-                    </div>
+                <div class="form-group border-bottom pb-3 mb-3">
+                    <label class="font-weight-bold">Biaya Admin</label>
+                    <input 
+                        type="number" 
+                        name="biaya_admin" 
+                        id="input-biaya-admin"
+                        class="form-control text-left"
+                        placeholder="Rp"
+                        value="{{ intval($penjualan->biaya_admin) }}"
+                        oninput="hitungTotalBaru()"
+                        style="border-radius: 15px; border: 2px solid #eaf6fd; font-size: 16px;"
+                        required
+                    >
                 </div>
-
-                <div class="form-group mb-3 pb-3 border-bottom border-light">
-                    <label class="text-muted small font-weight-bold">Catatan</label>
-                    <textarea name="catatan" class="form-control text-left" rows="2" style="border-radius: 10px; border: 1px solid #e0e0e0; background-color: #fafafa; font-size: 13px;" placeholder="(opsional)">{{ $penjualan->catatan ?? '' }}</textarea>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                    <span class="text-success font-weight-bold" style="letter-spacing: 0.5px;">TOTAL AKHIR</span>
-                    <strong class="text-success" style="font-size: 24px;" id="teks-total-akhir">Rp 0</strong>
+                <div class="d-flex justify-content-between mt-3">
+                    <span class="font-weight-bold text-success">TOTAL AKHIR</span>
+                    <strong 
+                        id="teks-total-akhir"
+                        class="text-success"
+                        style="font-size: 24px;"
+                    >
+                        Rp 0
+                    </strong>
                 </div>
             </div>
         </div>

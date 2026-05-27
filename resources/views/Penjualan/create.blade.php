@@ -30,6 +30,7 @@
     }
 
     .btn-kotak { 
+        border: 2px solid transparent;
         background-color: #e0e0e0;
         border-radius: 15px;
         padding: 15px 10px; 
@@ -37,9 +38,14 @@
         font-weight: bold;
     }
 
-    /* Pengepul Aktif */
+    /* Kotak pengepul normal */
+    .item-pengepul {
+        border: 2px solid transparent;
+    }
+
+    /* Saat aktif */
     .item-pengepul.active {
-        border: 2px solid #007bff !important;
+        border-color: #007bff !important;
         background-color: #e9f2ff !important;
         color: #007bff;
         box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
@@ -62,9 +68,16 @@
         height: 100%;
         object-fit: cover;
     }
+
+    .item-ikan.active {
+        border: 2px solid #007bff !important;
+        color: #007bff;
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+    }
     
     /* Input harga */
     .input-harga {
+        border: 2px solid transparent;
         display: none;
         width: 100%;
         padding: 8px;
@@ -73,6 +86,12 @@
         margin-top: 10px;
         text-align: left;
         font-weight: bold;
+    }
+
+    .input-harga:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
     }
     
     .btn-bawah { 
@@ -153,18 +172,19 @@
         text-align: center;
         font-weight: bold;
         background-color: #f1f1f1;
+        border: 2px solid transparent;
     }
 
     .btn-status.lunas-aktif {
         background-color: #d4edda;
         color: #155724;
-        border: 2px solid #28a745;
+        border-color: #28a745;
     }
 
     .btn-status.belum-aktif {
         background-color: #f8d7da;
         color: #721c24;
-        border: 2px solid #dc3545;
+        border-color: #dc3545;
     }
 
     /* ANIMASI PINDAH HALAMAN */
@@ -192,7 +212,7 @@
                     @if($n->foto_profil)
                         <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}">
                     @else
-                        <i class="bi bi-person-fill" style="font-size: 20px;"></i>
+                        <i class="bi bi-person-fill" style="font-size: 35px;"></i>
                     @endif
                 </div>
                 {{ $n->nama }}
@@ -208,7 +228,7 @@
         </div>
         <div style="height: 120px;"></div>
 
-        <div class="btn-bawah" style="background-color: red;">
+        <div class="btn-bawah" style="background-color: #dc3545;">
             <a href="{{ route('home') }}" class="btn-isi-bawah">
                 Batal
             </a>
@@ -227,7 +247,7 @@
             <i class="bi bi-arrow-left"></i> Kembali Pilih Nelayan
         </a>
 
-        <p class="font-weight-bold">Pilih Jenis Nama Hasil Laut</p>
+        <p class="font-weight-bold">Pilih Jenis Hasil Laut</p>
         
         <div id="alert-peringatan-ikan" class="alert shadow-sm mb-3" style="display: none; border-radius: 15px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
             <div class="d-flex align-items-center">
@@ -237,35 +257,45 @@
         </div>
 
         <div class="grid-btn" id="container-ikan">
-            <div class="btn-kotak" onclick="toggleInputIkan('Timbangan')">
-                Timbangan <input type="number" id="input-Timbangan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Timbangan', this)">
+                Timbangan
+                <input type="number" id="input-Timbangan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
-            <div class="btn-kotak" onclick="toggleInputIkan('Tebleng')">
-                Tebleng <input type="number" id="input-Tebleng" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Tebleng', this)">
+                Tebleng
+                <input type="number" id="input-Tebleng" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
-            <div class="btn-kotak" onclick="toggleInputIkan('Kembung')">
-                Kembung <input type="number" id="input-Kembung" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Kembung', this)">
+                Kembung
+                <input type="number" id="input-Kembung" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
-            <div class="btn-kotak" onclick="toggleInputIkan('Cucut')">
-                Cucut <input type="number" id="input-Cucut" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Cucut', this)">
+                Cucut
+                <input type="number" id="input-Cucut" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
-            <div class="btn-kotak" onclick="toggleInputIkan('Pirek')">
-                Pirek <input type="number" id="input-Pirek" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Pirek', this)">
+                Pirek
+                <input type="number" id="input-Pirek" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
-            <div class="btn-kotak" onclick="toggleInputIkan('Lelang')">
-                Lelang <input type="number" id="input-Lelang" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Lelang', this)">
+                Lelang
+                <input type="number" id="input-Lelang" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
-            <div class="btn-kotak" onclick="toggleInputIkan('Blekutak')">
-                Blekutak <input type="number" id="input-Blekutak" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Blekutak', this)">
+                Blekutak
+                <input type="number" id="input-Blekutak" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
-            <div class="btn-kotak" onclick="toggleInputIkan('Rajungan')">
-                Rajungan <input type="number" id="input-Rajungan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Rajungan', this)">
+                Rajungan
+                <input type="number" id="input-Rajungan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
-            <div class="btn-kotak" onclick="toggleInputIkan('Windu')">
-                Windu <input type="number" id="input-Windu" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Windu', this)">
+                Windu
+                <input type="number" id="input-Windu" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
-            <div class="btn-kotak" onclick="toggleInputIkan('Elek-Elekan')">
-                Elek-Elekan <input type="number" id="input-Elek-Elekan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Elek-Elekan', this)">
+                Elek-Elekan
+                <input type="number" id="input-Elek-Elekan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
         </div>
         
@@ -277,7 +307,7 @@
         </div>
         <div style="height: 120px;"></div>
 
-        <div class="btn-bawah" style="background-color: #0056b2;">
+        <div class="btn-bawah" style="background-color: #0d6efd;">
             <button onclick="lanjutKePengepul()" class="btn-isi-bawah">
                 Lanjut Pilih Pengepul
             </button>
@@ -337,7 +367,7 @@
 
         <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
             <div class="card-body">
-                <label class="font-weight-bold text-muted small d-block mb-3">Status Pembayaran <span class="text-danger">*</span></label>
+                <label class="font-weight-bold text-muted small d-block mb-3">Status Pembayaran</label>
                 <div class="d-flex" style="gap: 10px;">
                     <div id="btn-status-lunas" class="btn-status" onclick="pilihStatus('Lunas')">Lunas</div>
                     <div id="btn-status-belum" class="btn-status" onclick="pilihStatus('Hutang')">Hutang</div>
@@ -347,7 +377,7 @@
         </div>
         <div style="height: 120px;"></div>
 
-        <div class="btn-bawah" style="background-color: green;">
+        <div class="btn-bawah" style="background-color: #0d6efd;">
             <button onclick="validasiDanSimpan()" class="btn-isi-bawah">
                 Tambahkan Data Ini
             </button>
@@ -379,8 +409,8 @@
         </button>
         <div style="height: 120px;"></div>
         
-        <div class="btn-bawah" style="background-color: green;">
-            <button onclick="pindahKeStep(5)" class="btn-isi-bawah">
+        <div class="btn-bawah" style="background-color: #0d6efd;">
+            <button onclick="$('#modalKonfirmasiStep5').modal('show')" class="btn-isi-bawah">
                 Lanjut ke Biaya Admin
             </button>
         </div>
@@ -414,12 +444,6 @@
                 <span class="font-weight-bold text-success">TOTAL AKHIR</span>
                 <strong id="teks-total-akhir" class="text-success" style="font-size: 24px;">Rp 0</strong>
             </div>
-        </div>
-
-        <div class="btn-bawah" style="background-color: green;">
-            <button onclick="pindahKeStep(5)" class="btn-isi-bawah">
-                Lanjut ke Biaya Admin
-            </button>
         </div>
 
         <div class="btn-bawah" style="background-color: blue;">
@@ -499,35 +523,105 @@
 <div class="modal fade" id="modalWaPerItem" tabindex="-1" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
         <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
-            <div class="modal-body pt-4 pb-4 text-center">
-                
-                <div class="mb-3">
-                    <i class="bi bi-question-circle-fill text-primary" style="font-size: 60px; filter: drop-shadow(0px 4px 6px rgba(0,123,255,0.3));"></i>
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title font-weight-bold">Kunci & Kirim Pesan?</h5>
+            </div>      
+            <div class="modal-body pt-3">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <div class="d-flex align-items-center flex-wrap mb-1">
+                            <h6 class="font-weight-bold mb-0 mr-2">
+                                <i class="bi bi-shop"></i> 
+                                <span id="namaPengepulWa"></span>
+                            </h6>
+                            <span id="badgeStatusWa" class="badge rounded-pill px-2 py-1">
+                                -
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                
-                <h5 class="font-weight-bold text-dark mb-2">Kunci & Kirim Pesan?</h5>
-                
-                <p class="text-muted mb-2" style="font-size: 14px;">
-                    Rincian penjualan <b id="namaNelayanWa" class="text-dark"></b> ke <b id="namaPengepulWa" class="text-primary"></b>:
+                <div 
+                    id="rincianIkanWa" 
+                    class="bg-light p-3 rounded mb-3 shadow-sm"
+                    style="font-size: 13px; border: 1px dashed #ccc;"
+                >
+                </div>
+                <p class="text-muted mb-0" style="font-size: 13px;">
+                    *Sudah yakin data ini benar? 
+                    Data yang dikunci tidak dapat diubah lagi di keranjang.
                 </p>
+            </div>
 
-                <div id="rincianIkanWa" class="text-left bg-light p-3 rounded mb-3 mx-2 shadow-sm" style="font-size: 13px; border: 1px dashed #ccc;">
+            <!-- Footer -->
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button"
+                    class="btn btn-light shadow-sm font-weight-bold"
+                    data-dismiss="modal"
+                    style="border-radius: 15px; padding: 10px 15px;"
+                >
+                    Batal
+                </button>
+                <a 
+                    href="#"
+                    id="tombolKirimWaItem"
+                    class="btn btn-primary shadow-sm font-weight-bold px-4"
+                    style="border-radius: 15px; padding: 10px 15px; text-decoration: none;"
+                    onclick="eksekusiSimpanKeranjang()"
+                >
+                    Yakin
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalKonfirmasiStep5" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
+        <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title font-weight-bold">
+                    Lanjut ke Biaya Admin?
+                </h5>
+            </div>
+            <div class="modal-body pt-3">
+                <div class="alert mb-3"
+                    style="
+                        border-radius: 15px;
+                        background-color: #fff3cd;
+                        border-left: 2px solid #ffc107;
+                    ">
+                    <div class="d-flex">
+                        <i class="bi bi-exclamation-triangle-fill text-warning mr-2"></i>
+
+                        <div style="font-size: 14px;">
+                            Setelah lanjut ke tahap biaya admin,
+                            rincian ikan yang sudah masuk keranjang
+                            <b>tidak dapat diubah kembali.</b>
+                        </div>
+                    </div>
                 </div>
-
-                <p class="text-muted mb-4" style="font-size: 14px;">
-                    *Sudah yakin data ini benar? Data yang dikunci tidak dapat diubah lagi di keranjang.
+                <p class="text-muted mb-0" style="font-size: 13px;">
+                    *Pastikan data penjualan sudah benar sebelum melanjutkan.
                 </p>
-                
-                <div class="d-flex px-2" style="gap: 10px;">
-                    <button type="button" class="btn btn-light text-secondary font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" data-dismiss="modal" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd; font-size: 16px;">
-                        Batal
-                    </button>
-                    
-                    <a href="#" id="tombolKirimWaItem" class="btn btn-success font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; font-size: 16px; color: white; text-decoration: none;" onclick="eksekusiSimpanKeranjang()">
-                        Yakin
-                    </a>
-                </div>
+            </div>
 
+            <div class="modal-footer border-top-0 pt-0">
+                <button
+                    type="button"
+                    class="btn btn-light shadow-sm font-weight-bold"
+                    data-dismiss="modal"
+                    style="border-radius: 15px; padding: 10px 15px;"
+                >
+                    Kembali
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-primary shadow-sm font-weight-bold px-4"
+                    style="border-radius: 15px; padding: 10px 15px;"
+                    onclick="lanjutKeStep5()"
+                >
+                    Lanjut
+                </button>
             </div>
         </div>
     </div>
@@ -561,9 +655,6 @@ function pindahKeStep(nomor) {
 // ==========================================
 // 3. FUNGSI STEP 1: NELAYAN
 // ==========================================
-// ==========================================
-// 3. FUNGSI STEP 1: NELAYAN
-// ==========================================
 function pilihNelayan(id, nama, hp) {
     memori.nelayan_id = id;
     memori.nelayan_nama = nama;
@@ -579,14 +670,16 @@ function pilihNelayan(id, nama, hp) {
 // ==========================================
 // 4. FUNGSI STEP 2: IKAN
 // ==========================================
-function toggleInputIkan(namaIkan) {
+function toggleInputIkan(namaIkan, elemenKotak) {
     let kotakInput = document.getElementById('input-' + namaIkan);
     if (kotakInput.style.display === 'block') {
         kotakInput.style.display = 'none';
         kotakInput.value = '';
+        elemenKotak.classList.remove('active');
     } else {
         kotakInput.style.display = 'block';
         kotakInput.focus();
+        elemenKotak.classList.add('active');
     }
 }
 
@@ -603,7 +696,7 @@ function simpanIkanBaru() {
         let idAman = namaIkan.replace(/\s+/g, '_');
         let htmlKotakBaru = `
         <div class="btn-kotak" onclick="toggleInputIkan('${idAman}')">
-            ${namaIkan} <span class="text-success font-weight-bold">*</span>
+            ${namaIkan} <span class="text-success">*</span>
             <input type="number" id="input-${idAman}" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
         </div>`;
         document.getElementById('container-ikan').insertAdjacentHTML('beforeend', htmlKotakBaru);
@@ -659,9 +752,18 @@ function lanjutKePengepul() {
 // 5. FUNGSI STEP 3: PENGEPUL & STATUS
 // ==========================================
 function pilihPengepulUI(elemenKotak, nama) {
-    memori.pengepul_aktif = nama;
-    document.querySelectorAll('.item-pengepul').forEach(el => el.classList.remove('active'));
-    elemenKotak.classList.add('active');
+    // jika pengepul yang sama diklik lagi
+    if (elemenKotak.classList.contains('active')) {
+        elemenKotak.classList.remove('active');
+        memori.pengepul_aktif = '';
+    } else {
+        // hapus active dari semua
+        document.querySelectorAll('.item-pengepul')
+            .forEach(el => el.classList.remove('active'));
+        // aktifkan yang dipilih
+        elemenKotak.classList.add('active');
+        memori.pengepul_aktif = nama;
+    }
     document.getElementById('alert-pengepul').style.display = 'none';
 }
 
@@ -675,7 +777,7 @@ function simpanPengepulBaru() {
         $('#modalPengepulBaru').modal('hide');
         inputElement.value = "";
         
-        let htmlBaru = `<div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, '${namaBaru}')">${namaBaru}</div>`;
+        let htmlBaru = `<div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, '${namaBaru}')">${namaBaru}<span class="text-success">*</span></div>`;
         document.getElementById('container-pengepul').insertAdjacentHTML('beforeend', htmlBaru);
         
         let kotakBaru = document.getElementById('container-pengepul').lastElementChild;
@@ -688,20 +790,26 @@ function simpanPengepulBaru() {
 }
 
 function pilihStatus(status) {
-    document.getElementById('pilihan-status').value = status;
+    let inputStatus = document.getElementById('pilihan-status');
     let btnLunas = document.getElementById('btn-status-lunas');
     let btnBelum = document.getElementById('btn-status-belum');
 
-    btnLunas.classList.remove('lunas-aktif');
-    btnBelum.classList.remove('belum-aktif');
-
-    if (status === 'Lunas') {
-        btnLunas.classList.add('lunas-aktif');
+    // jika status yang sama diklik lagi
+    if (inputStatus.value === status) {
+        inputStatus.value = '';
+        btnLunas.classList.remove('lunas-aktif');
+        btnBelum.classList.remove('belum-aktif');
     } else {
-        btnBelum.classList.add('belum-aktif');
+        inputStatus.value = status;
+        btnLunas.classList.remove('lunas-aktif');
+        btnBelum.classList.remove('belum-aktif');
+        if (status === 'Lunas') {
+            btnLunas.classList.add('lunas-aktif');
+        } else {
+            btnBelum.classList.add('belum-aktif');
+        }
     }
-
-    // Sembunyikan alert peringatan status jika pengguna sudah memilih
+    // sembunyikan alert
     document.getElementById('alert-status').style.display = 'none';
 }
 
@@ -791,14 +899,20 @@ function validasiDanSimpan() {
                         <span class="text-muted">Total:</span> 
                         <strong class="text-success" style="font-size: 15px;">Rp ${totalHargaBaru.toLocaleString('id-ID')}</strong>
                     </div>`;
-    rincianHtml += `<div class="d-flex justify-content-between mt-1">
-                        <span class="text-muted">Status:</span> 
-                        <strong class="${statusDipilih === 'Lunas' ? 'text-success' : 'text-danger'}">${statusDipilih}</strong>
-                    </div>`;
 
-    document.getElementById('namaNelayanWa').innerText = memori.nelayan_nama;
     document.getElementById('namaPengepulWa').innerText = pengepulYangBarusan;
     document.getElementById('rincianIkanWa').innerHTML = rincianHtml;
+
+    // Badge status
+    let badgeStatus = document.getElementById('badgeStatusWa');
+    badgeStatus.innerText = statusDipilih;
+    if (statusDipilih === 'Lunas') {
+        badgeStatus.className =
+            'badge badge-success rounded-pill px-2 py-1';
+    } else {
+        badgeStatus.className =
+            'badge badge-danger rounded-pill px-2 py-1';
+    }
 
     // Rakit Tautan WA (Jika nelayan punya nomor HP)
     let tombolYakin = document.getElementById('tombolKirimWaItem');
@@ -835,21 +949,36 @@ function eksekusiSimpanKeranjang() {
             harga: ikan.harga,
             status: ikan.status
         });
-
-        // 2. Sekarang baru kita bersihkan kotak input di layarnya
-        let kotakTerkait = document.getElementById(ikan.idKotak);
-        if(kotakTerkait) {
-            kotakTerkait.style.display = 'none';
-            kotakTerkait.value = '';
-        }
     });
-
-    // 3. Reset status UI pengepul
-    memori.pengepul_aktif = '';
-    document.querySelectorAll('.item-pengepul').forEach(el => el.classList.remove('active'));
 
     // 4. Perbarui gambar keranjang dan lompat ke Step 4
     gambarUlangKeranjangBelanja(); 
+
+    // Reset semua pilihan ikan
+    document.querySelectorAll('.item-ikan').forEach(el => {
+        el.classList.remove('active');
+    });
+
+    // Reset semua input harga
+    document.querySelectorAll('.input-harga').forEach(input => {
+        input.style.display = 'none';
+        input.value = '';
+    });
+
+    // Reset pengepul
+    memori.pengepul_aktif = '';
+    document.querySelectorAll('.item-pengepul').forEach(el => {
+        el.classList.remove('active');
+    });
+
+    // Reset status pembayaran
+    document.getElementById('pilihan-status').value = '';
+    document.getElementById('btn-status-lunas')
+        .classList.remove('lunas-aktif');
+
+    document.getElementById('btn-status-belum')
+        .classList.remove('belum-aktif');
+
     $('#modalWaPerItem').modal('hide');
     pindahKeStep(4);
 }
@@ -911,6 +1040,11 @@ function gambarUlangKeranjangBelanja() {
     
     document.getElementById('total-semua').innerText = "Rp " + totalSemuaGlobal.toLocaleString('id-ID');
     hitungTotalAkhir(); 
+}
+
+function lanjutKeStep5() {
+    $('#modalKonfirmasiStep5').modal('hide');
+    pindahKeStep(5);
 }
 
 

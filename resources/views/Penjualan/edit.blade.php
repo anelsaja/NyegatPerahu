@@ -165,7 +165,6 @@
                         <i class="bi bi-plus-circle" style="font-size: 20px;"></i>
                     </div>
                     <span class="font-weight-bold">Tambah Ikan Lainnya</span>
-                    <!-- <i class="bi bi-plus-circle"></i> Tambah Ikan Lainnya -->
                 </button>
             </div>
             @endforeach
@@ -173,7 +172,7 @@
 
         <button type="button" id="btn-tambah-pengepul-baru" class="btn-block btn-tambah-baru shadow-sm mb-3">
             <div class="card-tambah-baru">
-                <i class="bi bi-shop mr-1"></i>
+                <i class="bi bi-plus-circle mr-1"></i>
             </div>
             <span class="font-weight-bold">Tambah Data Baru</span>
         </button>
@@ -189,7 +188,7 @@
                 >{{ $penjualan->catatan ?? '' }}</textarea>
         </div>
 
-        <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px; background-color: #ffffff;">
+        <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
             <div class="card-body p-3">
                 <div class="d-flex justify-content-between mb-3">
                     <span class="text-muted">Total Tangkapan</span>
@@ -205,7 +204,6 @@
                         placeholder="Rp"
                         value="{{ intval($penjualan->biaya_admin) }}"
                         oninput="hitungTotalBaru()"
-                        style="border-radius: 15px; border: 2px solid #eaf6fd; font-size: 16px;"
                         required
                     >
                 </div>

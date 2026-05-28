@@ -142,23 +142,39 @@
     </a>
 </div>
 
-<div class="modal fade" id="modalHapusTransaksi">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 12px;">
-            <div class="modal-header">
-                <h5 class="modal-title font-weight-bold text-dark">Hapus Transaksi</h5>
+<div class="modal fade" id="modalHapusTransaksi" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
+        <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title font-weight-bold">
+                    Hapus Transaksi
+                </h5>
             </div>
-            <div class="modal-body">
-                <p class="text-muted">Apakah Ibu yakin ingin menghapus data Transaksi ini?</p>
+            <div class="modal-body pt-3">
+                <div class="alert shadow-sm mb-3"
+                    style="border-radius: 15px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-exclamation-circle-fill text-danger mr-2"
+                        style="font-size: 18px;"></i>
+                        <span style="font-size: 13px;">
+                            Data transaksi penjualan ini akan dihapus permanen dan tidak dapat dikembalikan.
+                        </span>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer border-top-0 pt-0">
-                <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 12px; color: #6c757d; width: 120px;">
+                <button type="button"
+                        class="btn btn-light shadow-sm font-weight-bold"
+                        data-dismiss="modal"
+                        style="border-radius: 15px; padding: 10px 15px;">
                     Batal
                 </button>
                 <form id="formHapusAjaib" method="POST" style="margin: 0;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger shadow-sm font-weight-bold" style="border-radius: 12px; background-color: #dc3545; width: 120px;">
+                    <button type="submit"
+                            class="btn btn-danger shadow-sm font-weight-bold px-4"
+                            style="border-radius: 15px; padding: 10px 15px;">
                         Hapus
                     </button>
                 </form>

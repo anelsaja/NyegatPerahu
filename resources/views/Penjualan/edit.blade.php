@@ -32,12 +32,13 @@
     .input-struk:focus {
         background-color: #fff;
         border-color: #5bc0de;
-        box-shadow: none;
     }
     
     .card-ikan {
-        background-color: #ffffff; border-radius: 12px; 
-        border: 1px solid #eaeaea; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        background-color: #ffffff;
+        border-radius: 12px; 
+        border: 1px solid #eaeaea;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
 
     .card-input-ikan {
@@ -46,12 +47,9 @@
         border-radius: 8px;
         padding: 4px 10px;
     }
+
     .card-input-ikan input {
-        background-color: transparent !important;
         border: none !important;
-        box-shadow: none !important;
-        color: #0056b3;
-        padding: 0;
     }
 
     .btn-bawah-ganda { 
@@ -86,21 +84,19 @@
 </style>
 
 <div class="p-3">
-    <h4 class="font-weight-bold mb-3 mt-2">Edit Transaksi</h4>
-
+    <h4 class="font-weight-bold mb-4 mt-2">Edit Transaksi</h4>
     <form action="{{ route('penjualan.update', $penjualan->penjualan_id) }}" method="POST">
         @csrf
         @method('PUT')
         <input type="hidden" name="tanggal" value="{{ $penjualan->tanggal }}">
         <input type="hidden" name="nelayan_id" value="{{ $penjualan->nelayan_id }}">
-        <table class="info-table mb-4">
+        <table class="info-table mb-3">
             <tr><td class="text-muted">Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td class="text-muted">Nama Nelayan</td><td>{{ $penjualan->nelayan->nama ?? '-' }}</td></tr>
             <tr><td class="text-muted">Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
         <h6 class="font-weight-bold mt-4 pb-2">Rincian Tangkapan & Pembayaran</h6>
-
         @php
             // MANTRA AJAIB: Kelompokkan data ikan berdasarkan nama pengepulnya
             $grupPenjualan = $penjualan->detail->groupBy('nama_pengepul');
@@ -114,13 +110,22 @@
                 // Buat ID unik untuk JavaScript (menghilangkan spasi pada nama)
                 $idPengepul = str_replace([' ', "'", '"', '.', ','], '_', $namaPengepul);
             @endphp
-            <div class="mb-4 p-3 card-ikan shadow-sm" style="border-top: 4px solid #5bc0de;" id="card-{{ $idPengepul }}">
+            <div class="mb-4 p-3 card-ikan shadow-sm" style="border-left: 2px solid #5bc0de;" id="card-{{ $idPengepul }}">
                 <div class="d-flex justify-content-between mb-3 align-items-center border-bottom pb-3">
                     <div class="d-flex align-items-center">
                         <span class="bg-light text-muted mr-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px; border-radius: 8px;">
-                            <i class="bi bi-shop"></i>
+                            <i class="bi bi-shop" style="font-size: 16px;"></i>
                         </span>
-                        <h6 class="font-weight-bold mb-0 text-dark" style="font-size: 16px;">{{ $namaPengepul }}</h6>
+                        <input 
+                            type="text"
+                            list="daftar-pengepul"
+                            value="{{ $namaPengepul }}"
+                            class="form-control form-control-sm input-struk border-0 bg-light mr-2 shadow-sm"
+                            style="font-size: 16px;"
+                            onchange="ubahNamaPengepulHidden('{{ $idPengepul }}', this.value)"
+                            autocomplete="off"
+                            required
+                        >
                     </div>
                     
                     <div class="d-flex align-items-center">
@@ -164,7 +169,7 @@
                     <div class="card-tambah-baru">
                         <i class="bi bi-plus-circle" style="font-size: 20px;"></i>
                     </div>
-                    <span class="font-weight-bold">Tambah Ikan Lainnya</span>
+                    <span class="font-weight-bold">Tambah Jenis Ikan Lainnya</span>
                 </button>
             </div>
             @endforeach
@@ -174,7 +179,7 @@
             <div class="card-tambah-baru">
                 <i class="bi bi-plus-circle mr-1"></i>
             </div>
-            <span class="font-weight-bold">Tambah Data Baru</span>
+            <span class="font-weight-bold">Tambah Data Lainnya</span>
         </button>
 
         <div class="form-group mb-3">
@@ -187,6 +192,8 @@
                 placeholder="(opsional)"
                 >{{ $penjualan->catatan ?? '' }}</textarea>
         </div>
+
+        <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Ringkasan Akhir</h6>
 
         <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
             <div class="card-body p-3">
@@ -242,10 +249,68 @@
             <option value="Rajungan"></option>
             <option value="Windu"></option>
         </datalist>
+
+        <datalist id="daftar-pengepul">
+            <option value="Kaji Arip"></option>
+            <option value="BBI"></option>
+            <option value="Tarom"></option>
+            <option value="Pramono"></option>
+            <option value="TPI Banyutowo"></option>
+            <option value="Rossa"></option>
+            <option value="Rini"></option>
+            <option value="Kaji Sun"></option>
+            <option value="Kaji Tino"></option>
+            <option value="Tri"></option>
+            <option value="Pii"></option>
+            <option value="Agus"></option>
+            <option value="Tilah Prawi"></option>
+        </datalist>
     </form>
 </div>
 
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="modalHapus" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
+        <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title font-weight-bold" id="judul-modal-hapus">
+                    Hapus Data
+                </h5>
+            </div>
+            <div class="modal-body pt-3">
+                <div class="alert shadow-sm mb-3"
+                    style="border-radius: 15px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-exclamation-circle-fill text-danger mr-2"
+                        style="font-size: 18px;"></i>
+                        <span id="isi-modal-hapus"
+                            style="font-size: 13px;">
+                            Data akan dihapus permanen.
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button"
+                        class="btn btn-light shadow-sm font-weight-bold"
+                        data-dismiss="modal"
+                        style="border-radius: 15px; padding: 10px 15px;">
+                    Batal
+                </button>
+                <button type="button"
+                        id="btn-konfirmasi-hapus"
+                        class="btn btn-danger shadow-sm font-weight-bold px-4"
+                        style="border-radius: 15px; padding: 10px 15px;">
+                    Hapus
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <script>
+    let fungsiHapusAktif = null;
     // Variabel penanda urutan input untuk dikirim ke Controller
     let urutanKe = {{ $penjualan->detail->count() ?? 0 }}; 
 
@@ -300,24 +365,23 @@
         let idPengepulBaru = 'grup_baru_' + urutanKe; 
         
         let kotakBaru = `
-        <div class="mb-4 p-3 card-ikan shadow-sm" style="border-top: 4px solid #007bff;" id="card-${idPengepulBaru}">
+        <div class="mb-4 p-3 card-ikan shadow-sm" style="border-left: 2px solid #5bc0de;" id="card-${idPengepulBaru}">
             <div class="d-flex justify-content-between mb-3 align-items-center border-bottom pb-3">
-                <select class="form-control form-control-sm input-struk border-0 bg-light mr-2 shadow-sm" required onchange="ubahNamaPengepulHidden('${idPengepulBaru}', this.value)" style="flex: 1.5;">
-                    <option value="">- Pilih Pengepul -</option>
-                    <option value="Kaji Arip">Kaji Arip</option>
-                    <option value="BBI">BBI</option>
-                    <option value="Tarom">Tarom</option>
-                    <option value="Pramono">Pramono</option>
-                    <option value="TPI Banyutowo">TPI Banyutowo</option>
-                    <option value="Rossa">Rossa</option>
-                    <option value="Rini">Rini</option>
-                    <option value="Kaji Sun">Kaji Sun</option>
-                    <option value="Kaji Tino">Kaji Tino</option>
-                    <option value="Tri">Tri</option>
-                    <option value="Pii">Pii</option>
-                    <option value="Agus">Agus</option>
-                    <option value="Tilah Prawi">Tilah Prawi</option>
-                </select>
+                <div class="d-flex align-items-center">
+                    <span class="bg-light text-muted mr-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px; border-radius: 8px;">
+                        <i class="bi bi-shop" style="font-size: 16px;"></i>
+                    </span>
+                    <input 
+                        type="text"
+                        list="daftar-pengepul"
+                        class="form-control form-control-sm input-struk border-0 bg-light mr-2 shadow-sm"
+                        placeholder="Nama Pengepul"
+                        required
+                        onchange="ubahNamaPengepulHidden('${idPengepulBaru}', this.value)"
+                        style="flex: 1.5; font-size: 16px; height: 35px;"
+                        autocomplete="off"
+                    >
+                </div>
                 
                 <div class="d-flex align-items-center">
                     <select class="form-control form-control-sm input-struk border-0 shadow-sm bg-success text-white" 
@@ -364,38 +428,63 @@
     // Varian tambah ikan khusus untuk Pengepul yang baru dibuat via JS
     function tambahIkanKeGrupPengepulDinamis(idPengepulBaru) {
         // Ambil nama pengepul yang diketik di select box
-        let selectPengepul = document.querySelector(`#card-${idPengepulBaru} select`).value;
+        // let selectPengepul = document.querySelector(`#card-${idPengepulBaru} select`).value;
+        let selectPengepul = document.querySelector(`#card-${idPengepulBaru} input[list="daftar-pengepul"]`).value;
         tambahIkanKeGrupPengepul(selectPengepul, idPengepulBaru);
     }
 
     // 4. FUNGSI HAPUS BARIS
     function hapusBaris(idBaris, idCard) {
-        let elemen = document.getElementById(idBaris);
-        if(elemen) {
-            elemen.remove();
-            hitungTotalBaru(); 
-            
-            // Hapus kotaknya sekalian jika ikannya habis (kosong)
-            let daftarIkanTersisa = document.getElementById('list-ikan-' + idCard.replace('card-', '')).children.length;
-            if (daftarIkanTersisa === 0) {
-                document.getElementById(idCard).remove();
+        bukaModalHapus(
+            'Hapus Jenis Ikan',
+            'Data ikan ini akan dihapus dari transaksi.',
+            function () {
+                let elemen = document.getElementById(idBaris);
+                if(elemen) {
+                    elemen.remove();
+                    hitungTotalBaru();
+                    let daftarIkan = document.getElementById(
+                        'list-ikan-' + idCard.replace('card-', '')
+                    );
+                    if (daftarIkan.children.length === 0) {
+                        document.getElementById(idCard).remove();
+                    }
+                }
             }
-        }
+        );
     }
 
     // FUNGSI HAPUS SATU KARTU PENGEPUL PENUH
     function hapusPengepulUtuh(idCard, namaPengepul) {
-        // Tampilkan peringatan cegat ganda
-        let yakin = confirm(`Apakah Ibu yakin ingin membatalkan dan menghapus seluruh transaksi dengan ${namaPengepul}?`);
-        
-        if (yakin) {
-            let elemenCard = document.getElementById(idCard);
-            if (elemenCard) {
-                elemenCard.remove(); // Hancurkan kartunya
-                hitungTotalBaru();   // Kalkulasi ulang total akhir (langsung dikurangi otomatis)
+        bukaModalHapus(
+            'Hapus Semua Data Pengepul',
+            `Semua jenis ikan dan harga dari ${namaPengepul} akan ikut terhapus.`,    
+            function () {
+                let elemenCard = document.getElementById(idCard);
+                if (elemenCard) {
+                    elemenCard.remove();
+                    hitungTotalBaru();
+                }
             }
-        }
+        );
     }
+
+    function bukaModalHapus(judul, isi, callbackHapus) {
+        document.getElementById('judul-modal-hapus').innerText = judul;
+        document.getElementById('isi-modal-hapus').innerText = isi;
+
+        fungsiHapusAktif = callbackHapus;
+
+        $('#modalHapus').modal('show');
+    }
+
+    document.getElementById('btn-konfirmasi-hapus').addEventListener('click', function () {
+        if (fungsiHapusAktif) {
+            fungsiHapusAktif();
+        }
+
+        $('#modalHapus').modal('hide');
+    });
 
     // 5. FUNGSI KALKULATOR TOTAL
     function hitungTotalBaru() {

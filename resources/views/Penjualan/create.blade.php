@@ -202,7 +202,7 @@
 
 <div class="p-3">
     <div id="step-1" class="step-section active">
-        <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
+        <h4 class="font-weight-bold mb-4 mt-2">Tambah Data Penjualan</h4>
         <p class="font-weight-bold">Pilih Nelayan</p>
 
         <div class="grid-btn">
@@ -236,7 +236,7 @@
     </div>
 
     <div id="step-2" class="step-section">
-        <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
+        <h4 class="font-weight-bold mb-4 mt-2">Tambah Data Penjualan</h4>
         <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
@@ -315,7 +315,7 @@
     </div>
 
     <div id="step-3" class="step-section">
-        <h4 class="font-weight-bold mb-3 mt-2">Tambah Data Penjualan</h4>
+        <h4 class="font-weight-bold mb-4 mt-2">Tambah Data Penjualan</h4>
         <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
@@ -379,13 +379,13 @@
 
         <div class="btn-bawah" style="background-color: #0d6efd;">
             <button onclick="validasiDanSimpan()" class="btn-isi-bawah">
-                Tambahkan Data Ini
+                Tambah Data Ini dan Kirim Pesan
             </button>
         </div>
     </div>
 
     <div id="step-4" class="step-section">
-        <h4 class="font-weight-bold mb-3 mt-2">Keranjang Penjualan</h4>
+        <h4 class="font-weight-bold mb-4 mt-2">Keranjang Penjualan</h4>
         <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
@@ -417,7 +417,7 @@
     </div>
 
     <div id="step-5" class="step-section">
-        <h4 class="font-weight-bold mb-3 mt-2">Ringkasan Akhir</h4>
+        <h4 class="font-weight-bold mb-4 mt-2">Ringkasan Akhir</h4>
         <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
@@ -431,6 +431,8 @@
                           placeholder="(opsional)"></textarea>
         </div>
 
+        <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Ringkasan Akhir</h6>
+        
         <div class="card p-3 shadow-sm mb-3" style="border-radius: 15px;">
             <div class="d-flex justify-content-between mb-3">
                 <span class="text-muted">Total Tangkapan</span>
@@ -446,9 +448,9 @@
             </div>
         </div>
 
-        <div class="btn-bawah" style="background-color: blue;">
+        <div class="btn-bawah" style="background-color: #0d6efd;">
             <button type="button" onclick="kirimKeDatabaseLaravel('cetak')" class="btn-isi-bawah">
-                Buat Karcis & Simpan
+                Buat Karcis dan Simpan
             </button>
         </div>
     </div>
@@ -524,14 +526,14 @@
     <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
         <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
             <div class="modal-header border-bottom-0 pb-0">
-                <h5 class="modal-title font-weight-bold">Kunci & Kirim Pesan?</h5>
+                <h5 class="modal-title font-weight-bold">Tambah Data ini dan Kirim Pesan</h5>
             </div>      
             <div class="modal-body pt-3">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
                         <div class="d-flex align-items-center flex-wrap mb-1">
                             <h6 class="font-weight-bold mb-0 mr-2">
-                                <i class="bi bi-shop"></i> 
+                                <i class="bi bi-shop mr-1"></i> 
                                 <span id="namaPengepulWa"></span>
                             </h6>
                             <span id="badgeStatusWa" class="badge rounded-pill px-2 py-1">
@@ -548,7 +550,7 @@
                 </div>
                 <p class="text-muted mb-0" style="font-size: 13px;">
                     *Sudah yakin data ini benar? 
-                    Data yang dikunci tidak dapat diubah lagi di keranjang.
+                    Data yang ditambahkan tidak dapat diubah lagi di keranjang.
                 </p>
             </div>
 
@@ -568,7 +570,7 @@
                     style="border-radius: 15px; padding: 10px 15px; text-decoration: none;"
                     onclick="eksekusiSimpanKeranjang()"
                 >
-                    Yakin
+                    Tambah dan Kirim
                 </a>
             </div>
         </div>
@@ -579,9 +581,7 @@
     <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
         <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
             <div class="modal-header border-bottom-0 pb-0">
-                <h5 class="modal-title font-weight-bold">
-                    Lanjut ke Biaya Admin?
-                </h5>
+                <h5 class="modal-title font-weight-bold">Lanjut ke Biaya Admin</h5>
             </div>
             <div class="modal-body pt-3">
                 <div class="alert mb-3"
@@ -612,7 +612,7 @@
                     data-dismiss="modal"
                     style="border-radius: 15px; padding: 10px 15px;"
                 >
-                    Kembali
+                    Batal
                 </button>
                 <button
                     type="button"
@@ -1008,7 +1008,7 @@ function gambarUlangKeranjangBelanja() {
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="d-flex align-items-center flex-wrap">
                         <h6 class="font-weight-bold mb-0 mr-2">
-                            <i class="bi bi-shop"></i> ${namaPengepul}
+                            <i class="bi bi-shop mr-1"></i> ${namaPengepul}
                         </h6>
                         <span class="badge ${warnaBadge} rounded-pill px-2 py-1">
                             ${statusTampil}

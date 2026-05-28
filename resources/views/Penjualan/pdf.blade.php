@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Karcis Penjualan - {{ $penjualan->nelayan->nama }} - {{ date('d/m/Y', strtotime($penjualan->tanggal)) }}</title>
+    <title>Karcis Penjualan - {{ $penjualan->nelayan->nama }} - {{ \Carbon\Carbon::parse($penjualan->tanggal)->locale('id')->translatedFormat('d F Y') }}</title>
     <style>
         body {
             font-family: "Montserrat", sans-serif;
@@ -61,10 +61,20 @@
         .pengepul-name { font-weight: bold; background-color: #f0f0f0; padding: 4px; border-bottom: 1px solid #000; display: block; margin-bottom: 5px; }
         
         .item-table { width: 100%; border-collapse: collapse; }
-        .item-table td { padding: 3px 0; }
+        .item-table td { padding: 3px 0; font-size: 12px;}
         .text-right { text-align: right; }
-        .subtotal { border-top: 1px dashed #999; font-weight: bold; margin-top: 5px; padding-top: 2px; }
+        .subtotal { border-top: 1px dashed #999; font-weight: bold; margin-top: 5px; padding-top: 2px; font-size: 12px;}
         
+        /* Box Catatan */
+        .catatan-box {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #fff9e6;
+            border-left: 4px solid #ffc107;
+            font-size: 12px;
+            color: #555;
+        }
+
         .total-section { margin-top: 20px; border-top: 2px solid #000; padding-top: 10px; }
         .grand-total { font-size: 16px; font-weight: bold; color: #000; }
         .footer { text-align: center; margin-top: 30px; font-style: italic; font-size: 10px; }
@@ -77,7 +87,7 @@
     </div>
 
     <div class="header">
-      <h2>REKAPITULASI PENJUALAN HASIL LAUT</h2>
+      <h2>REKAPITULASI PENJUALAN</h2>
       <p>Aplikasi Pencatatan Penjualan Hasil Laut Nelayan</p>
     </div>
 
@@ -88,7 +98,7 @@
           : <span class="info-value">{{ $penjualan->nelayan->nama }}</span>
         </td>
         <td width="20%">Tanggal</td>
-        <td width="30%">: <span class="info-value">{{ date('d/m/Y', strtotime($penjualan->tanggal)) }}</span></td>
+        <td width="30%">: <span class="info-value">{{ \Carbon\Carbon::parse($penjualan->tanggal)->locale('id')->translatedFormat('d F Y') }}</span></td>
       </tr>
       <tr>
         <td>No. Handphone</td>
@@ -100,14 +110,18 @@
       </tr>
     </table>
 
-    {{-- LOGIKA PENGELOMPOKAN DATA --}}
+    {{-- LOGIKA PENGELOMPOKAN DATA & PERHITUNGAN LANGSUNG --}}
     @php
         $groupedDetails = $penjualan->detail->groupBy('nama_pengepul');
+        $totalKotorGlobal = 0; // Inisialisasi variabel penyimpan total bersih
     @endphp
 
     @foreach($groupedDetails as $namaPengepul => $items)
         <div class="group-section">
-            <span class="pengepul-name">Pengepul: {{ $namaPengepul }}</span>
+            <span class="pengepul-name">
+                Pengepul: {{ $namaPengepul }}
+            </span>
+            
             <table class="item-table">
                 @php $subtotal = 0; @endphp
                 @foreach($items as $item)
@@ -115,28 +129,39 @@
                         <td>{{ $item->jenis_hasil_laut }}</td>
                         <td class="text-right">Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
                     </tr>
-                    @php $subtotal += $item->harga; @endphp
+                    @php 
+                        $subtotal += $item->harga; 
+                        $totalKotorGlobal += $item->harga; // Tambahkan langsung ke kalkulator utama
+                    @endphp
                 @endforeach
             </table>
             <div class="text-right subtotal">
-                Sub-total {{ $namaPengepul }}: Rp {{ number_format($subtotal, 0, ',', '.') }}
+                Sub-total: Rp {{ number_format($subtotal, 0, ',', '.') }}
             </div>
         </div>
     @endforeach
 
+    {{-- BAGIAN CATATAN (Hanya muncul jika catatan diisi) --}}
+    @if(!empty($penjualan->catatan))
+    <div class="catatan-box">
+        <strong>Catatan Khusus:</strong><br>
+        {{ $penjualan->catatan }}
+    </div>
+    @endif
+
     <div class="total-section">
         <table class="info-table">
             <tr>
-                <td>Total Seluruh Tangkapan</td>
-                <td class="text-right">Rp {{ number_format($penjualan->total_harga + $penjualan->biaya_admin, 0, ',', '.') }}</td>
+                <td>Total Tangkapan</td>
+                <td class="text-right">Rp {{ number_format($totalKotorGlobal, 0, ',', '.') }}</td>
             </tr>
             <tr style="color: #d9534f;">
-                <td>Potongan Biaya Admin</td>
+                <td>Biaya Admin</td>
                 <td class="text-right">- Rp {{ number_format($penjualan->biaya_admin, 0, ',', '.') }}</td>
             </tr>
             <tr class="grand-total">
-                <td style="padding-top: 10px;">TOTAL DITERIMA</td>
-                <td class="text-right" style="padding-top: 10px;">Rp {{ number_format($penjualan->total_harga, 0, ',', '.') }}</td>
+                <td style="padding-top: 10px;">TOTAL AKHIR</td>
+                <td class="text-right" style="padding-top: 10px;">Rp {{ number_format($totalKotorGlobal - $penjualan->biaya_admin, 0, ',', '.') }}</td>
             </tr>
         </table>
     </div>

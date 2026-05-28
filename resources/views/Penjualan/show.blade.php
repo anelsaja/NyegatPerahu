@@ -2,24 +2,35 @@
 @section('content')
 
 <style>
-    /* Sembunyikan navigasi bawah KHUSUS di halaman ini */
-    .bottom-nav { display: none !important; }
-    .mobile-container { padding-bottom: 120px !important; background-color: #f4f7f6; }
-
-    .info-table { width: 100%; margin-bottom: 0; font-size: 13px; }
-    .info-table td { padding: 6px 0; border-bottom: 1px dashed #eee; }
-    .info-table td:last-child { text-align: right; font-weight: bold; }
-    .info-table tr:last-child td { border-bottom: none; }
-    
-    .btn-bawah-ganda { 
-        position: fixed; bottom: 0; left: 0; width: 100%; 
-        padding: 12px; z-index: 1050; display: flex; gap: 10px; background-color: #ffffff;
-        border-top: 1px solid #f0f0f0;
+    .bottom-nav {
+        display: none !important;
     }
 
-    .btn-bawah-ganda a, .btn-bawah-ganda button {
-        flex: 1; padding: 14px; border-radius: 12px; font-weight: 600;
-        text-align: center; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    .info-table {
+        width: 100%;
+        font-size: 13px;
+    }
+
+    .info-table td {
+        padding: 4px 0;
+        border-bottom: 1px dashed #ccc;
+    }
+
+    .info-table td:last-child {
+        text-align: right;
+        font-weight: bold;
+    }
+
+    .btn-bawah-ganda { 
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%; 
+        padding: 12px;
+        display: flex;
+        gap: 10px;
+        background-color: #ffffff;
+        border-top: 2px solid #f0f0f0;
     }
 
     /* Gaya Card Baru untuk Pengepul */
@@ -43,14 +54,13 @@
 
 <div class="p-3">
     <h4 class="font-weight-bold mb-4 mt-2">Detail Data Penjualan</h4>
-    
-    <table class="info-table">
-        <tr><td class="text-muted">Tanggal</td><td>{{ date('d M Y', strtotime($penjualan->tanggal)) }}</td></tr>
+    <table class="info-table mb-3">
+        <tr><td class="text-muted">Tanggal</td><td>{{ \Carbon\Carbon::parse($penjualan->tanggal)->locale('id')->translatedFormat('d F Y') }}</td></tr>
         <tr><td class="text-muted">Nama Nelayan</td><td>{{ $penjualan->nelayan->nama ?? '-' }}</td></tr>
         <tr><td class="text-muted">Dicatat Oleh</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
     </table>
 
-    <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Tangkapan per Pengepul</h6>
+    <h6 class="font-weight-bold mt-4 pb-2">Tangkapan per Pengepul</h6>
 
     @foreach($detail_dikelompokkan as $pengepul => $items)
         @php 
@@ -63,7 +73,7 @@
         <div class="card-pengepul">
             <div class="card-pengepul-header">
                 <h6 class="font-weight-bold mb-0 text-dark">
-                    <i class="bi bi-person-badge text-primary mr-1"></i> {{ $pengepul }}
+                    <i class="bi bi-shop mr-1" style="font-size: 16px;"></i> {{ $pengepul }}
                 </h6>
                 <span class="badge {{ $badgeColor }} px-2 py-1" style="font-size: 11px; border-radius: 6px;">
                     {{ $statusPengepul }}
@@ -114,22 +124,22 @@
 </div>
 
 <div class="btn-bawah-ganda">
-    <a href="{{ route('home') }}" class="btn btn-light" style="background-color: #f8f9fa;">
-        <i class="bi bi-arrow-left mr-1"></i> Kembali
+    <a href="{{ route('home') }}" class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">
+        Batal
+        </a>
+    <button type="submit" class="btn btn-warning btn-lg font-weight-bold shadow-sm m-0" style="border-radius: 15px; flex: 1; padding: 16px 0;">
+        Simpan Edit
+    </button>
+</div>
+<div class="btn-bawah-ganda">
+    <a href="{{ route('home') }}" class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">
+        Batal
     </a>
-            @if($penjualan->link_wa)
-                <button type="button" onclick="cetakDanKirimWa('{{ route('penjualan.cetak', $penjualan->penjualan_id) }}', '{!! $penjualan->link_wa !!}')" 
-                        class="btn text-white shadow-sm flex-fill font-weight-bold" 
-                        style="border-radius: 10px; padding: 12px; background-color: #25D366; border: none;">
-                    <i class="bi bi-printer-fill mr-1"></i> Cetak & Kirim WA
-                </button>
-            @else
-                <a href="{{ route('penjualan.cetak', $penjualan->penjualan_id) }}" 
-                   class="btn btn-primary text-white shadow-sm flex-fill font-weight-bold" 
-                   style="border-radius: 10px; padding: 12px;">
-                    <i class="bi bi-printer-fill mr-1"></i> Cetak Ulang
-                </a>
-            @endif
+    <button type="button" onclick="cetakDanKirimWa('{{ route('penjualan.cetak', $penjualan->penjualan_id) }}', '{!! $penjualan->link_wa !!}')" 
+        class="btn btn-primary btn-lg font-weight-bold shadow-sm m-0" 
+        style="border-radius: 15px; flex: 1; padding: 16px 0;">
+        Buat Karcis
+    </button>
 </div>
 
 <script>

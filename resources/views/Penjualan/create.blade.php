@@ -103,7 +103,7 @@
         bottom: 40px;
         left: 50%;
         transform: translateX(-50%);
-        padding: 18px;
+        padding: 15px;
         display: block;
         width: 92%;
         border-radius: 15px;
@@ -319,7 +319,7 @@
 
         <div class="btn-bawah" style="background-color: #0d6efd;">
             <button onclick="lanjutKePengepul()" class="btn-isi-bawah">
-                Lanjut Pilih Pengepul
+                Lanjut Pilih Pengepul <i class="bi bi-arrow-right"></i>
             </button>
         </div>
     </div>
@@ -389,7 +389,7 @@
 
         <div class="btn-bawah" style="background-color: #0d6efd;">
             <button onclick="validasiDanSimpan()" class="btn-isi-bawah">
-                Tambah Data Ini dan Kirim Pesan
+                <i class="bi bi-plus"></i> Tambah Data Ini dan Kirim Pesan
             </button>
         </div>
     </div>
@@ -402,7 +402,7 @@
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
-        <p class="font-weight-bold">Rincian Tangkapan</p>
+        <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Ringkasan Akhir</h6>
         <div id="area-keranjang-belanja"></div>
 
         <div class="card p-3 mb-4 bg-light shadow-sm" style="border-radius: 15px;">
@@ -441,8 +441,6 @@
                           style="border-radius: 15px; border: 2px solid #eaf6fd; font-size: 16px;" 
                           placeholder="(opsional)"></textarea>
         </div>
-
-        <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Ringkasan Akhir</h6>
         
         <div class="card p-3 shadow-sm mb-3" style="border-radius: 15px;">
             <div class="d-flex justify-content-between mb-3">
@@ -729,8 +727,16 @@ function cekModeLelang() {
             }
         });
 
-        // auto pilih TPI
-        pilihPengepulUI(tpiBox, 'TPI Banyutowo');
+        // auto pilih TPI hanya jika belum aktif
+        if (!tpiBox.classList.contains('active')) {
+
+            document.querySelectorAll('.item-pengepul')
+                .forEach(el => el.classList.remove('active'));
+
+            tpiBox.classList.add('active');
+
+            memori.pengepul_aktif = 'TPI Banyutowo';
+        }
 
     } else {
 
@@ -743,12 +749,6 @@ function cekModeLelang() {
 
         // sembunyikan TPI
         tpiBox.style.display = 'none';
-
-        // jika sebelumnya TPI terpilih → reset
-        if (memori.pengepul_aktif === 'TPI Banyutowo') {
-            memori.pengepul_aktif = '';
-            tpiBox.classList.remove('active');
-        }
     }
 }
 
@@ -765,7 +765,7 @@ function simpanIkanBaru() {
         let idAman = namaIkan.replace(/\s+/g, '_');
         let htmlKotakBaru = `
         <div class="btn-kotak" onclick="toggleInputIkan('${idAman}')">
-            ${namaIkan} <span class="text-success">*</span>
+            ${namaIkan} <span class="text-danger">*</span>
             <input type="number" id="input-${idAman}" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
         </div>`;
         document.getElementById('container-ikan').insertAdjacentHTML('beforeend', htmlKotakBaru);
@@ -846,7 +846,7 @@ function simpanPengepulBaru() {
         $('#modalPengepulBaru').modal('hide');
         inputElement.value = "";
         
-        let htmlBaru = `<div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, '${namaBaru}')">${namaBaru}<span class="text-success">*</span></div>`;
+        let htmlBaru = `<div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, '${namaBaru}')">${namaBaru}<span class="text-danger">*</span></div>`;
         document.getElementById('container-pengepul').insertAdjacentHTML('beforeend', htmlBaru);
         
         let kotakBaru = document.getElementById('container-pengepul').lastElementChild;

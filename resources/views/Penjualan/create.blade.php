@@ -88,6 +88,10 @@
         font-weight: bold;
     }
 
+    #pengepul-tpi {
+        display: none;
+    }
+
     .input-harga:focus {
         border-color: #007bff;
         outline: none;
@@ -202,7 +206,7 @@
 
 <div class="p-3">
     <div id="step-1" class="step-section active">
-        <h4 class="font-weight-bold mb-4 mt-2">Tambah Data Penjualan</h4>
+        <h4 class="font-weight-bold mb-2 mt-2">Tambah Data Penjualan</h4>
         <p class="font-weight-bold">Pilih Nelayan</p>
 
         <div class="grid-btn">
@@ -236,14 +240,20 @@
     </div>
 
     <div id="step-2" class="step-section">
-        <h4 class="font-weight-bold mb-4 mt-2">Tambah Data Penjualan</h4>
+        <h4 class="font-weight-bold mb-2 mt-2">Tambah Data Penjualan</h4>
         <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
-        <a href="javascript:void(0)" onclick="pindahKeStep(1)" class="btn-kembali" style="margin-bottom: 20px;">
+        <a 
+            href="javascript:void(0)" 
+            onclick="pindahKeStep(1)" 
+            id="btn-kembali-nelayan"
+            class="btn-kembali" 
+            style="margin-bottom: 20px;"
+        >
             <i class="bi bi-arrow-left"></i> Kembali Pilih Nelayan
         </a>
 
@@ -257,6 +267,10 @@
         </div>
 
         <div class="grid-btn" id="container-ikan">
+            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Lelang', this)">
+                Lelang
+                <input type="number" id="input-Lelang" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            </div>
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Timbangan', this)">
                 Timbangan
                 <input type="number" id="input-Timbangan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
@@ -276,10 +290,6 @@
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Pirek', this)">
                 Pirek
                 <input type="number" id="input-Pirek" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
-            </div>
-            <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Lelang', this)">
-                Lelang
-                <input type="number" id="input-Lelang" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Blekutak', this)">
                 Blekutak
@@ -315,7 +325,7 @@
     </div>
 
     <div id="step-3" class="step-section">
-        <h4 class="font-weight-bold mb-4 mt-2">Tambah Data Penjualan</h4>
+        <h4 class="font-weight-bold mb-2 mt-2">Tambah Data Penjualan</h4>
         <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
@@ -340,7 +350,7 @@
             <div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, 'BBI')">BBI</div>
             <div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, 'Tarom')">Tarom</div>
             <div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, 'Pramono')">Pramono</div>
-            <div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, 'TPI Banyutowo')">TPI Banyutowo</div>
+            <div id="pengepul-tpi" class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, 'TPI Banyutowo')">TPI Banyutowo</div>
             <div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, 'Rossa')">Rossa</div>
             <div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, 'Rini')">Rini</div>
             <div class="btn-kotak item-pengepul" onclick="pilihPengepulUI(this, 'Kaji Sun')">Kaji Sun</div>
@@ -385,13 +395,14 @@
     </div>
 
     <div id="step-4" class="step-section">
-        <h4 class="font-weight-bold mb-4 mt-2">Keranjang Penjualan</h4>
+        <h4 class="font-weight-bold mb-2 mt-2">Keranjang Penjualan</h4>
         <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
+        <p class="font-weight-bold">Rincian Tangkapan</p>
         <div id="area-keranjang-belanja"></div>
 
         <div class="card p-3 mb-4 bg-light shadow-sm" style="border-radius: 15px;">
@@ -417,7 +428,7 @@
     </div>
 
     <div id="step-5" class="step-section">
-        <h4 class="font-weight-bold mb-4 mt-2">Ringkasan Akhir</h4>
+        <h4 class="font-weight-bold mb-2 mt-2">Ringkasan Akhir</h4>
         <table class="info-table mb-3">
             <tr><td>Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
@@ -639,6 +650,7 @@ let memori = {
     daftar_belanja: [] 
 };
 let totalSemuaGlobal = 0;
+let nelayanTerkunci = false;
 
 // ==========================================
 // 2. KONTROL HALAMAN (STEP)
@@ -649,6 +661,17 @@ function pindahKeStep(nomor) {
     if (stepSekarang) stepSekarang.style.display = 'block';
 
     if (nomor === 5) hitungTotalAkhir();
+
+    let tombolKembaliNelayan = document.getElementById('btn-kembali-nelayan');
+
+    if (tombolKembaliNelayan) {
+        if (nelayanTerkunci) {
+            tombolKembaliNelayan.style.display = 'none';
+        } else {
+            tombolKembaliNelayan.style.display = 'block';
+        }
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -680,6 +703,52 @@ function toggleInputIkan(namaIkan, elemenKotak) {
         kotakInput.style.display = 'block';
         kotakInput.focus();
         elemenKotak.classList.add('active');
+    }
+}
+
+function cekModeLelang() {
+    let inputLelang = document.getElementById('input-Lelang');
+    let tpiBox = document.getElementById('pengepul-tpi');
+
+    if (!inputLelang || !tpiBox) return;
+
+    // cek apakah lelang aktif
+    let lelangAktif =
+        inputLelang.style.display === 'block' &&
+        inputLelang.value !== '';
+
+    if (lelangAktif) {
+
+        // tampilkan TPI
+        tpiBox.style.display = 'block';
+
+        // sembunyikan pengepul lain
+        document.querySelectorAll('.item-pengepul').forEach(el => {
+            if (el.id !== 'pengepul-tpi') {
+                el.style.display = 'none';
+            }
+        });
+
+        // auto pilih TPI
+        pilihPengepulUI(tpiBox, 'TPI Banyutowo');
+
+    } else {
+
+        // tampilkan pengepul selain TPI
+        document.querySelectorAll('.item-pengepul').forEach(el => {
+            if (el.id !== 'pengepul-tpi') {
+                el.style.display = 'block';
+            }
+        });
+
+        // sembunyikan TPI
+        tpiBox.style.display = 'none';
+
+        // jika sebelumnya TPI terpilih → reset
+        if (memori.pengepul_aktif === 'TPI Banyutowo') {
+            memori.pengepul_aktif = '';
+            tpiBox.classList.remove('active');
+        }
     }
 }
 
@@ -979,6 +1048,9 @@ function eksekusiSimpanKeranjang() {
     document.getElementById('btn-status-belum')
         .classList.remove('belum-aktif');
 
+    // Kunci nelayan setelah ada data pertama
+    nelayanTerkunci = true;
+
     $('#modalWaPerItem').modal('hide');
     pindahKeStep(4);
 }
@@ -1097,6 +1169,14 @@ function kirimKeDatabaseLaravel(aksi) {
 
 // PENANGKAP PESAN (JIKA HABIS TAMBAH NELAYAN BARU)
 document.addEventListener("DOMContentLoaded", function() {
+
+    // realtime cek lelang
+    document.addEventListener('input', function(e) {
+        if (e.target && e.target.id === 'input-Lelang') {
+            cekModeLelang();
+        }
+    });
+
     @if(session('nelayan_baru_id'))
         let idBaru = {{ session('nelayan_baru_id') }};
         let namaBaru = "{{ session('nelayan_baru_nama') }}";

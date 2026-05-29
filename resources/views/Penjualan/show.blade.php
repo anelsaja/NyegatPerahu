@@ -53,14 +53,14 @@
 </style>
 
 <div class="p-3">
-    <h4 class="font-weight-bold mb-4 mt-2">Detail Data Penjualan</h4>
+    <h4 class="font-weight-bold mb-2 mt-2">Detail Data Penjualan</h4>
     <table class="info-table mb-3">
-        <tr><td class="text-muted">Tanggal</td><td>{{ \Carbon\Carbon::parse($penjualan->tanggal)->locale('id')->translatedFormat('d F Y') }}</td></tr>
+        <tr><td class="text-muted">Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
         <tr><td class="text-muted">Nama Nelayan</td><td>{{ $penjualan->nelayan->nama ?? '-' }}</td></tr>
-        <tr><td class="text-muted">Dicatat Oleh</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
+        <tr><td class="text-muted">Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
     </table>
 
-    <h6 class="font-weight-bold mt-4 pb-2">Tangkapan per Pengepul</h6>
+    <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Rincian Tangkapan</h6>
 
     @foreach($detail_dikelompokkan as $pengepul => $items)
         @php 
@@ -70,58 +70,59 @@
             $badgeColor = ($statusPengepul == 'Lunas') ? 'badge-success' : 'badge-warning';
         @endphp
 
-        <div class="card-pengepul">
-            <div class="card-pengepul-header">
-                <h6 class="font-weight-bold mb-0 text-dark">
-                    <i class="bi bi-shop mr-1" style="font-size: 16px;"></i> {{ $pengepul }}
-                </h6>
-                <span class="badge {{ $badgeColor }} px-2 py-1" style="font-size: 11px; border-radius: 6px;">
-                    {{ $statusPengepul }}
-                </span>
+        <div class="mb-4 border-bottom pb-2">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex align-items-center flex-wrap">
+                    <h6 class="font-weight-bold mb-0 mr-2">
+                        <i class="bi bi-shop mr-1"></i> {{ $pengepul }}
+                    </h6>
+                    <span class="badge {{ $badgeColor }} rounded-pill px-2 py-1">
+                        {{ $statusPengepul }}
+                    </span>
+                </div>
             </div>
-            
-            <div class="p-3">
-                <table class="info-table">
-                    @foreach($items as $item)
-                    <tr>
-                        <td class="text-secondary"><i class="bi bi-record-circle text-muted" style="font-size: 8px; margin-right: 5px;"></i> {{ $item->jenis_hasil_laut }}</td>
-                        <td>Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
-                    </tr>
-                    @php $totalPerPengepul += $item->harga; @endphp
-                    @endforeach
-                    
-                    <tr>
-                        <td class="text-right text-muted pt-3 border-top mt-2">Sub-total:</td>
-                        <td class="pt-3 text-info border-top mt-2" style="font-size: 15px;">
-                            Rp {{ number_format($totalPerPengepul, 0, ',', '.') }}
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            <table class="info-table mt-1">
+                @foreach($items as $item)
+                <tr>
+                    <td class="text-secondary"><i class="bi bi-record-circle text-muted" style="font-size: 8px; margin-right: 5px;"></i> {{ $item->jenis_hasil_laut }}</td>
+                    <td>Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
+                </tr>
+                @php $totalPerPengepul += $item->harga; @endphp
+                @endforeach
+
+                <tr>
+                    <td class="text-right text-muted pt-2 border-top">Sub-total:</td>
+                    <td class="pt-2 text-info border-top font-weight-bold" style="font-size: 15px;">
+                        Rp {{ number_format($totalPerPengepul, 0, ',', '.') }}
+                    </td>
+                </tr>
+            </table>
         </div>
     @endforeach
 
     <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Ringkasan Akhir</h6>
 
-    <div class="card-pengepul p-3 mb-4 border-0" style="background-color: #f8fbfa;">
-        <div class="d-flex justify-content-between mb-2">
-            <span class="text-muted small font-weight-bold">Total Kotor</span>
-            <span class="font-weight-bold text-dark">Rp {{ number_format($penjualan->total_harga, 0, ',', '.') }}</span>
-        </div>
-        
-        <div class="d-flex justify-content-between mb-3 pb-3 border-bottom border-secondary">
-            <span class="text-muted small font-weight-bold">Potongan Biaya Admin</span>
-            <span class="text-danger font-weight-bold">- Rp {{ number_format($penjualan->biaya_admin, 0, ',', '.') }}</span>
-        </div>
-        
-        <div class="d-flex justify-content-between align-items-center">
-            <span class="text-success font-weight-bold" style="letter-spacing: 0.5px;">TOTAL DITERIMA</span>
-            <strong class="text-success" style="font-size: 24px;">
-                Rp {{ number_format($penjualan->total_harga - $penjualan->biaya_admin, 0, ',', '.') }}
-            </strong>
+    <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
+        <div class="card-body p-3">
+            <div class="d-flex justify-content-between mb-3">
+                <span class="text-muted">Total Tangkapan</span>
+                <strong style="font-size: 16px;">Rp {{ number_format($penjualan->total_harga, 0, ',', '.') }}</strong>
+            </div>
+
+            <div class="d-flex justify-content-between mb-3 pb-3 border-bottom border-secondary">
+                <label class="font-weight-bold">Biaya Admin</label>
+                <strong class="text-danger" style="font-size: 16px;">- Rp {{ number_format($penjualan->biaya_admin, 0, ',', '.') }}</strong>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="text-success font-weight-bold" style="letter-spacing: 0.5px;">TOTAL AKHIR</span>
+                <strong class="text-success" style="font-size: 24px;">
+                    Rp {{ number_format($penjualan->total_harga - $penjualan->biaya_admin, 0, ',', '.') }}
+                </strong>
+            </div>
         </div>
     </div>
 </div>
+<div style="height: 120px;"></div>
 
 <div class="btn-bawah-ganda">
     <a href="{{ route('home') }}" class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">

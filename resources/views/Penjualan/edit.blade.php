@@ -84,7 +84,7 @@
 </style>
 
 <div class="p-3">
-    <h4 class="font-weight-bold mb-4 mt-2">Edit Transaksi</h4>
+    <h4 class="font-weight-bold mb-2 mt-2">Edit Transaksi</h4>
     <form action="{{ route('penjualan.update', $penjualan->penjualan_id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -96,7 +96,7 @@
             <tr><td class="text-muted">Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
-        <h6 class="font-weight-bold mt-4 pb-2">Rincian Tangkapan & Pembayaran</h6>
+        <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Rincian Tangkapan</h6>
         @php
             // MANTRA AJAIB: Kelompokkan data ikan berdasarkan nama pengepulnya
             $grupPenjualan = $penjualan->detail->groupBy('nama_pengepul');

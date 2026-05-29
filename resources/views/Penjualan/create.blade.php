@@ -402,7 +402,7 @@
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
 
-        <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Ringkasan Akhir</h6>
+        <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Rincian Tangkapan</h6>
         <div id="area-keranjang-belanja"></div>
 
         <div class="card p-3 mb-4 bg-light shadow-sm" style="border-radius: 15px;">
@@ -422,7 +422,7 @@
         
         <div class="btn-bawah" style="background-color: #0d6efd;">
             <button onclick="$('#modalKonfirmasiStep5').modal('show')" class="btn-isi-bawah">
-                Lanjut ke Biaya Admin
+                Lanjut ke Biaya Admin <i class="bi bi-arrow-right"></i>
             </button>
         </div>
     </div>
@@ -702,6 +702,8 @@ function toggleInputIkan(namaIkan, elemenKotak) {
         kotakInput.focus();
         elemenKotak.classList.add('active');
     }
+
+    cekModeLelang();
 }
 
 function cekModeLelang() {
@@ -727,16 +729,14 @@ function cekModeLelang() {
             }
         });
 
-        // auto pilih TPI hanya jika belum aktif
-        if (!tpiBox.classList.contains('active')) {
+        // AUTO ACTIVE TPI
+        document.querySelectorAll('.item-pengepul').forEach(el => {
+            el.classList.remove('active');
+        });
 
-            document.querySelectorAll('.item-pengepul')
-                .forEach(el => el.classList.remove('active'));
+        tpiBox.classList.add('active');
 
-            tpiBox.classList.add('active');
-
-            memori.pengepul_aktif = 'TPI Banyutowo';
-        }
+        memori.pengepul_aktif = 'TPI Banyutowo';
 
     } else {
 
@@ -749,6 +749,13 @@ function cekModeLelang() {
 
         // sembunyikan TPI
         tpiBox.style.display = 'none';
+
+        // reset active
+        tpiBox.classList.remove('active');
+
+        if (memori.pengepul_aktif === 'TPI Banyutowo') {
+            memori.pengepul_aktif = '';
+        }
     }
 }
 
@@ -814,6 +821,7 @@ function lanjutKePengepul() {
         document.querySelectorAll('.item-pengepul').forEach(el => el.classList.remove('active'));
     }
 
+    cekModeLelang();
     pindahKeStep(3);
 }
 

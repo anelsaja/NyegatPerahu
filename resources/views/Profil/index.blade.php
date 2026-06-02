@@ -1,10 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <style>
-    body {
-        background-color: #ffffff;
-    }
-
     /* Avatar Profil Besar */
     .avatar-profile {
         width: 100px;
@@ -23,9 +19,9 @@
     /* TOMBOL KELUAR MELAYANG (FAB Merah) */
     .btn-logout-fab {
         position: fixed;
-        bottom: 100px; /* Sejajar dengan FAB di halaman lain */
+        bottom: 100px;
         right: 20px; 
-        background: #dc3545; /* Warna Merah (Danger) */
+        background: #dc3545; 
         color: white;
         border-radius: 50%; 
         width: 70px;
@@ -33,15 +29,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 28px;
-        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
-        z-index: 1000;
+        font-size: 32px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         text-decoration: none !important;
-        transition: transform 0.2s;
-    }
-    .btn-logout-fab:hover, .btn-logout-fab:active {
-        color: white;
-        transform: scale(0.95);
     }
 </style>
 
@@ -64,32 +54,41 @@
         <i class="bi bi-box-arrow-right" style="margin-left: 4px;"></i>
     </a>
 
-    <div class="modal fade" id="modalLogout" tabindex="-1" aria-labelledby="modalLogoutLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered"> <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
-          
-          <div class="modal-header border-bottom-0 pb-0">
-            <h5 class="modal-title font-weight-bold text-dark" id="modalLogoutLabel">Konfirmasi Keluar</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          
-          <div class="modal-body pt-3 pb-4">
-            <p class="text-muted font-weight-bold mb-0">Apakah Ibu yakin ingin keluar dari aplikasi sekarang?</p>
-          </div>
-          
-          <div class="modal-footer border-top-0 pt-0">
-            <button type="button" class="btn btn-light shadow-sm font-weight-bold" data-dismiss="modal" style="border-radius: 10px; color: #6c757d;">
-                Batal
-            </button>
-            
-            <a href="{{ route('logout') }}" class="btn btn-danger shadow-sm font-weight-bold px-4" style="border-radius: 10px; background-color: #dc3545;">
-                Ya, Keluar <i class="bi bi-box-arrow-right ml-1"></i>
-            </a>
-          </div>
-          
+    <div class="modal fade" id="modalLogout" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
+            <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title font-weight-bold">
+                        Keluar Aplikasi
+                    </h5>
+                </div>
+                <div class="modal-body pt-3">
+                    <div class="alert shadow-sm mb-3"
+                        style="border-radius: 15px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
+                        <div class="d-flex align-items-start">
+                            <i class="bi bi-exclamation-circle-fill text-danger mr-2"
+                            style="font-size: 18px;"></i>
+                            <span style="font-size: 13px;">
+                                Apakah Ibu yakin ingin keluar dari aplikasi sekarang?
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button"
+                            class="btn btn-light shadow-sm font-weight-bold"
+                            data-dismiss="modal"
+                            style="border-radius: 15px; padding: 10px 15px;">
+                        Batal
+                    </button>
+                    <a href="{{ route('logout') }}"
+                    class="btn btn-danger shadow-sm font-weight-bold px-4"
+                    style="border-radius: 15px; padding: 10px 15px;">
+                        Keluar
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 </div>
 @endsection

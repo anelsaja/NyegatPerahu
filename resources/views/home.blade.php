@@ -1,10 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <style>
-    body {
-        background-color: #ffffff;
-    }
-
     /* TOMBOL TAMBAH DATA (Floating Action Button - Kanan Bawah) */
     .btn-tambah-fab {
         position: fixed;
@@ -20,27 +16,13 @@
         justify-content: center;
         font-size: 32px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        z-index: 1000;
         text-decoration: none !important;
-        transition: transform 0.2s;
-    }
-    .btn-tambah-fab:hover, .btn-tambah-fab:active {
-        color: white;
-        transform: scale(0.95);
     }
 
     /* GAYA DAFTAR TRANSAKSI FLAT (Tanpa Card) */
     .transaksi-item {
-        border-bottom: 1px solid #f0f2f5;
+        border-bottom: 3px solid #f0f2f5;
         padding: 15px 0;
-    }
-
-    .info-link {
-        text-decoration: none !important;
-        color: inherit;
-        display: flex;
-        flex-grow: 1;
-        align-items: center;
     }
 </style>
 
@@ -72,7 +54,6 @@
     <h4 class="font-weight-bold mb-4 mt-2">Riwayat Penjualan</h4>
 
     <h6>Cari berdasarkan tanggal:</h6>
-
     <form action="{{ route('home') }}" method="GET" class="mb-2">
         <input type="date" 
                name="tanggal" 
@@ -83,22 +64,19 @@
                onchange="this.form.submit()"> 
     </form>
 
-    <div class="mt-3">
+    <div class="mt-1">
         @forelse($riwayat_penjualan->sortByDesc('created_at') as $trx)
         <div class="transaksi-item">
-            
-            <div class="info-link mb-2">
-                
+            <div class="mb-2">      
                 <div class="flex-grow-1 pr-2">
                     <div class="d-flex justify-content-between align-items-baseline mb-1">
                         <h6 class="mb-0 font-weight-bold text-dark" style="font-size: 16px;">
                             {{ $trx->nelayan->nama ?? 'Nelayan Dihapus' }}
                         </h6>
                         <small class="text-muted font-weight-bold" style="font-size: 11px;">
-                            {{ date('d M Y', strtotime($trx->tanggal)) }}
+                            {{ \Carbon\Carbon::parse($trx->tanggal)->locale('id')->translatedFormat('d F Y') }}
                         </small>
                     </div>
-                    
                     <div class="d-flex justify-content-between align-items-center">
                         <small class="text-muted text-truncate" style="max-width: 180px; font-size: 13px;">
                             Pengepul: <strong>{{ $trx->detail->pluck('nama_pengepul')->unique()->implode(', ') }}</strong>

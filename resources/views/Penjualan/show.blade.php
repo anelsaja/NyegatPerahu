@@ -55,7 +55,7 @@
 <div class="p-3">
     <h4 class="font-weight-bold mb-2 mt-2">Detail Data Penjualan</h4>
     <table class="info-table mb-3">
-        <tr><td class="text-muted">Tanggal</td><td>{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</td></tr>
+        <tr><td class="text-muted">Tanggal</td><td>{{ \Carbon\Carbon::parse($penjualan->tanggal)->locale('id')->translatedFormat('d F Y') }}</td></tr>
         <tr><td class="text-muted">Nama Nelayan</td><td>{{ $penjualan->nelayan->nama ?? '-' }}</td></tr>
         <tr><td class="text-muted">Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
     </table>

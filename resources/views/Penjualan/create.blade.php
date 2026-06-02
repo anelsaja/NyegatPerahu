@@ -1099,7 +1099,7 @@ function gambarUlangKeranjangBelanja() {
         `;
 
         lemariPengepul[namaPengepul].forEach(function(ikan) {
-            desainHTML += `<tr><td>${ikan.jenis.replace(/_/g, ' ')}</td><td>Rp ${ikan.harga.toLocaleString('id-ID')}</td></tr>`;
+            desainHTML += `<tr><td class="text-secondary"><i class="bi bi-record-circle text-muted" style="font-size: 8px; margin-right: 5px;"></i> ${ikan.jenis.replace(/_/g, ' ')}</td><td>Rp ${ikan.harga.toLocaleString('id-ID')}</td></tr>`;
             totalHarga += ikan.harga;
         });
 

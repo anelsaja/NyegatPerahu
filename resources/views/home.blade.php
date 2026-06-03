@@ -160,7 +160,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit"
-                            class="btn btn-success shadow-sm font-weight-bold px-4"
+                            class="btn btn-danger shadow-sm font-weight-bold px-4"
                             style="border-radius: 15px; padding: 10px 15px;">
                         Hapus
                     </button>

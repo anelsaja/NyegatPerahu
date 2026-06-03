@@ -43,9 +43,6 @@ class AuthController extends Controller
             return redirect()->route('home');
 
         } catch (\Exception $e) {
-            // MATIKAN SEMENTARA pesan error generic ini
-            // return redirect('/login')->with('error', 'Terjadi kesalahan saat login dengan Google.');
-
             // TAMPILKAN pesan error aslinya (dd = dump and die)
             dd($e->getMessage());
         }

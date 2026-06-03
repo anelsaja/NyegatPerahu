@@ -11,10 +11,6 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,33 +20,32 @@ Route::get('/auth/google', 'AuthController@redirectToGoogle')->name('google.logi
 Route::get('/auth/google/callback', 'AuthController@handleGoogleCallback');
 
 Route::middleware(['auth'])->group(function () {
-    
     // Beranda / Home (Menampilkan Riwayat)
     Route::get('/', 'HomeController@index')->name('home');
 
     // Penjualan
     Route::get('/penjualan/tambah', 'PenjualanController@create')->name('penjualan.create');
     Route::post('/penjualan/simpan', 'PenjualanController@store')->name('penjualan.store');
-    // TAMBAHKAN RUTE INI UNTUK MELIHAT DETAIL:
     Route::get('/penjualan/{id}/detail', 'PenjualanController@show')->name('penjualan.show');
-
-    // RUTE BARU UNTUK EDIT & HAPUS
     Route::get('/penjualan/{id}/edit', 'PenjualanController@edit')->name('penjualan.edit');
     Route::put('/penjualan/{id}/update', 'PenjualanController@update')->name('penjualan.update');
     Route::delete('/penjualan/{id}/hapus', 'PenjualanController@destroy')->name('penjualan.destroy');
-
-    // Rute Edit Penjualan
-    Route::get('/penjualan/{id}/edit', 'PenjualanController@edit')->name('penjualan.edit');
-    Route::put('/penjualan/{id}/update', 'PenjualanController@update')->name('penjualan.update');
     Route::get('/penjualan/{id}/cetak', 'PenjualanController@cetak')->name('penjualan.cetak');
 
     // Nelayan
-    Route::resource('nelayan', 'NelayanController');
+    Route::get('/nelayan', 'NelayanController@index')->name('nelayan.index');
+    Route::get('/nelayan/tambah', 'NelayanController@create')->name('nelayan.create');
+    Route::post('/nelayan/simpan', 'NelayanController@store')->name('nelayan.store');
+    Route::get('/nelayan/{id}/edit', 'NelayanController@edit')->name('nelayan.edit');
+    Route::put('/nelayan/{id}/update', 'NelayanController@update')->name('nelayan.update');
+    Route::delete('/nelayan/{id}/hapus', 'NelayanController@destroy')->name('nelayan.destroy');
 
-    // Laporan & Profil
+    // Laporan
     Route::get('/laporan', 'LaporanController@index')->name('laporan.index');
-    Route::get('/profil', 'ProfilController@index')->name('profil.index');
     Route::get('/laporan/pdf', 'LaporanController@downloadPDF')->name('laporan.pdf');
+
+    // Profil
+    Route::get('/profil', 'ProfilController@index')->name('profil.index');
 
     // Proses Logout
     Route::get('/logout', 'AuthController@logout')->name('logout');

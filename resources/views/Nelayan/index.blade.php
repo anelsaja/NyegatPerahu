@@ -123,7 +123,7 @@
                 {{ request('cari') ? 'Nama nelayan tidak ditemukan.' : 'Belum ada data nelayan.' }}
             </p>
             @if(request('cari'))
-            <a href="{{ route('nelayan.index') }}" class="btn btn-md btn-light mt-2 font-weight-bold" style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;">Tampilkan Semua</a>
+            <a href="{{ route('nelayan.index') }}" class="btn btn-md btn-light mt-2 font-weight-bold" style="border-radius: 12px; color: white; background-color: #0d6efd;">Tampilkan Semua</a>
             @endif
         </div>
         @endforelse

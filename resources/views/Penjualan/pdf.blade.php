@@ -144,7 +144,7 @@
     {{-- BAGIAN CATATAN (Hanya muncul jika catatan diisi) --}}
     @if(!empty($penjualan->catatan))
     <div class="catatan-box">
-        <strong>Catatan Khusus:</strong><br>
+        <strong>Catatan:</strong><br>
         {{ $penjualan->catatan }}
     </div>
     @endif

@@ -38,10 +38,10 @@ class PenjualanController extends Controller
                 if (!empty($item['jenis']) && !empty($item['harga']) && !empty($item['pengepul'])) {
                     DetailPenjualan::create([
                         'penjualan_id' => $penjualan->penjualan_id,
-                        'nama_pengepul' => $item['pengepul'], // Disimpan per baris ikan
+                        'nama_pengepul' => $item['pengepul'],
                         'jenis_hasil_laut' => $item['jenis'],
                         'harga' => $item['harga'],
-                        'status_pembayaran' => $item['status_pembayaran'] // Pastikan ini ikut disimpan!
+                        'status_pembayaran' => $item['status_pembayaran']
                     ]);
                     $total_keseluruhan += $item['harga']; 
                 }
@@ -58,12 +58,12 @@ class PenjualanController extends Controller
             return redirect()->route('home')->with([
                 'success' => 'Data tersimpan! Karcis sedang diunduh.',
                 'url_karcis_pdf' => route('penjualan.cetak', $penjualan->penjualan_id),
-                'link_wa_nelayan' => $penjualan->link_wa // Menggunakan fungsi baru
+                'link_wa_nelayan' => $penjualan->link_wa
             ]);
         } else {
             return redirect()->route('home')->with([
                 'success' => 'Data penjualan berhasil disimpan!',
-                'link_wa_nelayan' => $penjualan->link_wa // Menggunakan fungsi baru
+                'link_wa_nelayan' => $penjualan->link_wa
             ]);
         }
     }
@@ -103,7 +103,7 @@ class PenjualanController extends Controller
         // Ambil data transaksi beserta detail ikannya
         $penjualan = Penjualan::with('detail')
             ->where('penjualan_id', $id)
-            ->where('pengguna_id', Auth::id()) // Pastikan milik ibu ini
+            ->where('pengguna_id', Auth::id())
             ->firstOrFail();
 
         $nelayans = Nelayan::where('pengguna_id', Auth::id())->get();
@@ -140,7 +140,7 @@ class PenjualanController extends Controller
                         'nama_pengepul' => $item['pengepul'],
                         'jenis_hasil_laut' => $item['jenis'],
                         'harga' => $item['harga'],
-                        'status_pembayaran' => $item['status_pembayaran'] // Pastikan ini ikut disimpan!
+                        'status_pembayaran' => $item['status_pembayaran']
                     ]);
                     $total_keseluruhan += $item['harga'];
                 }
@@ -156,8 +156,8 @@ class PenjualanController extends Controller
     public function cetak($id)
     {
         $penjualan = Penjualan::with('detail', 'nelayan')
-            ->where('penjualan_id', $id) // ✅ FIX DI SINI
-            ->where('pengguna_id', Auth::id()) // sekalian amankan
+            ->where('penjualan_id', $id)
+            ->where('pengguna_id', Auth::id())
             ->firstOrFail();
 
         $pdf = Pdf::loadView('penjualan.pdf', compact('penjualan'));

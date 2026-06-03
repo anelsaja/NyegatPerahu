@@ -17,6 +17,12 @@
         background-color: #ffffff;
         border-top: 2px solid #f0f0f0;
     }
+
+    .custom-file-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 </style>
 
 <div class="p-3">
@@ -52,7 +58,7 @@
 
             <div class="custom-file text-left">
                 <input type="file" name="foto_profil" class="custom-file-input" id="fotoProfil" accept="image/*">
-                <label class="custom-file-label" for="fotoProfil" style="border-radius: 12px; border: 2px solid #eaf6fd;">Ganti Foto (Opsional)...</label>
+                <label class="custom-file-label" for="fotoProfil" style="border-radius: 15px; border: 2px solid #eaf6fd;">Ganti Foto (Opsional)...</label>
             </div>
             <small class="text-muted text-left d-block mt-1">Biarkan kosong jika tidak ingin mengubah foto.</small>
         </div>

@@ -82,7 +82,7 @@
 </style>
 
 <div class="p-3">
-    <h4 class="font-weight-bold mb-4 mt-2">Laporan Bulanan</h4>
+    <h4 class="font-weight-bold mb-2 mt-2">Laporan Bulanan</h4>
 
     <form action="{{ route('laporan.index') }}" method="GET" class="mb-4">
 <div class="form-group mb-3">

@@ -11,6 +11,7 @@
         body {
             font-family: 'Montserrat', sans-serif;
         }
+        
         .header-nyegat {
             background-color: #d8efff;
             padding: 15px;

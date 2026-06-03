@@ -32,7 +32,7 @@
     </div>
     @endif
     
-    <h4 class="font-weight-bold mb-4 mt-2">Tambah Nelayan Baru</h4>
+    <h4 class="font-weight-bold mb-2 mt-2">Tambah Nelayan Baru</h4>
 
     <form action="{{ route('nelayan.store') }}" method="POST" enctype="multipart/form-data">
         @csrf

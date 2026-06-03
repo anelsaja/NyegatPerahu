@@ -33,7 +33,7 @@
     </div>
     @endif
 
-    <h4 class="font-weight-bold mb-4 mt-2">Edit Data Nelayan</h4>
+    <h4 class="font-weight-bold mb-2 mt-2">Edit Data Nelayan</h4>
 
     <form action="{{ route('nelayan.update', $nelayan->nelayan_id) }}" method="POST" enctype="multipart/form-data">
         @csrf

@@ -67,7 +67,7 @@
             $totalPerPengepul = 0; 
             // Mengambil status pembayaran dari item pertama milik pengepul ini
             $statusPengepul = $items->first()->status_pembayaran ?? 'Lunas';
-            $badgeColor = ($statusPengepul == 'Lunas') ? 'badge-success' : 'badge-warning';
+            $badgeColor = ($statusPengepul == 'Lunas') ? 'badge-success' : 'badge-danger';
         @endphp
 
         <div class="mb-4 border-bottom pb-2">
@@ -124,14 +124,6 @@
 </div>
 <div style="height: 120px;"></div>
 
-<div class="btn-bawah-ganda">
-    <a href="{{ route('home') }}" class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">
-        Batal
-        </a>
-    <button type="submit" class="btn btn-warning btn-lg font-weight-bold shadow-sm m-0" style="border-radius: 15px; flex: 1; padding: 16px 0;">
-        Simpan Edit
-    </button>
-</div>
 <div class="btn-bawah-ganda">
     <a href="{{ route('home') }}" class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">
         Batal

@@ -535,7 +535,7 @@
     <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
         <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
             <div class="modal-header border-bottom-0 pb-0">
-                <h5 class="modal-title font-weight-bold">Tambah Data ini dan Kirim Pesan</h5>
+                <h5 class="modal-title font-weight-bold">Tambah Data ini dan Kirim Pesan WhatsApp</h5>
             </div>      
             <div class="modal-body pt-3">
                 <div class="d-flex justify-content-between align-items-start mb-3">

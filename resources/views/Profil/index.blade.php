@@ -5,7 +5,7 @@
     .avatar-profile {
         width: 100px;
         height: 100px;
-        background-color: #08a10b; /* Warna utama hijau */
+        background-color: #08a10b;
         color: white;
         font-size: 40px;
         border-radius: 50%;
@@ -36,7 +36,7 @@
 </style>
 
 <div class="p-3">
-    <h4 class="font-weight-bold mb-4 mt-2">Profil Saya</h4>
+    <h4 class="font-weight-bold mb-2 mt-2">Profil Saya</h4>
 
     <div class="text-center mb-4 mt-5 pt-3">
         <div class="avatar-profile mb-4">

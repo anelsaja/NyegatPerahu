@@ -54,7 +54,7 @@
 
 <div class="p-3">
     @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show shadow-sm mb-3" role="alert" style="border-radius: 12px;">
+    <div class="alert alert-success alert-dismissible fade show shadow-sm mt-1" role="alert" style="border-radius: 12px;">
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <i class="bi bi-check-circle-fill mr-1"></i> 
@@ -67,11 +67,11 @@
     </div>
     @endif
 
-    <h4 class="font-weight-bold mb-4 mt-2">Data Nelayan</h4>
+    <h4 class="font-weight-bold mb-2 mt-2">Data Nelayan</h4>
 
     <h6>Cari nama nelayan:</h6>
 
-    <form action="{{ route('nelayan.index') }}" method="GET" class="mb-4">
+    <form action="{{ route('nelayan.index') }}" method="GET" class="mb-2">
         <div class="input-group shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff; overflow: hidden;">
             <input type="text" 
                    name="cari" 
@@ -162,7 +162,7 @@
                         style="border-radius: 15px; padding: 10px 15px;">
                     Batal
                 </button>
-                <form id="formHapusAjaib" method="POST" style="margin: 0;">
+                <form id="formHapusAjaib" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit"

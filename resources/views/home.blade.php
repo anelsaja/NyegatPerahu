@@ -28,7 +28,7 @@
 
 <div class="p-3">
     @if(session('success'))
-    <div id="alert-sukses-wa" class="alert alert-success alert-dismissible fade show shadow-sm mt-3" role="alert" style="border-radius: 12px;">
+    <div id="alert-sukses-wa" class="alert alert-success alert-dismissible fade show shadow-sm mt-1" role="alert" style="border-radius: 12px;">
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <i class="bi bi-check-circle-fill mr-1"></i> 
@@ -51,7 +51,7 @@
     </div>
     @endif
 
-    <h4 class="font-weight-bold mb-4 mt-2">Riwayat Penjualan</h4>
+    <h4 class="font-weight-bold mb-2 mt-2">Riwayat Penjualan</h4>
 
     <h6>Cari berdasarkan tanggal:</h6>
     <form action="{{ route('home') }}" method="GET" class="mb-2">
@@ -78,7 +78,7 @@
                         </small>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted text-truncate" style="max-width: 180px; font-size: 13px;">
+                        <small class="text-muted text-wrap" style="max-width: 180px; font-size: 13px;">
                             Pengepul: <strong>{{ $trx->detail->pluck('nama_pengepul')->unique()->implode(', ') }}</strong>
                         </small>
                         <strong class="text-success" style="font-size: 14px;">
@@ -103,17 +103,26 @@
                     </button>
                 </div>
             </div>
-            
         </div>
         @empty
         <div class="text-center text-muted p-4 mt-4">
             <i class="bi bi-inbox" style="font-size: 40px; color: #ccc;"></i>
-            <p class="mt-2 font-weight-bold">Belum ada riwayat penjualan.</p>
+            <p class="mt-2 font-weight-bold">
+                {{ request('cari') ? 'Data penjualan tidak ditemukan.' : 'Belum ada riwayat penjualan.' }}
+            </p>
+
+            @if(request('cari'))
+            <a href="{{ route('home') }}" 
+            class="btn btn-md btn-light mt-2 font-weight-bold"
+            style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;">
+                Tampilkan Semua
+            </a>
+            @endif
         </div>
         @endforelse
     </div>
 
-    <div style="height: 100px;"></div>
+    <div style="height: 180px;"></div>
 
     <a href="{{ route('penjualan.create') }}" class="btn-tambah-fab">
         <i class="bi bi-plus-lg"></i>
@@ -147,11 +156,11 @@
                         style="border-radius: 15px; padding: 10px 15px;">
                     Batal
                 </button>
-                <form id="formHapusAjaib" method="POST" style="margin: 0;">
+                <form id="formHapusAjaib" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
-                            class="btn btn-danger shadow-sm font-weight-bold px-4"
+                            class="btn btn-success shadow-sm font-weight-bold px-4"
                             style="border-radius: 15px; padding: 10px 15px;">
                         Hapus
                     </button>

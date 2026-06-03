@@ -74,6 +74,18 @@
         color: #007bff;
         box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
     }
+
+    .btn-bawah-ganda { 
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%; 
+        padding: 15px;
+        display: flex;
+        gap: 10px;
+        background-color: #ffffff;
+        border-top: 2px solid #f0f0f0;
+    }
     
     /* Input harga */
     .input-harga {
@@ -96,59 +108,6 @@
         border-color: #007bff;
         outline: none;
         box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-    }
-    
-    .btn-bawah { 
-        position: fixed;
-        bottom: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 15px;
-        display: block;
-        width: 92%;
-        border-radius: 15px;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-
-    /* Isi tombol/link */
-    .btn-isi-bawah {
-        display: block;
-        width: 100%;
-        background: transparent;
-        border: none;
-        color: white;
-        text-decoration: none !important;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .btn-isi-bawah:focus,
-    .btn-isi-bawah:active,
-    .btn-isi-bawah:visited {
-        color: white;
-        text-decoration: none !important;
-        outline: none;
-        box-shadow: none;
-        border: none;
-    }
-
-    .btn-kembali {
-        display: block;
-        width: 100%;
-        border-radius: 15px;
-        padding: 18px;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        text-decoration: none !important;
-        border: none;
-        background-color: whitesmoke;
-        color: black;
     }
 
     .btn-tambah-baru {
@@ -232,8 +191,10 @@
         </div>
         <div style="height: 120px;"></div>
 
-        <div class="btn-bawah" style="background-color: #dc3545;">
-            <a href="{{ route('home') }}" class="btn-isi-bawah">
+        <div class="btn-bawah-ganda">
+            <a href="{{ route('home') }}"
+            class="btn btn-danger btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0"
+            style="border-radius: 15px; width: 100%; padding: 16px 0;">
                 Batal
             </a>
         </div>
@@ -246,16 +207,6 @@
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
-
-        <a 
-            href="javascript:void(0)" 
-            onclick="pindahKeStep(1)" 
-            id="btn-kembali-nelayan"
-            class="btn-kembali" 
-            style="margin-bottom: 20px;"
-        >
-            <i class="bi bi-arrow-left"></i> Kembali Pilih Nelayan
-        </a>
 
         <p class="font-weight-bold">Pilih Jenis Hasil Laut</p>
         
@@ -317,9 +268,19 @@
         </div>
         <div style="height: 120px;"></div>
 
-        <div class="btn-bawah" style="background-color: #0d6efd;">
-            <button onclick="lanjutKePengepul()" class="btn-isi-bawah">
-                Lanjut Pilih Pengepul <i class="bi bi-arrow-right"></i>
+        <div class="btn-bawah-ganda">
+            <button type="button"
+                    onclick="pindahKeStep(1)"
+                    class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0"
+                    style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">
+                Kembali
+            </button>
+
+            <button type="button"
+                    onclick="lanjutKePengepul()"
+                    class="btn btn-primary btn-lg font-weight-bold shadow-sm m-0"
+                    style="border-radius: 15px; flex: 1; padding: 16px 0;">
+                Lanjut
             </button>
         </div>
     </div>
@@ -331,10 +292,6 @@
             <tr><td>Nama Nelayan</td><td class="info-nelayan-nama-teks">-</td></tr>
             <tr><td>Ibu-ibu Nelayan</td><td class="text-info">{{ Auth::user()->nama }}</td></tr>
         </table>
-
-        <a href="javascript:void(0)" onclick="pindahKeStep(2)" class="btn-kembali" style="margin-bottom: 20px;">
-            <i class="bi bi-arrow-left"></i> Kembali Pilih Ikan
-        </a>
 
         <p class="font-weight-bold">Pilih Pengepul</p>
 
@@ -387,9 +344,19 @@
         </div>
         <div style="height: 120px;"></div>
 
-        <div class="btn-bawah" style="background-color: #0d6efd;">
-            <button onclick="validasiDanSimpan()" class="btn-isi-bawah">
-                <i class="bi bi-plus"></i> Tambah Data Ini dan Kirim Pesan
+        <div class="btn-bawah-ganda">
+            <button type="button"
+                    onclick="pindahKeStep(2)"
+                    class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0"
+                    style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">
+                Kembali
+            </button>
+
+            <button type="button"
+                    onclick="validasiDanSimpan()"
+                    class="btn btn-primary btn-lg font-weight-bold shadow-sm m-0"
+                    style="border-radius: 15px; flex: 1; padding: 16px 0;">
+                Simpan
             </button>
         </div>
     </div>
@@ -420,8 +387,11 @@
         </button>
         <div style="height: 120px;"></div>
         
-        <div class="btn-bawah" style="background-color: #0d6efd;">
-            <button onclick="$('#modalKonfirmasiStep5').modal('show')" class="btn-isi-bawah">
+        <div class="btn-bawah-ganda">
+            <button type="button"
+                    onclick="$('#modalKonfirmasiStep5').modal('show')"
+                    class="btn btn-primary btn-lg font-weight-bold shadow-sm m-0"
+                    style="border-radius: 15px; width: 100%; padding: 16px 0;">
                 Lanjut ke Biaya Admin <i class="bi bi-arrow-right"></i>
             </button>
         </div>
@@ -457,8 +427,11 @@
             </div>
         </div>
 
-        <div class="btn-bawah" style="background-color: #0d6efd;">
-            <button type="button" onclick="kirimKeDatabaseLaravel('cetak')" class="btn-isi-bawah">
+        <div class="btn-bawah-ganda">
+            <button type="button"
+                    onclick="kirimKeDatabaseLaravel('cetak')"
+                    class="btn btn-primary btn-lg font-weight-bold shadow-sm m-0"
+                    style="border-radius: 15px; width: 100%; padding: 16px 0;">
                 Buat Karcis dan Simpan
             </button>
         </div>
@@ -562,8 +535,6 @@
                     Data yang ditambahkan tidak dapat diubah lagi di keranjang.
                 </p>
             </div>
-
-            <!-- Footer -->
             <div class="modal-footer border-top-0 pt-0">
                 <button type="button"
                     class="btn btn-light shadow-sm font-weight-bold"

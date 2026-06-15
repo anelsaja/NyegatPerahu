@@ -41,9 +41,23 @@
             <label class="font-weight-bold text-dark">Foto Profil (Opsional)</label>
             <div class="custom-file">
                 <input type="file" name="foto_profil" class="custom-file-input" id="fotoProfil" accept="image/*">
-                <label class="custom-file-label" for="fotoProfil" style="border-radius: 12px; border: 2px solid #eaf6fd;">Pilih Foto...</label>
+                <label class="custom-file-label" for="fotoProfil"
+                    style="border-radius: 12px; border: 2px solid #eaf6fd;">
+                    <i class="bi bi-image mr-1"></i>
+                    Pilih Foto...
+                </label>
             </div>
             <small class="text-muted">Format: JPG, JPEG, PNG. Maksimal 2MB.</small>
+            <div id="alert-foto-besar"
+                class="alert shadow-sm mt-2"
+                style="display: none; border-radius: 12px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-circle-fill text-danger mr-2"></i>
+                    <span style="font-size: 13px;">
+                        Ukuran foto terlalu besar. Maksimal 2 MB.
+                    </span>
+                </div>
+            </div>
         </div>
         <div class="form-group mb-4">
             <label class="font-weight-bold">Nama Nelayan <span class="text-danger">*</span></label>
@@ -72,9 +86,33 @@
     </form>
 </div>
 <script>
-    $('.custom-file-input').on('change', function() {
-        let fileName = $(this).val().split('\\').pop();
-        $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    });
+document.getElementById('fotoProfil').addEventListener('change', function() {
+
+    let file = this.files[0];
+
+    if (!file) return;
+
+    let maxSize = 2 * 1024 * 1024; // 2 MB
+
+    if (file.size > maxSize) {
+
+        document.getElementById('alert-foto-besar').style.display = 'block';
+
+        this.value = '';
+
+        document.querySelector('label[for="fotoProfil"]').innerHTML = 'Pilih Foto...';
+
+        setTimeout(() => {
+            document.getElementById('alert-foto-besar').style.display = 'none';
+        }, 4000);
+
+        return;
+    }
+
+    document.getElementById('alert-foto-besar').style.display = 'none';
+
+    document.querySelector('label[for="fotoProfil"]').innerHTML =
+    '<i class="bi bi-image-fill text-success mr-1"></i>' + file.name;
+});
 </script>
 @endsection

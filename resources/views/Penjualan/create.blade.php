@@ -220,43 +220,43 @@
         <div class="grid-btn" id="container-ikan">
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Lelang', this)">
                 Lelang
-                <input type="number" id="input-Lelang" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+                <input type="text" id="input-Lelang" class="input-harga format-rupiah" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Timbangan', this)">
                 Timbangan
-                <input type="number" id="input-Timbangan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+                <input type="text" id="input-Timbangan" class="input-harga format-rupiah" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Tebleng', this)">
                 Tebleng
-                <input type="number" id="input-Tebleng" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+                <input type="text" id="input-Tebleng" class="input-harga format-rupiah" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Kembung', this)">
                 Kembung
-                <input type="number" id="input-Kembung" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+                <input type="text" id="input-Kembung" class="input-harga format-rupiah" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Cucut', this)">
                 Cucut
-                <input type="number" id="input-Cucut" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+                <input type="text" id="input-Cucut" class="input-harga format-rupiah" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Pirek', this)">
                 Pirek
-                <input type="number" id="input-Pirek" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+                <input type="text" id="input-Pirek" class="input-harga format-rupiah" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Blekutak', this)">
                 Blekutak
-                <input type="number" id="input-Blekutak" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+                <input type="text" id="input-Blekutak" class="input-harga format-rupiah" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Rajungan', this)">
                 Rajungan
-                <input type="number" id="input-Rajungan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+                <input type="text" id="input-Rajungan" class="input-harga format-rupiah" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Windu', this)">
                 Windu
-                <input type="number" id="input-Windu" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+                <input type="text" id="input-Windu" class="input-harga format-rupiah" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
             <div class="btn-kotak item-ikan" onclick="toggleInputIkan('Elek-Elekan', this)">
                 Elek-Elekan
-                <input type="number" id="input-Elek-Elekan" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+                <input type="text" id="input-Elek-Elekan" class="input-harga format-rupiah" placeholder="Rp" onclick="event.stopPropagation()">
             </div>
         </div>
         
@@ -419,7 +419,7 @@
             </div>
             <div class="form-group border-bottom pb-3">
                 <label class="font-weight-bold">Biaya Admin</label>
-                <input type="number" id="input-admin" class="form-control text-left" placeholder="Rp" oninput="hitungTotalAkhir()">
+                <input type="text" id="input-admin" class="form-control text-left" placeholder="Rp" oninput="hitungTotalAkhir()">
             </div>
             <div class="d-flex justify-content-between mt-3">
                 <span class="font-weight-bold text-success">TOTAL AKHIR</span>
@@ -744,7 +744,7 @@ function simpanIkanBaru() {
         let htmlKotakBaru = `
         <div class="btn-kotak" onclick="toggleInputIkan('${idAman}')">
             ${namaIkan} <span class="text-danger">*</span>
-            <input type="number" id="input-${idAman}" class="input-harga" placeholder="Rp" onclick="event.stopPropagation()">
+            <input type="text" id="input-${idAman}" class="input-harga format-rupiah" placeholder="Rp" onclick="event.stopPropagation()">
         </div>`;
         document.getElementById('container-ikan').insertAdjacentHTML('beforeend', htmlKotakBaru);
     } else {
@@ -759,7 +759,7 @@ function lanjutKePengepul() {
     let adaLelang = false; // 1. Tambahan variabel penanda ikan lelang
 
     document.querySelectorAll('.input-harga').forEach(input => {
-        if (input.value && parseInt(input.value) > 0) {
+        if (input.value && parseInt(input.value.replace(/\./g, '')) > 0) {
             adaIkan = true;
             
             // 2. Cek jika kotak yang sedang diisi adalah kotak "Lelang"
@@ -918,7 +918,9 @@ function validasiDanSimpan() {
     document.querySelectorAll('.input-harga').forEach(function(kotakInput) {
         if (kotakInput.style.display === 'block' && kotakInput.value !== '') {
             let namaIkan = kotakInput.id.replace('input-', '').replace(/_/g, ' '); 
-            let hargaIkan = parseInt(kotakInput.value); 
+            let hargaIkan = parseInt(
+                kotakInput.value.replace(/\./g, '')
+            );
                 
             keranjangSementara.push({
                 pengepul: memori.pengepul_aktif,
@@ -1109,7 +1111,9 @@ function hitungTotalAkhir() {
     if (elKotor) elKotor.innerText = "Rp " + kotor.toLocaleString('id-ID');
 
     let elAdmin = document.getElementById('input-admin');
-    let nilaiAdmin = (elAdmin && elAdmin.value !== "") ? parseInt(elAdmin.value) : 0;
+    let nilaiAdmin = (elAdmin && elAdmin.value !== "")
+        ? parseInt(elAdmin.value.replace(/\./g, ''))
+        : 0;
 
     let bersih = kotor - nilaiAdmin;
 
@@ -1136,7 +1140,8 @@ function kirimKeDatabaseLaravel(aksi) {
         areaInputRahasia.innerHTML += `<input type="hidden" name="hasil_laut[${urutan}][status_pembayaran]" value="${ikan.status}">`;
     });
 
-    let admin = document.getElementById('input-admin').value || 0;
+    let admin = document.getElementById('input-admin').value || '0';
+    admin = admin.replace(/\./g, '');
     document.getElementById('input-admin-hidden').value = admin;
 
     // KODE BARU: Ambil teks catatan dari textarea dan masukkan ke input hidden
@@ -1164,6 +1169,26 @@ document.addEventListener("DOMContentLoaded", function() {
         // Masukkan hpBaru ke dalam fungsi
         pilihNelayan(idBaru, namaBaru, hpBaru);
     @endif
+});
+
+document.addEventListener('input', function(e) {
+
+    if (
+        e.target.classList.contains('input-harga') ||
+        e.target.id === 'input-admin'
+    ) {
+
+        let angka = e.target.value.replace(/\D/g, '');
+
+        e.target.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+        if (e.target.id === 'input-admin') {
+            hitungTotalAkhir();
+        }
+
+        cekModeLelang();
+    }
+
 });
 </script>
 @endsection

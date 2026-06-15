@@ -162,6 +162,16 @@ class PenjualanController extends Controller
 
         $pdf = Pdf::loadView('penjualan.pdf', compact('penjualan'));
 
-        return $pdf->download('Karcis_Ikan_'.$penjualan->penjualan_id.'.pdf');
+        // Nama nelayan aman untuk nama file
+        $namaNelayan = preg_replace('/[^A-Za-z0-9_\-]/', '_', $penjualan->nelayan->nama);
+
+        // Format tanggal Indonesia
+        $tanggal = \Carbon\Carbon::parse($penjualan->tanggal)
+            ->locale('id')
+            ->translatedFormat('d F Y');
+
+        $namaFile = 'Karcis Penjualan_' . $namaNelayan . '_' . $tanggal . '.pdf';
+
+        return $pdf->download($namaFile);
     }
 }

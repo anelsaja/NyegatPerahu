@@ -154,7 +154,14 @@
                         </div>
                         
                         <div class="input-group input-group-sm mr-2" style="flex: 1.2; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
-                            <input type="number" name="hasil_laut[{{ $urutanKe }}][harga]" class="form-control input-struk text-right text-info nilai-harga border-0 w-100 bg-white" value="{{ intval($item->harga) }}" oninput="hitungTotalBaru()" required style="font-size: 15px;" placeholder="Rp">
+                            <input type="text"
+                                name="hasil_laut[{{ $urutanKe }}][harga]"
+                                class="form-control input-struk text-right text-info nilai-harga border-0 w-100 bg-white format-rupiah"
+                                value="{{ number_format($item->harga, 0, ',', '.') }}"
+                                oninput="formatInputRupiah(this); hitungTotalBaru();"
+                                required
+                                style="font-size: 15px;"
+                                placeholder="Rp">
                         </div>
 
                         <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('baris-ikan-{{ $urutanKe }}', 'card-{{ $idPengepul }}')">
@@ -204,15 +211,14 @@
                 <div class="form-group border-bottom pb-3 mb-3">
                     <label class="font-weight-bold">Biaya Admin</label>
                     <input 
-                        type="number" 
-                        name="biaya_admin" 
-                        id="input-biaya-admin"
-                        class="form-control text-left"
-                        placeholder="Rp"
-                        value="{{ intval($penjualan->biaya_admin) }}"
-                        oninput="hitungTotalBaru()"
-                        required
-                    >
+                            type="text" 
+                            name="biaya_admin" 
+                            id="input-biaya-admin"
+                            class="form-control text-left format-rupiah"
+                            placeholder="Rp"
+                            value="{{ number_format($penjualan->biaya_admin, 0, ',', '.') }}"
+                            oninput="formatInputRupiah(this); hitungTotalBaru();"
+                            required>
                 </div>
                 <div class="d-flex justify-content-between mt-3">
                     <span class="font-weight-bold text-success">TOTAL AKHIR</span>
@@ -348,7 +354,12 @@
                 </div>
                 
                 <div class="input-group input-group-sm mr-2" style="flex: 1.2; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
-                    <input type="number" name="hasil_laut[${urutanKe}][harga]" class="form-control input-struk text-right text-info nilai-harga border-0 w-100 bg-white" placeholder="Rp" oninput="hitungTotalBaru()" required style="font-size: 15px;">
+                    <input type="text"
+                        class="form-control input-struk text-right text-info nilai-harga format-rupiah border-0 w-100 bg-white"
+                        placeholder="Rp"
+                        oninput="formatInputRupiah(this); hitungTotalBaru()"
+                        required
+                        style="font-size: 15px;">
                 </div>
 
                 <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('${idBaris}', 'card-${idPengepul}')">
@@ -407,7 +418,12 @@
                     </div>
                     
                     <div class="input-group input-group-sm mr-2" style="flex: 1.2; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
-                        <input type="number" name="hasil_laut[${urutanKe}][harga]" class="form-control input-struk text-right text-info nilai-harga border-0 w-100 bg-white" placeholder="Rp" oninput="hitungTotalBaru()" required style="font-size: 15px;">
+                        <input type="text"
+                            class="form-control input-struk text-right text-info nilai-harga format-rupiah border-0 w-100 bg-white"
+                            placeholder="Rp"
+                            oninput="formatInputRupiah(this); hitungTotalBaru()"
+                            required
+                            style="font-size: 15px;">
                     </div>
 
                     <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('baris-ikan-${urutanKe}', 'card-${idPengepulBaru}')">
@@ -492,13 +508,17 @@
         let semuaHarga = document.querySelectorAll('.nilai-harga');
         
         semuaHarga.forEach(function(inputBox) {
-            let angka = parseInt(inputBox.value);
+            let angka = parseInt(
+                inputBox.value.replace(/\./g, '')
+            );
             if (!isNaN(angka)) {
                 totalKotor += angka;
             }
         });
 
-        let biayaAdmin = parseInt(document.getElementById('input-biaya-admin').value);
+        let biayaAdmin = parseInt(
+            document.getElementById('input-biaya-admin').value.replace(/\./g, '')
+        );
         if (isNaN(biayaAdmin)) {
             biayaAdmin = 0;
         }
@@ -513,6 +533,20 @@
     window.onload = function() {
         hitungTotalBaru();
     };
+
+    function formatInputRupiah(input) {
+        let angka = input.value.replace(/\D/g, '');
+
+        input.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    document.querySelector('form').addEventListener('submit', function() {
+
+    document.querySelectorAll('.format-rupiah').forEach(function(input) {
+        input.value = input.value.replace(/\./g, '');
+    });
+
+});
 </script>
 
 @endsection

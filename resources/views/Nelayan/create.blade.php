@@ -24,7 +24,7 @@
     <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" style="border-radius: 12px; background-color: #fde8ec; border: 1px solid #f8c9d2; color: #dc3545;">
         <div class="d-flex align-items-center">
             <i class="bi bi-exclamation-triangle-fill mr-2" style="font-size: 1.2rem;"></i> 
-            <strong style="font-size: 14px;">{{ session('error') }}</strong>
+            <span style="font-size: 14px;">{{ session('error') }}</span>
         </div>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="padding-top: 0.6rem;">
             <span aria-hidden="true" style="color: #dc3545;">&times;</span>
@@ -48,14 +48,10 @@
                 </label>
             </div>
             <small class="text-muted">Format: JPG, JPEG, PNG. Maksimal 2MB.</small>
-            <div id="alert-foto-besar"
-                class="alert shadow-sm mt-2"
-                style="display: none; border-radius: 12px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
+            <div id="alert-foto-besar" class="alert shadow-sm mt-2" style="display: none; border-radius: 12px; background-color: #fde8ec; border-left: 2px solid #dc3545;">
                 <div class="d-flex align-items-center">
                     <i class="bi bi-exclamation-circle-fill text-danger mr-2"></i>
-                    <span style="font-size: 13px;">
-                        Ukuran foto terlalu besar. Maksimal 2 MB.
-                    </span>
+                    <span style="font-size: 13px;">Ukuran foto terlalu besar. Maksimal 2 MB.</span>
                 </div>
             </div>
         </div>

@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-
 class PenjualanController extends Controller
 {
     public function create()
@@ -50,22 +49,12 @@ class PenjualanController extends Controller
 
         $penjualan->update(['total_harga' => $total_keseluruhan]);
 
-        // AMBIL OBJEK NELAYAN (Otomatis membawa fungsi link_wa)
-        $nelayan = Nelayan::find($request->nelayan_id);
-
         // ALUR REDIRECT
-        if ($request->aksi_transaksi == 'cetak') {
-            return redirect()->route('home')->with([
-                'success' => 'Data tersimpan! Karcis sedang diunduh.',
-                'url_karcis_pdf' => route('penjualan.cetak', $penjualan->penjualan_id),
-                'link_wa_nelayan' => $penjualan->link_wa
-            ]);
-        } else {
-            return redirect()->route('home')->with([
-                'success' => 'Data penjualan berhasil disimpan!',
-                'link_wa_nelayan' => $penjualan->link_wa
-            ]);
-        }
+        return redirect()->route('home')->with([
+            'success' => 'Data tersimpan! Karcis sedang diunduh.',
+            'url_karcis_pdf' => route('penjualan.cetak', $penjualan->penjualan_id),
+            'link_wa_nelayan' => $penjualan->link_wa
+        ]);
     }
 
     // Menampilkan detail transaksi (seperti struk)
@@ -170,8 +159,6 @@ class PenjualanController extends Controller
             ->locale('id')
             ->translatedFormat('d F Y');
 
-        $namaFile = 'Karcis Penjualan_' . $namaNelayan . '_' . $tanggal . '.pdf';
-
-        return $pdf->download($namaFile);
+        return $pdf->download('Karcis Penjualan_' . $namaNelayan . '_' . $tanggal . '.pdf');
     }
 }

@@ -20,7 +20,7 @@ class NelayanController extends Controller
             $query->where('nama', 'like', '%' . $request->cari . '%');
         }
 
-        // Ambil datanya (bisa ditambahkan paginate() jika datanya ribuan)
+        // Ambil datanya
         $nelayans = $query->orderBy('nama', 'asc')->get();
 
         return view('nelayan.index', compact('nelayans'));
@@ -84,7 +84,6 @@ class NelayanController extends Controller
             'nelayan_baru_id' => $nelayan->nelayan_id,
             'nelayan_baru_nama' => $nelayan->nama,
             'nelayan_baru_hp' => $nelayan->nomor_hp,
-            'success' => 'Nelayan berhasil ditambahkan! silakan pilih!'
            ]);
         } else {
             // Jika datang dari menu nelayan biasa, kembalikan ke tabel nelayan
@@ -103,10 +102,7 @@ class NelayanController extends Controller
     public function edit($id)
     {
         // Cari data nelayan berdasarkan ID dan pastikan itu milik ibu yang sedang login
-        $nelayan = Nelayan::where('nelayan_id', $id)
-                    ->where('pengguna_id', Auth::id())
-                    ->firstOrFail();
-
+        $nelayan = Nelayan::where('nelayan_id', $id)->where('pengguna_id', Auth::id())->firstOrFail();
         return view('nelayan.edit', compact('nelayan'));
     }
 
@@ -133,9 +129,7 @@ class NelayanController extends Controller
         }
 
         // Cari data nelayan berdasarkan ID dan pastikan itu milik ibu yang sedang login
-        $nelayan = Nelayan::where('nelayan_id', $id)
-                    ->where('pengguna_id', Auth::id())
-                    ->firstOrFail();
+        $nelayan = Nelayan::where('nelayan_id', $id)->where('pengguna_id', Auth::id())->firstOrFail();
 
         // 2. Siapkan wadah data awal untuk di-update
         $data = [

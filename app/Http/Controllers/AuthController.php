@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Laravel\Socialite\Facades\Socialite;
 use App\Pengguna;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -27,7 +26,7 @@ class AuthController extends Controller
         try {
             $user = Socialite::driver('google')->stateless()->user();
 
-                // Cek apakah email sudah ada di database. Jika belum, daftarkan akun baru!
+            // Cek apakah email sudah ada di database. Jika belum, daftarkan akun baru!
             $pengguna = Pengguna::firstOrCreate(
                 ['email' => $user->getEmail()],
                 [

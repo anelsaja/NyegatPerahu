@@ -88,7 +88,7 @@ class LaporanController extends Controller
             'nama_bulan' => $nama_bulan
         ];
 
-        $pdf = app('dompdf.wrapper')->loadView('laporan.pdf', $data);
+        $pdf = Pdf::loadView('laporan.pdf', $data);
         return $pdf->download('Laporan Bulanan_'.$nelayan->nama.'_Bulan '.$nama_bulan.'.pdf');
     }
 }

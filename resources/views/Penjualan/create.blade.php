@@ -429,7 +429,7 @@
 
         <div class="btn-bawah-ganda">
             <button type="button"
-                    onclick="kirimKeDatabaseLaravel('cetak')"
+                    onclick="kirimKeDatabaseLaravel()"
                     class="btn btn-primary btn-lg font-weight-bold shadow-sm m-0"
                     style="border-radius: 15px; width: 100%; padding: 16px 0;">
                 Buat Karcis dan Simpan
@@ -442,7 +442,6 @@
     @csrf
     <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
     <input type="hidden" name="nelayan_id" id="input-rahasia-nelayan">
-    <input type="hidden" name="aksi_transaksi" id="input-aksi-transaksi">
     <input type="hidden" name="biaya_admin" id="input-admin-hidden">
     <input type="hidden" name="catatan" id="input-catatan-hidden">
     <div id="tempat-input-ikan-rahasia"></div>
@@ -1121,13 +1120,12 @@ function hitungTotalAkhir() {
     if (elAkhir) elAkhir.innerText = "Rp " + bersih.toLocaleString('id-ID');
 }
 
-function kirimKeDatabaseLaravel(aksi) {
+function kirimKeDatabaseLaravel() {
     if (memori.daftar_belanja.length === 0) {
         alert("Keranjang masih kosong!");
         return;
     }
 
-    document.getElementById('input-aksi-transaksi').value = aksi;
     document.getElementById('input-rahasia-nelayan').value = memori.nelayan_id;
 
     let areaInputRahasia = document.getElementById('tempat-input-ikan-rahasia');

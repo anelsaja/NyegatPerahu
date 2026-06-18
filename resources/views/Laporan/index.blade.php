@@ -82,6 +82,29 @@
 </style>
 
 <div class="p-3">
+    <div id="alert-wa-laporan"
+        class="alert alert-success alert-dismissible fade shadow-sm"
+        style="display:none; border-radius:12px;">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <i class="bi bi-check-circle-fill mr-1"></i>
+                <strong>Laporan berhasil diunduh!</strong>
+            </div>
+
+            <a href="{!! $link_wa_bulanan !!}"
+            target="_blank"
+            class="btn btn-success btn-sm font-weight-bold shadow"
+            style="border-radius:8px; background:#25D366; border-color:#25D366;">
+                <i class="bi bi-whatsapp"></i> Kirim ke WA
+            </a>
+        </div>
+
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+
     <h4 class="font-weight-bold mb-2 mt-2">Laporan Bulanan</h4>
 
     <form action="{{ route('laporan.index') }}" method="GET" class="mb-4">
@@ -229,16 +252,12 @@
         @endphp
 
         @if($link_wa_bulanan)
-            <button type="button" 
-                    onclick="cetakDanKirimWa('{{ route('laporan.pdf', ['nelayan_id' => request('nelayan_id'), 'bulan' => request('bulan')]) }}', '{!! $link_wa_bulanan !!}')" 
-                    class="btn-wa-fab" 
-                    title="Cetak PDF & Kirim WA">
-                <i class="bi bi-whatsapp"></i>
-            </button>
-        @else
-            <a href="{{ route('laporan.pdf', ['nelayan_id' => request('nelayan_id'), 'bulan' => request('bulan')]) }}" class="btn-pdf-fab" title="Download PDF">
+            <button type="button"
+                    onclick="downloadLaporan()"
+                    class="btn-pdf-fab"
+                    title="Download PDF">
                 <i class="bi bi-file-earmark-pdf-fill"></i>
-            </a>
+            </button>
         @endif
     @endif
 </div>
@@ -246,13 +265,25 @@
 <div style="height: 180px;"></div>
 
 <script>
-    function cetakDanKirimWa(urlPdf, urlWa) {
-        // 1. Perintahkan browser membuka tab WA baru
-        window.open(urlWa, '_blank');
-        
-        // 2. Beri jeda 1 detik lalu jalankan unduh laporan PDF
+    function downloadLaporan() {
+
+        // Download PDF
+        window.open(
+            "{{ route('laporan.pdf', [
+                'nelayan_id' => request('nelayan_id'),
+                'bulan' => request('bulan')
+            ]) }}",
+            '_blank'
+        );
+
+        // Tampilkan alert WA
         setTimeout(function() {
-            window.location.href = urlPdf;
+
+            let alertBox = document.getElementById('alert-wa-laporan');
+
+            alertBox.style.display = 'block';
+            alertBox.classList.add('show');
+
         }, 1000);
     }
 

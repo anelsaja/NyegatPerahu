@@ -16,12 +16,10 @@ class CreateDetailPenjualanTable extends Migration
         Schema::create('detail_penjualan', function (Blueprint $table) {
             $table->bigIncrements('detail_id');
             $table->unsignedBigInteger('penjualan_id');
-            $table->string('nama_pengepul'); // Pengepul pindah ke sini
+            $table->string('nama_pengepul');
             $table->string('jenis_hasil_laut');
-            $table->decimal('harga', 15, 2);
-
-            // TAMBAHKAN BARIS INI:
-            $table->enum('status_pembayaran', ['Lunas', 'Belum Lunas'])->default('Lunas');
+            $table->unsignedBigInteger('harga');
+            $table->enum('status_pembayaran', ['Lunas', 'Hutang']);
 
             $table->foreign('penjualan_id')->references('penjualan_id')->on('penjualan')->onDelete('cascade');
         });

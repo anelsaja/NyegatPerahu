@@ -18,11 +18,9 @@ class CreatePenjualanTable extends Migration
             $table->unsignedBigInteger('pengguna_id');
             $table->unsignedBigInteger('nelayan_id');
             $table->date('tanggal');
-            // nama_pengepul dihapus dari sini
-            $table->decimal('total_harga', 15, 2);
-            $table->decimal('biaya_admin', 15, 2)->default(0); // Kolom Biaya Admin
+            $table->unsignedBigInteger('total_harga')->default(0);
+            $table->unsignedBigInteger('biaya_admin')->default(0);
             $table->text('catatan')->nullable();
-            // $table->enum('status_pembayaran', ['Lunas', 'Belum Lunas']);
             $table->timestamps();
 
             $table->foreign('pengguna_id')->references('pengguna_id')->on('pengguna')->onDelete('cascade');

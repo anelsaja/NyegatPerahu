@@ -33,7 +33,7 @@ class LaporanController extends Controller
                 ->orderBy('tanggal', 'asc')
                 ->get();
 
-            // LOGIKA PERHITUNGAN BARU (Sama dengan PDF)
+            // LOGIKA PERHITUNGAN
             foreach ($laporan as $trx) {
                 $total_kotor += $trx->total_harga;
                 $total_admin += $trx->biaya_admin;

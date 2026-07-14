@@ -122,7 +122,7 @@
                             value="{{ $namaPengepul }}"
                             class="form-control form-control-sm input-struk border-0 bg-light mr-2 shadow-sm"
                             style="font-size: 16px;"
-                            onchange="ubahNamaPengepulHidden('{{ $idPengepul }}', this.value)"
+                            oninput="ubahNamaPengepulHidden('{{ $idPengepul }}', this.value)"
                             autocomplete="off"
                             required
                         >
@@ -316,6 +316,7 @@
 </div>
 
 <script>
+    @ -0,0 +1,233 @@
     let fungsiHapusAktif = null;
     // Variabel penanda urutan input untuk dikirim ke Controller
     let urutanKe = {{ $penjualan->detail->count() ?? 0 }}; 
@@ -355,11 +356,12 @@
                 
                 <div class="input-group input-group-sm mr-2" style="flex: 1.2; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
                     <input type="text"
+                        name="hasil_laut[${urutanKe}][harga]"
                         class="form-control input-struk text-right text-info nilai-harga format-rupiah border-0 w-100 bg-white"
                         placeholder="Rp"
                         oninput="formatInputRupiah(this); hitungTotalBaru()"
                         required
-                        style="font-size: 15px;">
+                        style="font-size:15px;">
                 </div>
 
                 <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('${idBaris}', 'card-${idPengepul}')">
@@ -388,7 +390,7 @@
                         class="form-control form-control-sm input-struk border-0 bg-light mr-2 shadow-sm"
                         placeholder="Nama Pengepul"
                         required
-                        onchange="ubahNamaPengepulHidden('${idPengepulBaru}', this.value)"
+                        oninput="ubahNamaPengepulHidden('${idPengepulBaru}', this.value)"
                         style="flex: 1.5; font-size: 16px; height: 35px;"
                         autocomplete="off"
                     >
@@ -419,11 +421,12 @@
                     
                     <div class="input-group input-group-sm mr-2" style="flex: 1.2; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
                         <input type="text"
+                            name="hasil_laut[${urutanKe}][harga]"
                             class="form-control input-struk text-right text-info nilai-harga format-rupiah border-0 w-100 bg-white"
                             placeholder="Rp"
                             oninput="formatInputRupiah(this); hitungTotalBaru()"
                             required
-                            style="font-size: 15px;">
+                            style="font-size:15px;">
                     </div>
 
                     <button type="button" class="btn btn-sm text-danger font-weight-bold p-1" onclick="hapusBaris('baris-ikan-${urutanKe}', 'card-${idPengepulBaru}')">

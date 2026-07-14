@@ -990,14 +990,28 @@ function validasiDanSimpan() {
 // ==========================================
 // Fungsi 2: Dipanggil KHUSUS saat tombol "Yakin" di modal ditekan
 function eksekusiSimpanKeranjang() {
-    // 1. Pindahkan data ke memori permanen
     keranjangSementara.forEach(ikan => {
-        memori.daftar_belanja.push({
-            pengepul: ikan.pengepul,
-            jenis: ikan.jenis,
-            harga: ikan.harga,
-            status: ikan.status
-        });
+
+        // Cari apakah ikan yang sama sudah pernah dimasukkan
+        let sudahAda = memori.daftar_belanja.find(item =>
+            item.pengepul === ikan.pengepul &&
+            item.status === ikan.status &&
+            item.jenis === ikan.jenis
+        );
+
+        if (sudahAda) {
+            // Jika jenis ikan sama, cukup tambahkan harganya
+            sudahAda.harga += ikan.harga;
+        } else {
+            // Jika belum ada, buat data baru
+            memori.daftar_belanja.push({
+                pengepul: ikan.pengepul,
+                jenis: ikan.jenis,
+                harga: ikan.harga,
+                status: ikan.status
+            });
+        }
+
     });
 
     // 4. Perbarui gambar keranjang dan lompat ke Step 4
@@ -1043,16 +1057,31 @@ function gambarUlangKeranjangBelanja() {
     totalSemuaGlobal = 0;
 
     memori.daftar_belanja.forEach(function(ikan) {
-        if (!lemariPengepul[ikan.pengepul]) {
-            lemariPengepul[ikan.pengepul] = [];
+
+        // gabungkan pengepul + status menjadi key
+        let key = ikan.pengepul + "|" + ikan.status;
+
+        if (!lemariPengepul[key]) {
+            lemariPengepul[key] = [];
         }
-        lemariPengepul[ikan.pengepul].push(ikan);
+
+        lemariPengepul[key].push(ikan);
     });
 
-    for (let namaPengepul in lemariPengepul) {
+    for (let key in lemariPengepul) {
+
         let totalHarga = 0;
-        let statusTampil = lemariPengepul[namaPengepul][0].status;
-        let warnaBadge = (statusTampil === 'Lunas') ? 'badge-success' : 'badge-danger';
+
+        let daftarIkan = lemariPengepul[key];
+
+        let namaPengepul = daftarIkan[0].pengepul;
+
+        let statusTampil = daftarIkan[0].status;
+
+        let warnaBadge =
+            statusTampil === 'Lunas'
+                ? 'badge-success'
+                : 'badge-danger';
 
         // DESAIN BARU: Tanpa tombol Edit & Hapus (Read-Only)
         let desainHTML = `
@@ -1070,7 +1099,7 @@ function gambarUlangKeranjangBelanja() {
                 <table class="info-table mt-1">
         `;
 
-        lemariPengepul[namaPengepul].forEach(function(ikan) {
+        daftarIkan.forEach(function(ikan) {
             desainHTML += `<tr><td class="text-secondary"><i class="bi bi-record-circle text-muted" style="font-size: 8px; margin-right: 5px;"></i> ${ikan.jenis.replace(/_/g, ' ')}</td><td>Rp ${ikan.harga.toLocaleString('id-ID')}</td></tr>`;
             totalHarga += ikan.harga;
         });

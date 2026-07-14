@@ -183,35 +183,34 @@
             Tidak ada data penjualan pada bulan ini.
           </td>
         </tr>
-        @endforelse @if($laporan->isNotEmpty())
-        <tr class="total-row bg-light-green">
-          <td colspan="4" class="text-right" style="border-right: none">
-            AKUMULASI KOTOR & ADMIN :
+        @endforelse
+        @if($laporan->isNotEmpty())
+        <tr>
+          <td colspan="6" class="text-right">
+              Total Penjualan Kotor
           </td>
           <td class="text-right">
-            Rp {{ number_format($total_kotor, 0, ',', '.') }}
+              Rp {{ number_format($total_kotor, 0, ',', '.') }}
+          </td>
+      </tr>
+
+      <tr>
+          <td colspan="6" class="text-right">
+              Biaya Admin
           </td>
           <td class="text-right text-danger">
-            - Rp {{ number_format($total_admin, 0, ',', '.') }}
+              - Rp {{ number_format($total_admin, 0, ',', '.') }}
           </td>
-          <td
-            class="text-right"
-            style="
-              background-color: #fff;
-              border-bottom: none;
-              border-right: none;
-            "
-          ></td>
-        </tr>
+      </tr>
 
-        <tr class="total-row bg-dark-green">
-          <td colspan="6" class="text-right" style="font-size: 14px">
-            TOTAL PENDAPATAN BERSIH :
+      <tr style="background:#08a10b; color:white; font-weight:bold;">
+          <td colspan="6" class="text-right">
+              TOTAL PENDAPATAN BERSIH
           </td>
-          <td class="text-right" style="font-size: 14px">
-            Rp {{ number_format($laba_bersih, 0, ',', '.') }}
+          <td class="text-right">
+              Rp {{ number_format($laba_bersih, 0, ',', '.') }}
           </td>
-        </tr>
+      </tr>
         @endif
       </tbody>
     </table>

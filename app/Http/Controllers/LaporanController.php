@@ -7,6 +7,7 @@ use App\Penjualan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class LaporanController extends Controller
 {
@@ -55,8 +56,10 @@ class LaporanController extends Controller
     public function downloadPDF(Request $request)
     {
         $nelayan = Nelayan::findOrFail($request->nelayan_id);
-        $bulan = date('m', strtotime($request->bulan));
-        $tahun = date('Y', strtotime($request->bulan));
+        $periode = Carbon::parse($request->bulan . '-01');
+
+        $bulan = $periode->month;
+        $tahun = $periode->year;
 
         $laporan = Penjualan::with('detail')
             ->where('pengguna_id', Auth::id())
@@ -76,7 +79,7 @@ class LaporanController extends Controller
         }
 
         $laba_bersih = $total_kotor - $total_admin;
-        $nama_bulan = date('F Y', strtotime($request->bulan));
+        $nama_bulan = $periode->locale('id')->translatedFormat('F Y');
 
         // Masukkan ke dalam array data
         $data = [

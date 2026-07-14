@@ -82,6 +82,33 @@
 </style>
 
 <div class="p-3">
+    @php
+        $nelayan_terpilih = $nelayans->where('nelayan_id', request('nelayan_id'))->first();
+        $link_wa_bulanan = null;
+
+        if($nelayan_terpilih && !empty($nelayan_terpilih->nomor_hp)) {
+
+            $hp = preg_replace('/[^0-9]/', '', $nelayan_terpilih->nomor_hp);
+
+            if(substr($hp,0,1)=='0'){
+                $hp='62'.substr($hp,1);
+            }
+
+            if(request('bulan')){
+                $rupiah_bersih = isset($laba_bersih)
+                    ? number_format($laba_bersih,0,',','.')
+                    : '0';
+
+                $bulan_format = \Carbon\Carbon::parse(request('bulan').'-01')
+                                ->locale('id')
+                                ->translatedFormat('F Y');
+
+                $pesan = "Halo Pak {$nelayan_terpilih->nama}, ini rekapitulasi penjualan hasil laut Bapak untuk bulan {$bulan_format}. Total pendapatan bersihnya adalah *Rp {$rupiah_bersih}*. File laporan PDF-nya silakan diunduh ya Pak.";
+
+                $link_wa_bulanan = "https://wa.me/{$hp}?text=".urlencode($pesan);
+            }
+        }
+    @endphp
     <div id="alert-wa-laporan"
         class="alert alert-success alert-dismissible fade shadow-sm"
         style="display:none; border-radius:12px;">
@@ -227,34 +254,11 @@
                 @endforeach
             </div>
         @endif
-        
-        @php
-            // Cari data nelayan yang sedang dipilih dari dropdown
-            $nelayan_terpilih = $nelayans->where('nelayan_id', request('nelayan_id'))->first();
-            $link_wa_bulanan = null;
-
-            // Jika nelayan ketemu dan punya nomor HP, buat link WA-nya
-            if($nelayan_terpilih && !empty($nelayan_terpilih->nomor_hp)) {
-                $hp = preg_replace('/[^0-9]/', '', $nelayan_terpilih->nomor_hp);
-                if (substr($hp, 0, 1) == '0') {
-                    $hp = '62' . substr($hp, 1);
-                }
-                
-                // Format angka dan bulan
-                $rupiah_bersih = number_format($laba_bersih, 0, ',', '.');
-                $bulan_format = \Carbon\Carbon::parse(request('bulan').'-01')->locale('id')->translatedFormat('F Y');
-                
-                // Susun pesan bulanan
-                $pesan = "Halo Pak {$nelayan_terpilih->nama}, ini rekapitulasi penjualan hasil laut Bapak untuk bulan {$bulan_format}. Total pendapatan bersihnya adalah *Rp {$rupiah_bersih}*. File laporan PDF-nya silakan diunduh ya Pak.";
-                
-                $link_wa_bulanan = "https://wa.me/{$hp}?text=" . urlencode($pesan);
-            }
-        @endphp
 
         @if($link_wa_bulanan)
             <button type="button"
                     onclick="downloadLaporan()"
-                    class="btn-pdf-fab"
+                    class="btn-wa-fab"
                     title="Download PDF">
                 <i class="bi bi-file-earmark-pdf-fill"></i>
             </button>
@@ -267,18 +271,18 @@
 <script>
     function downloadLaporan() {
 
-        // Download PDF
-        window.open(
-            "{{ route('laporan.pdf', [
-                'nelayan_id' => request('nelayan_id'),
-                'bulan' => request('bulan')
-            ]) }}",
-            '_blank'
-        );
+        let nelayan = document.getElementById('input_nelayan_id').value;
+        let bulan = document.querySelector('input[name="bulan"]').value;
 
-        // Tampilkan alert WA
-        setTimeout(function() {
+        let url = "{{ route('laporan.pdf') }}"
+                + "?nelayan_id=" + encodeURIComponent(nelayan)
+                + "&bulan=" + encodeURIComponent(bulan);
 
+        // Download PDF pada tab yang sama
+        window.location.href = url;
+
+        // Tampilkan alert WA setelah download dimulai
+        setTimeout(function () {
             let alertBox = document.getElementById('alert-wa-laporan');
 
             alertBox.style.display = 'block';

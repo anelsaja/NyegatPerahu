@@ -98,17 +98,25 @@
 
         <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Rincian Tangkapan</h6>
         @php
-            // MANTRA AJAIB: Kelompokkan data ikan berdasarkan nama pengepulnya
-            $grupPenjualan = $penjualan->detail->groupBy('nama_pengepul');
-            $urutanKe = 0; // Kunci indeks unik untuk Controller
+            // Kelompokkan berdasarkan nama pengepul + status pembayaran
+            $grupPenjualan = $penjualan->detail->groupBy(function ($item) {
+                return $item->nama_pengepul . '|' . $item->status_pembayaran;
+            });
+
+            $urutanKe = 0;
         @endphp
 
         <div id="area-hasil-laut">
-            @foreach($grupPenjualan as $namaPengepul => $items)
-            @php 
-                $statusPertama = $items->first()->status_pembayaran; 
-                // Buat ID unik untuk JavaScript (menghilangkan spasi pada nama)
-                $idPengepul = str_replace([' ', "'", '"', '.', ','], '_', $namaPengepul);
+            @foreach($grupPenjualan as $key => $items)
+
+            @php
+                [$namaPengepul, $statusPertama] = explode('|', $key);
+
+                $idPengepul = str_replace(
+                    [' ', "'", '"', '.', ',', '|'],
+                    '_',
+                    $key
+                );
             @endphp
             <div class="mb-4 p-3 card-ikan shadow-sm" style="border-left: 2px solid #5bc0de;" id="card-{{ $idPengepul }}">
                 <div class="d-flex justify-content-between mb-3 align-items-center border-bottom pb-3">
@@ -122,7 +130,7 @@
                             value="{{ $namaPengepul }}"
                             class="form-control form-control-sm input-struk border-0 bg-light mr-2 shadow-sm"
                             style="font-size: 16px;"
-                            oninput="ubahNamaPengepulHidden('{{ $idPengepul }}', this.value)"
+                            onchange="ubahNamaPengepulHidden('{{ $idPengepul }}', this.value)"
                             autocomplete="off"
                             required
                         >
@@ -172,7 +180,7 @@
                     @endforeach
                 </div>
 
-                <button type="button" class="btn btn-sm btn-outline-info mt-2 font-weight-bold w-100" style="border-radius: 8px; border-style: dashed;" onclick="tambahIkanKeGrupPengepul('{{ $namaPengepul }}', '{{ $idPengepul }}')">
+                <button type="button" class="btn btn-sm btn-outline-info mt-2 font-weight-bold w-100" style="border-radius: 8px; border-style: dashed;" onclick="tambahIkanKeGrupPengepul('{{ $idPengepul }}')">
                     <div class="card-tambah-baru">
                         <i class="bi bi-plus-circle" style="font-size: 20px;"></i>
                     </div>
@@ -316,7 +324,6 @@
 </div>
 
 <script>
-    @ -0,0 +1,233 @@
     let fungsiHapusAktif = null;
     // Variabel penanda urutan input untuk dikirim ke Controller
     let urutanKe = {{ $penjualan->detail->count() ?? 0 }}; 
@@ -339,8 +346,12 @@
     }
 
     // 2. FUNGSI TAMBAH IKAN KE DALAM GRUP YANG SUDAH ADA
-    function tambahIkanKeGrupPengepul(namaPengepul, idPengepul) {
-        // Cari status pembayaran yang sedang aktif di grup tersebut
+    function tambahIkanKeGrupPengepul(idPengepul){
+
+        let namaPengepul = document.querySelector(
+            `#card-${idPengepul} input[list="daftar-pengepul"]`
+        ).value;
+
         let inputStatusPertama = document.querySelector('.status-grup-' + idPengepul);
         let statusSekarang = inputStatusPertama ? inputStatusPertama.value : 'Lunas';
 

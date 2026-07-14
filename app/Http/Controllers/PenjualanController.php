@@ -67,7 +67,9 @@ class PenjualanController extends Controller
             ->firstOrFail();
 
         // 2. Kelompokkan rincian ikan berdasarkan nama_pengepul (mirip seperti JS di keranjang)
-        $detail_dikelompokkan = $penjualan->detail->groupBy('nama_pengepul');
+        $detail_dikelompokkan = $penjualan->detail->groupBy(function ($item) {
+            return $item->nama_pengepul . '|' . $item->status_pembayaran;
+        });
 
         return view('penjualan.show', compact('penjualan', 'detail_dikelompokkan'));
     }

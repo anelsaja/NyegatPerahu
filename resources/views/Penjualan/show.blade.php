@@ -62,12 +62,15 @@
 
     <h6 class="font-weight-bold mt-4 mb-3 text-muted" style="font-size: 14px;">Rincian Tangkapan</h6>
 
-    @foreach($detail_dikelompokkan as $pengepul => $items)
-        @php 
-            $totalPerPengepul = 0; 
-            // Mengambil status pembayaran dari item pertama milik pengepul ini
-            $statusPengepul = $items->first()->status_pembayaran ?? 'Lunas';
-            $badgeColor = ($statusPengepul == 'Lunas') ? 'badge-success' : 'badge-danger';
+    @foreach($detail_dikelompokkan as $key => $items)
+        @php
+            [$pengepul, $statusPengepul] = explode('|', $key);
+
+            $totalPerPengepul = 0;
+
+            $badgeColor = ($statusPengepul == 'Lunas')
+                ? 'badge-success'
+                : 'badge-danger';
         @endphp
 
         <div class="mb-4 border-bottom pb-2">

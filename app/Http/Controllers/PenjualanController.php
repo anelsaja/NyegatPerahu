@@ -57,7 +57,7 @@ class PenjualanController extends Controller
         ]);
     }
 
-    // Menampilkan detail transaksi (seperti struk)
+    // Menampilkan detail transaksi
     public function show($id)
     {
         // 1. Ambil data penjualan berdasarkan ID, pastikan milik ibu yang sedang login
@@ -66,7 +66,7 @@ class PenjualanController extends Controller
             ->where('pengguna_id', Auth::id())
             ->firstOrFail();
 
-        // 2. Kelompokkan rincian ikan berdasarkan nama_pengepul (mirip seperti JS di keranjang)
+        // 2. Kelompokkan rincian ikan berdasarkan nama_pengepul
         $detail_dikelompokkan = $penjualan->detail->groupBy(function ($item) {
             return $item->nama_pengepul . '|' . $item->status_pembayaran;
         });
@@ -117,7 +117,7 @@ class PenjualanController extends Controller
             'catatan' => $request->catatan
         ]);
 
-        // B. HAPUS SEMUA rincian ikan yang lama (Trik paling aman)
+        // B. HAPUS SEMUA rincian ikan yang lama
         DetailPenjualan::where('penjualan_id', $penjualan->penjualan_id)->delete();
 
         $total_keseluruhan = 0;

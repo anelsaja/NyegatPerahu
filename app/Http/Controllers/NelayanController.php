@@ -116,12 +116,12 @@ class NelayanController extends Controller
             'foto_profil' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // 2. LOGIKA ANTI-DUPLIKAT UNTUK EDIT (Baru)
+        // 2. LOGIKA ANTI-DUPLIKAT UNTUK EDIT
         // Cek apakah nama dan no HP ini sudah dipakai oleh nelayan LAIN (kecuali nelayan yang sedang diedit ini)
         $duplikat = Nelayan::where('pengguna_id', Auth::id())
                             ->where('nama', $request->nama)
                             ->where('nomor_hp', $request->nomor_hp)
-                            ->where('nelayan_id', '!=', $id) // <-- Kunci pembedanya ada di sini
+                            ->where('nelayan_id', '!=', $id)
                             ->exists();
 
         if ($duplikat) {

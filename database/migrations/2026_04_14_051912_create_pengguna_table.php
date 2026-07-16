@@ -17,7 +17,7 @@ class CreatePenggunaTable extends Migration
             $table->bigIncrements('pengguna_id');
             $table->string('nama');
             $table->string('email')->unique();
-            $table->string('google_id')->nullable()->unique(); // Untuk Login Google
+            $table->string('google_id')->unique();
             $table->timestamps();
         });
     }

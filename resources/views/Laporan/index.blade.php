@@ -132,10 +132,20 @@
         </button>
     </div>
 
+
     <h4 class="font-weight-bold mb-2 mt-2">Laporan Bulanan</h4>
 
-    <form action="{{ route('laporan.index') }}" method="GET" class="mb-4">
-<div class="form-group mb-3">
+    <div id="alert-filter" class="alert shadow-sm"
+        style="display:none; border-radius:12px; background-color:#fde8ec; border-left:2px solid #dc3545;">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle-fill text-danger mr-2"></i>
+            <span style="font-size:13px;">
+                Silakan pilih nelayan dan periode terlebih dahulu.
+            </span>
+        </div>
+    </div>
+    <form id="formLaporan" action="{{ route('laporan.index') }}" method="GET" class="mb-4" novalidate>
+        <div class="form-group mb-3">
             <label class="font-weight-bold">Nama Nelayan</label>
             <input type="hidden" name="nelayan_id" id="input_nelayan_id" value="{{ request('nelayan_id') }}" required>
             
@@ -255,7 +265,7 @@
             </div>
         @endif
 
-        @if($link_wa_bulanan)
+        @if($link_wa_bulanan && $laporan->isNotEmpty())
             <button type="button"
                     onclick="downloadLaporan()"
                     class="btn-wa-fab"
@@ -304,5 +314,26 @@
         // 3. Tambahkan class 'active' HANYA ke kartu yang baru saja diklik
         document.getElementById('kartu-nelayan-' + nelayanId).classList.add('active');
     }
+
+    document.getElementById('formLaporan').addEventListener('submit', function(e) {
+
+        let nelayan = document.getElementById('input_nelayan_id').value;
+        let bulan = document.querySelector('input[name="bulan"]').value;
+
+        if (!nelayan || !bulan) {
+
+            e.preventDefault();
+
+            let alertBox = document.getElementById('alert-filter');
+
+            alertBox.style.display = 'block';
+            alertBox.classList.add('show');
+
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+                alertBox.classList.remove('show');
+            }, 4000);
+        }
+    });
 </script>
 @endsection

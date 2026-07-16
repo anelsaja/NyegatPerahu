@@ -8,8 +8,6 @@ class Nelayan extends Model
 {
     protected $table = 'nelayan';
     protected $primaryKey = 'nelayan_id';
-    
-    // Kolom yang boleh diisi
     protected $fillable = ['pengguna_id', 'nama', 'nomor_hp', 'foto_profil'];
 
     // Relasi balik ke pengguna (ibu nelayan)

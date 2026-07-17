@@ -52,7 +52,7 @@ class LaporanController extends Controller
         ));
     }
 
-    // Fungsi Baru untuk Download PDF
+    // Fungsi untuk Download PDF
     public function downloadPDF(Request $request)
     {
         $nelayan = Nelayan::findOrFail($request->nelayan_id);
@@ -69,7 +69,7 @@ class LaporanController extends Controller
             ->orderBy('tanggal', 'asc')
             ->get();
 
-        // LOGIKA BARU: Hitung Total Kotor, Admin, dan Laba Bersih
+        // Hitung Total Kotor, Admin, dan Laba Bersih
         $total_kotor = 0;
         $total_admin = 0;
 

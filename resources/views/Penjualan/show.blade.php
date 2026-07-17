@@ -33,7 +33,6 @@
         border-top: 2px solid #f0f0f0;
     }
 
-    /* Gaya Card Baru untuk Pengepul */
     .card-pengepul {
         background-color: #ffffff;
         border-radius: 14px;
@@ -53,6 +52,33 @@
 </style>
 
 <div class="p-3">
+    <div id="alert-wa"
+        class="alert alert-success alert-dismissible fade show shadow-sm mt-1"
+        style="border-radius:12px; display:none;">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <i class="bi bi-check-circle-fill mr-1"></i>
+                <strong>Karcis berhasil dibuat.</strong>
+            </div>
+
+            <a href="{{ $penjualan->link_wa }}"
+            target="_blank"
+            class="btn btn-success btn-sm font-weight-bold shadow"
+            style="border-radius:8px; background:#25D366; border-color:#25D366;"
+            onclick="document.getElementById('alert-wa').style.display='none';">
+                <i class="bi bi-whatsapp"></i>
+                Kirim ke WA
+            </a>
+        </div>
+
+        <button type="button"
+                class="close"
+                data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+
+    </div>
     <h4 class="font-weight-bold mb-2 mt-2">Detail Data Penjualan</h4>
     <table class="info-table mb-3">
         <tr><td class="text-muted">Tanggal</td><td>{{ \Carbon\Carbon::parse($penjualan->tanggal)->locale('id')->translatedFormat('d F Y') }}</td></tr>
@@ -129,24 +155,25 @@
 
 <div class="btn-bawah-ganda">
     <a href="{{ route('home') }}" class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">
-        Batal
+        Kembali
     </a>
-    <button type="button" onclick="cetakDanKirimWa('{{ route('penjualan.cetak', $penjualan->penjualan_id) }}', '{!! $penjualan->link_wa !!}')" 
-        class="btn btn-primary btn-lg font-weight-bold shadow-sm m-0" 
-        style="border-radius: 15px; flex: 1; padding: 16px 0;">
+    <button type="button"
+        onclick="buatKarcis()"
+        class="btn btn-primary btn-lg font-weight-bold shadow-sm m-0"
+        style="border-radius:15px; flex:1; padding:16px 0;">
         Buat Karcis
     </button>
 </div>
-
+<iframe id="downloadFrame" style="display:none;"></iframe>
 <script>
-    function cetakDanKirimWa(urlPdf, urlWa) {
-        // 1. Perintahkan browser membuka tab WA baru
-        window.open(urlWa, '_blank');
-        
-        // 2. Beri jeda 1 detik penuh (1000ms) lalu jalankan unduh PDF
-        setTimeout(function() {
-            window.location.href = urlPdf;
-        }, 1000);
+    function buatKarcis() {
+
+        // Download PDF tanpa membuka tab baru
+        document.getElementById('downloadFrame').src =
+            "{{ route('penjualan.cetak', $penjualan->penjualan_id) }}";
+
+        // Tampilkan alert
+        document.getElementById("alert-wa").style.display = "block";
     }
 </script>
 @endsection

@@ -141,7 +141,6 @@
         </div>
     @endforeach
 
-    {{-- BAGIAN CATATAN (Hanya muncul jika catatan diisi) --}}
     @if(!empty($penjualan->catatan))
     <div class="catatan-box">
         <strong>Catatan:</strong><br>

@@ -1191,7 +1191,7 @@ document.addEventListener("DOMContentLoaded", function() {
     @if(session('nelayan_baru_id'))
         let idBaru = {{ session('nelayan_baru_id') }};
         let namaBaru = "{{ session('nelayan_baru_nama') }}";
-        let hpBaru = "{{ session('nelayan_baru_hp') ?? '' }}"; // <-- Tangkap dari Controller
+        let hpBaru = "{{ session('nelayan_baru_hp') ?? '' }}";
         
         // Masukkan hpBaru ke dalam fungsi
         pilihNelayan(idBaru, namaBaru, hpBaru);

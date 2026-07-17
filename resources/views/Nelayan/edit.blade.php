@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
 <style>
     .bottom-nav {
         display: none !important;

@@ -1,9 +1,8 @@
 <!doctype html>
 <html>
   <head>
-    <title>Laporan Penjualan - {{ $nelayan->nama }}</title>
+    <title>Laporan Penjualan - {{ $nelayan->nama }} - Bulan {{ $nama_bulan }}</title>
     <style>
-      /* Pengaturan Font dan Dasar */
       body {
         font-family: "Montserrat", sans-serif;
       }

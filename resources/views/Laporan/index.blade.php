@@ -12,12 +12,12 @@
         align-items: center;
     }
 
-    /* FAB WA (Hijau) */
+    /* FAB WA */
     .btn-wa-fab {
         position: fixed;
         bottom: 100px;
         right: 20px; 
-        background: #25D366; /* Warna Hijau WA */
+        background: #25D366;
         color: white;
         border-radius: 50%; 
         width: 70px;
@@ -39,7 +39,7 @@
 
     /* Gaya khusus saat kartu nelayan diklik / aktif */
     .btn-kotak.active {
-        border-color: #007bff !important; /* Warna biru, sesuaikan dengan tema aplikasimu */
+        border-color: #007bff !important;
         background-color: #e9f2ff !important;
         box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
     }
@@ -207,8 +207,26 @@
                 <p class="mt-2 font-weight-bold">Tidak ada transaksi di bulan ini.</p>
             </div>
         @else
-            <div class="shadow-sm mb-4 p-3" style="border-radius: 15px; background-color: #f8fcff; border: 1px solid #eaf6fd;">
-                <div class="d-flex justify-content-between align-items-center border-bottom border-light pb-2 mb-2">
+            <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Total Tangkapan</span>
+                        <strong style="font-size: 16px;">Rp {{ number_format($total_kotor, 0, ',', '.') }}</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3 pb-3 border-bottom border-secondary">
+                        <label class="font-weight-bold">Biaya Admin</label>
+                        <strong class="text-danger" style="font-size: 16px;">- Rp {{ number_format($total_admin, 0, ',', '.') }}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-success font-weight-bold" style="letter-spacing: 0.5px;">TOTAL AKHIR</span>
+                        <strong class="text-success" style="font-size: 24px;">
+                            Rp {{ number_format($laba_bersih, 0, ',', '.') }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+                <!-- <div class="d-flex justify-content-between align-items-center border-bottom border-light pb-2 mb-2">
                     <span class="text-muted font-weight-bold" style="font-size: 14px;">Total Kotor</span>
                     <span class="font-weight-bold text-dark">Rp {{ number_format($total_kotor, 0, ',', '.') }}</span>
                 </div>
@@ -220,7 +238,7 @@
                     <span class="text-success font-weight-bold" style="font-size: 15px;">Total Pendapatan</span>
                     <strong class="text-success" style="font-size: 20px;">Rp {{ number_format($laba_bersih, 0, ',', '.') }}</strong>
                 </div>
-            </div>
+            </div> -->
 
             <h6 class="font-weight-bold mb-3 mt-4 text-dark">Rincian Harian</h6>
             
@@ -270,7 +288,7 @@
                     onclick="downloadLaporan()"
                     class="btn-wa-fab"
                     title="Download PDF">
-                <i class="bi bi-file-earmark-pdf-fill"></i>
+                <i class="bi bi-file-earmark-arrow-down-fill"></i>
             </button>
         @endif
     @endif

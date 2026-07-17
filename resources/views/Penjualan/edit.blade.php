@@ -282,7 +282,6 @@
     </form>
 </div>
 
-<!-- Modal Konfirmasi Hapus -->
 <div class="modal fade" id="modalHapus" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mx-3" style="max-width: 100%;">
         <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">

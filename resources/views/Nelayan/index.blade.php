@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <style>
-    /* TOMBOL TAMBAH DATA (Floating Action Button) */
+    /* TOMBOL TAMBAH DATA*/
     .btn-tambah-fab {
         position: fixed;
         bottom: 100px;
@@ -30,7 +30,7 @@
         padding: 13px 0;
     }
 
-    /* Foto Profil Bundar */
+    /* Foto Profil */
     .avatar {
         width: 50px;
         height: 50px;

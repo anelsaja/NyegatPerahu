@@ -25,7 +25,6 @@
 </style>
 
 <div class="p-3">
-
     @if(session('error'))
     <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" style="border-radius: 12px; background-color: #fde8ec; border: 1px solid #f8c9d2; color: #dc3545;">
         <div class="d-flex align-items-center">
@@ -43,7 +42,6 @@
     <form action="{{ route('nelayan.update', $nelayan->nelayan_id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-
         <div class="form-group mb-4 text-center">
             <div class="mb-3">
                 @if($nelayan->foto_profil)
@@ -54,7 +52,6 @@
                     </div>
                 @endif
             </div>
-
             <div class="custom-file text-left">
                 <input type="file" name="foto_profil" class="custom-file-input" id="fotoProfil" accept="image/*">
                 <label class="custom-file-label" for="fotoProfil"
@@ -63,11 +60,9 @@
                     Ganti Foto (Opsional)...
                 </label>
             </div>
-
             <small class="text-muted text-left d-block mt-1">
                 Biarkan kosong jika tidak ingin mengubah foto. Format JPG, JPEG, PNG. Maksimal 2 MB.
             </small>
-
             <div id="alert-foto-besar" class="alert shadow-sm mt-2"
                 style="display:none; border-radius:12px; background-color:#fde8ec; border-left:2px solid #dc3545;">
                 <div class="d-flex align-items-center">
@@ -78,17 +73,14 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group mb-4">
             <label class="font-weight-bold">Nama Nelayan<span class="text-danger">*</span></label>
             <input type="text" name="nama" class="form-control form-control-lg shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;" value="{{ $nelayan->nama }}" required>
         </div>
-
         <div class="form-group mb-4">
             <label class="font-weight-bold">Nomor WA<span class="text-danger">*</span></label>
             <input type="number" name="nomor_hp" class="form-control form-control-lg shadow-sm" style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;" value="{{ $nelayan->nomor_hp }}" required>
         </div>
-
         <div class="btn-bawah-ganda">
             <a href="{{ route('nelayan.index') }}" class="btn btn-light text-secondary btn-lg font-weight-bold shadow-sm d-flex align-items-center justify-content-center m-0" style="border-radius: 15px; flex: 1; padding: 16px 0; border: 1px solid #ddd;">
                 Batal
@@ -101,12 +93,9 @@
 </div>
 <script>
     document.getElementById('fotoProfil').addEventListener('change', function () {
-
         let file = this.files[0];
-
         if (!file) return;
-
-        let maxSize = 2 * 1024 * 1024; // 2 MB
+        let maxSize = 2 * 1024 * 1024;
 
         if (file.size > maxSize) {
 

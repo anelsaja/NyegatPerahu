@@ -35,13 +35,13 @@
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        background-color: #08a10b; 
+        background-color: gainsboro; 
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 22px;
         font-weight: bold;
-        color: #fff;
+        color: black;
         margin-right: 15px;
     }
 
@@ -92,12 +92,12 @@
         <div class="list-item">
             <div class="info-wrapper mb-3">
             <div class="avatar" style="overflow: hidden; padding: 0;">
-                    @if($n->foto_profil)
-                        <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
-                    @else
-                        {{ substr($n->nama, 0, 1) }}
-                    @endif
-                </div>
+                @if($n->foto_profil)
+                    <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
+                @else
+                    <i class="bi bi-person-fill" style="font-size: 35px;"></i>
+                @endif
+            </div>
                 <div class="flex-grow-1">
                     <h6 class="mb-1 font-weight-bold text-dark" style="font-size: 17px;">
                         {{ $n->nama }}
@@ -123,7 +123,7 @@
                 {{ request('cari') ? 'Nama nelayan tidak ditemukan.' : 'Belum ada data nelayan.' }}
             </p>
             @if(request('cari'))
-            <a href="{{ route('nelayan.index') }}" class="btn btn-md btn-light mt-2 font-weight-bold" style="border-radius: 12px; color: white; background-color: #0d6efd;">Tampilkan Semua</a>
+            <a href="{{ route('nelayan.index') }}" class="btn btn-md btn-light mt-2 font-weight-bold" style="border-radius: 12px; color: white; background-color: #007bff;">Tampilkan Semua</a>
             @endif
         </div>
         @endforelse

@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
 <style>
     .bottom-nav {
         display: none !important;
@@ -82,33 +81,25 @@
     </form>
 </div>
 <script>
-document.getElementById('fotoProfil').addEventListener('change', function() {
+    document.getElementById('fotoProfil').addEventListener('change', function() {
+        let file = this.files[0];
+        if (!file) return;
+        let maxSize = 2 * 1024 * 1024;
 
-    let file = this.files[0];
+        if (file.size > maxSize) {
+            document.getElementById('alert-foto-besar').style.display = 'block';
+            this.value = '';
+            document.querySelector('label[for="fotoProfil"]').innerHTML = 'Pilih Foto...';
+            setTimeout(() => {
+                document.getElementById('alert-foto-besar').style.display = 'none';
+            }, 4000);
+            return;
+        }
 
-    if (!file) return;
+        document.getElementById('alert-foto-besar').style.display = 'none';
 
-    let maxSize = 2 * 1024 * 1024; // 2 MB
-
-    if (file.size > maxSize) {
-
-        document.getElementById('alert-foto-besar').style.display = 'block';
-
-        this.value = '';
-
-        document.querySelector('label[for="fotoProfil"]').innerHTML = 'Pilih Foto...';
-
-        setTimeout(() => {
-            document.getElementById('alert-foto-besar').style.display = 'none';
-        }, 4000);
-
-        return;
-    }
-
-    document.getElementById('alert-foto-besar').style.display = 'none';
-
-    document.querySelector('label[for="fotoProfil"]').innerHTML =
-    '<i class="bi bi-image-fill text-success mr-1"></i>' + file.name;
-});
+        document.querySelector('label[for="fotoProfil"]').innerHTML =
+        '<i class="bi bi-image-fill text-success mr-1"></i>' + file.name;
+    });
 </script>
 @endsection

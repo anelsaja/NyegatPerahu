@@ -12,7 +12,7 @@
         align-items: center;
     }
 
-    /* FAB WA */
+    /* FAB */
     .btn-wa-fab {
         position: fixed;
         bottom: 100px;
@@ -56,19 +56,22 @@
         margin-bottom: 20px;
     }
 
-    .icon-box {
-        width: 50px;
-        height: 50px;
+        .fotoprofil {
+        width: 60px;
+        height: 60px;
         border: 3px solid #333;
         border-radius: 15px;
         margin: 0 auto 10px auto;
         font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .icon-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    .fotoprofil img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .btn-kotak { 
@@ -87,7 +90,6 @@
         $link_wa_bulanan = null;
 
         if($nelayan_terpilih && !empty($nelayan_terpilih->nomor_hp)) {
-
             $hp = preg_replace('/[^0-9]/', '', $nelayan_terpilih->nomor_hp);
 
             if(substr($hp,0,1)=='0'){
@@ -98,13 +100,10 @@
                 $rupiah_bersih = isset($laba_bersih)
                     ? number_format($laba_bersih,0,',','.')
                     : '0';
-
                 $bulan_format = \Carbon\Carbon::parse(request('bulan').'-01')
                                 ->locale('id')
                                 ->translatedFormat('F Y');
-
                 $pesan = "Halo Pak {$nelayan_terpilih->nama}, ini rekapitulasi penjualan hasil laut Bapak untuk bulan {$bulan_format}. Total pendapatan bersihnya adalah *Rp {$rupiah_bersih}*. File laporan PDF-nya silakan diunduh ya Pak.";
-
                 $link_wa_bulanan = "https://wa.me/{$hp}?text=".urlencode($pesan);
             }
         }
@@ -112,13 +111,11 @@
     <div id="alert-wa-laporan"
         class="alert alert-success alert-dismissible fade shadow-sm"
         style="display:none; border-radius:12px;">
-
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <i class="bi bi-check-circle-fill mr-1"></i>
                 <strong>Laporan berhasil diunduh!</strong>
             </div>
-
             <a href="{!! $link_wa_bulanan !!}"
             target="_blank"
             class="btn btn-success btn-sm font-weight-bold shadow"
@@ -126,12 +123,10 @@
                 <i class="bi bi-whatsapp"></i> Kirim ke WA
             </a>
         </div>
-
         <button type="button" class="close" data-dismiss="alert">
             <span>&times;</span>
         </button>
     </div>
-
 
     <h4 class="font-weight-bold mb-2 mt-2">Laporan Bulanan</h4>
 
@@ -144,6 +139,7 @@
             </span>
         </div>
     </div>
+
     <form id="formLaporan" action="{{ route('laporan.index') }}" method="GET" class="mb-4" novalidate>
         <div class="form-group mb-3">
             <label class="font-weight-bold">Nama Nelayan</label>
@@ -154,15 +150,13 @@
                     <div class="btn-kotak {{ request('nelayan_id') == $n->nelayan_id ? 'active' : '' }}" 
                          id="kartu-nelayan-{{ $n->nelayan_id }}" 
                          onclick="pilihNelayanLaporan({{ $n->nelayan_id }})">
-                        
-                        <div class="icon-box" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                        <div class="fotoprofil">
                             @if($n->foto_profil)
-                                <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                <img src="{{ asset('images/nelayan/' . $n->foto_profil) }}" alt="Foto {{ $n->nama }}">
                             @else
-                                <span style="font-size: 20px;">👤</span>
+                                <i class="bi bi-person-fill" style="font-size: 35px;"></i>
                             @endif
-                        </div>
-                        
+                        </div>                        
                         <span class="font-weight-bold">{{ $n->nama }}</span>
                     </div>
                 @empty
@@ -202,92 +196,71 @@
         <h6 class="font-weight-bold mb-3 text-dark">Hasil Rekapitulasi</h6>
         
         @if($laporan->isEmpty())
-            <div class="text-center text-muted p-4 mt-2">
-                <i class="bi bi-inbox" style="font-size: 50px; color: #ccc;"></i>
-                <p class="mt-2 font-weight-bold">Tidak ada transaksi di bulan ini.</p>
-            </div>
+        <div class="text-center text-muted p-4 mt-2">
+            <i class="bi bi-inbox" style="font-size: 50px; color: #ccc;"></i>
+            <p class="mt-2 font-weight-bold">Tidak ada transaksi di bulan ini.</p>
+        </div>
         @else
-            <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
-                <div class="card-body p-3">
-                    <div class="d-flex justify-content-between mb-3">
-                        <span class="text-muted">Total Tangkapan</span>
-                        <strong style="font-size: 16px;">Rp {{ number_format($total_kotor, 0, ',', '.') }}</strong>
-                    </div>
-
-                    <div class="d-flex justify-content-between mb-3 pb-3 border-bottom border-secondary">
-                        <label class="font-weight-bold">Biaya Admin</label>
-                        <strong class="text-danger" style="font-size: 16px;">- Rp {{ number_format($total_admin, 0, ',', '.') }}</strong>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-success font-weight-bold" style="letter-spacing: 0.5px;">TOTAL AKHIR</span>
-                        <strong class="text-success" style="font-size: 24px;">
-                            Rp {{ number_format($laba_bersih, 0, ',', '.') }}
-                        </strong>
-                    </div>
+        <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px;">
+            <div class="card-body p-3">
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">Total Tangkapan</span>
+                    <strong style="font-size: 16px;">Rp {{ number_format($total_kotor, 0, ',', '.') }}</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-3 pb-3 border-bottom border-secondary">
+                    <label class="font-weight-bold">Biaya Admin</label>
+                    <strong class="text-danger" style="font-size: 16px;">- Rp {{ number_format($total_admin, 0, ',', '.') }}</strong>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-success font-weight-bold" style="letter-spacing: 0.5px;">TOTAL AKHIR</span>
+                    <strong class="text-success" style="font-size: 24px;">
+                        Rp {{ number_format($laba_bersih, 0, ',', '.') }}
+                    </strong>
                 </div>
             </div>
-                <!-- <div class="d-flex justify-content-between align-items-center border-bottom border-light pb-2 mb-2">
-                    <span class="text-muted font-weight-bold" style="font-size: 14px;">Total Kotor</span>
-                    <span class="font-weight-bold text-dark">Rp {{ number_format($total_kotor, 0, ',', '.') }}</span>
-                </div>
-                <div class="d-flex justify-content-between align-items-center border-bottom border-light pb-2 mb-2">
-                    <span class="text-muted font-weight-bold" style="font-size: 14px;">Potongan Admin</span>
-                    <span class="font-weight-bold text-danger">- Rp {{ number_format($total_admin, 0, ',', '.') }}</span>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-2 pt-1">
-                    <span class="text-success font-weight-bold" style="font-size: 15px;">Total Pendapatan</span>
-                    <strong class="text-success" style="font-size: 20px;">Rp {{ number_format($laba_bersih, 0, ',', '.') }}</strong>
-                </div>
-            </div> -->
+        </div>
 
-            <h6 class="font-weight-bold mb-3 mt-4 text-dark">Rincian Harian</h6>
+        <h6 class="font-weight-bold mb-3 mt-4 text-dark">Rincian Harian</h6>
             
-            <div>
-                @foreach($laporan as $lap)
-                    @php 
-                        $bersih_harian = $lap->total_harga - $lap->biaya_admin; 
-                    @endphp
-                    <div class="list-item">
-                        
-                        <div class="info-wrapper mb-2">
-                            <div class="flex-grow-1 pr-2">
-                                
-                                <div class="d-flex justify-content-between align-items-baseline mb-2">
-                                    <h6 class="mb-0 font-weight-bold text-dark" style="font-size: 16px;">
-                                        {{ date('d M Y', strtotime($lap->tanggal)) }}
-                                    </h6>
-                                </div>
-                                
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="text-muted" style="font-size: 13px;">
-                                        <span class="d-block mb-1">Pengepul:</span>
-                                        @foreach($lap->detail->pluck('nama_pengepul')->unique() as $pengepul)
-                                            <strong class="d-block text-dark mb-1" style="padding-left: 8px; border-left: 2px solid #08a10b;">
-                                                {{ $pengepul }}
-                                            </strong>
-                                        @endforeach
-                                    </div>
-                                    <strong class="text-success" style="font-size: 14px;">
-                                        Rp {{ number_format($bersih_harian, 0, ',', '.') }}
-                                    </strong>
-                                </div>
+        <div>
+            @foreach($laporan as $lap)
+            @php 
+                $bersih_harian = $lap->total_harga - $lap->biaya_admin; 
+            @endphp
+            <div class="list-item">
+                <div class="info-wrapper mb-2">
+                    <div class="flex-grow-1 pr-2">                               
+                        <div class="d-flex justify-content-between align-items-baseline mb-2">
+                            <h6 class="mb-0 font-weight-bold text-dark" style="font-size: 16px;">
+                                {{ date('d M Y', strtotime($lap->tanggal)) }}
+                            </h6>
+                        </div>                               
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="text-muted" style="font-size: 13px;">
+                                <span class="d-block mb-1">Pengepul:</span>
+                                @foreach($lap->detail->pluck('nama_pengepul')->unique() as $pengepul)
+                                <strong class="d-block text-dark mb-1" style="padding-left: 8px; border-left: 2px solid #08a10b;">
+                                    {{ $pengepul }}
+                                </strong>
+                                @endforeach
                             </div>
+                            <strong class="text-success" style="font-size: 14px;">
+                                Rp {{ number_format($bersih_harian, 0, ',', '.') }}
+                            </strong>
                         </div>
-                        
-                        <div class="d-flex justify-content-between px-3 py-2 mt-2" style="background-color: #f8f9fa; border-radius: 8px;">
-                            <span class="text-danger font-weight-bold" style="font-size: 12px;">Admin: -Rp {{ number_format($lap->biaya_admin, 0, ',', '.') }}</span>
-                        </div>
-                        
                     </div>
-                @endforeach
+                </div>                       
+                <div class="d-flex justify-content-between px-3 py-2 mt-2" style="background-color: #f8f9fa; border-radius: 8px;">
+                    <span class="text-danger font-weight-bold" style="font-size: 12px;">Admin: -Rp {{ number_format($lap->biaya_admin, 0, ',', '.') }}</span>
+                </div>                       
             </div>
+            @endforeach
+        </div>
         @endif
-
         @if($link_wa_bulanan && $laporan->isNotEmpty())
             <button type="button"
                     onclick="downloadLaporan()"
                     class="btn-wa-fab"
-                    title="Download PDF">
                 <i class="bi bi-file-earmark-arrow-down-fill"></i>
             </button>
         @endif
@@ -298,10 +271,8 @@
 
 <script>
     function downloadLaporan() {
-
         let nelayan = document.getElementById('input_nelayan_id').value;
         let bulan = document.querySelector('input[name="bulan"]').value;
-
         let url = "{{ route('laporan.pdf') }}"
                 + "?nelayan_id=" + encodeURIComponent(nelayan)
                 + "&bulan=" + encodeURIComponent(bulan);
@@ -312,7 +283,6 @@
         // Tampilkan alert WA setelah download dimulai
         setTimeout(function () {
             let alertBox = document.getElementById('alert-wa-laporan');
-
             alertBox.style.display = 'block';
             alertBox.classList.add('show');
 
@@ -322,31 +292,24 @@
     function pilihNelayanLaporan(nelayanId) {
         // 1. Masukkan ID nelayan yang dipilih ke dalam input tersembunyi
         document.getElementById('input_nelayan_id').value = nelayanId;
-
         // 2. Hapus class 'active' dari SEMUA kartu nelayan
         let semuaKartu = document.querySelectorAll('.grid-btn .btn-kotak');
         semuaKartu.forEach(function(kartu) {
             kartu.classList.remove('active');
         });
-
         // 3. Tambahkan class 'active' HANYA ke kartu yang baru saja diklik
         document.getElementById('kartu-nelayan-' + nelayanId).classList.add('active');
     }
 
     document.getElementById('formLaporan').addEventListener('submit', function(e) {
-
         let nelayan = document.getElementById('input_nelayan_id').value;
         let bulan = document.querySelector('input[name="bulan"]').value;
 
         if (!nelayan || !bulan) {
-
             e.preventDefault();
-
             let alertBox = document.getElementById('alert-filter');
-
             alertBox.style.display = 'block';
             alertBox.classList.add('show');
-
             setTimeout(() => {
                 alertBox.style.display = 'none';
                 alertBox.classList.remove('show');

@@ -42,7 +42,7 @@ class NelayanController extends Controller
             'foto_profil' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // 2. LOGIKA ANTI-DUPLIKAT (Baru)
+        // 2. LOGIKA ANTI-DUPLIKAT
         // Cek apakah di akun pengguna ini sudah ada nelayan dengan nama DAN nomor HP yang persis sama
         $duplikat = Nelayan::where('pengguna_id', Auth::id())
                             ->where('nama', $request->nama)
@@ -68,7 +68,6 @@ class NelayanController extends Controller
             $nama_file = time() . '_' . $file->getClientOriginalName();
             // Pindahkan file ke folder public/images/nelayan/
             $file->move(public_path('images/nelayan'), $nama_file);
-            
             // Masukkan nama file tersebut ke dalam wadah data
             $data['foto_profil'] = $nama_file;
         }
@@ -76,7 +75,7 @@ class NelayanController extends Controller
         // 4. Eksekusi simpan ke database (menggunakan wadah $data yang sudah disiapkan)
         $nelayan = Nelayan::create($data);
 
-        // 5. ALUR BARU: Kembali ke halaman asal (home/tambah penjualan) 
+        // 5. Kembali ke halaman asal (home/tambah penjualan) 
         // sambil membawa ID dan Nama nelayan yang baru dibuat
         if ($request->asal == 'penjualan') {
             // Jika datang dari penjualan, kembalikan ke form penjualan (Step 1)
@@ -109,7 +108,7 @@ class NelayanController extends Controller
     // Menyimpan perubahan data ke database
     public function update(Request $request, $id)
     {
-        // 1. Validasi Input (Wajib menyertakan aturan untuk foto_profil)
+        // 1. Validasi Input
         $request->validate([
             'nama' => 'required|string|max:255',
             'nomor_hp' => 'required|string|max:15',

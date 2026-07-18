@@ -8,7 +8,6 @@ class Penjualan extends Model
 {
     protected $table = 'penjualan';
     protected $primaryKey = 'penjualan_id';
-    
     protected $fillable = [
         'pengguna_id', 'nelayan_id', 'tanggal', 
         'total_harga', 'biaya_admin', 'catatan'
@@ -45,11 +44,10 @@ class Penjualan extends Model
         }
 
         // 3. Hitung pendapatan bersih
-        $total_bersih = $this->total_harga - $this->biaya_admin;
-        $rupiah = number_format($total_bersih, 0, ',', '.');    
+        $rupiah = number_format($this->total_bersih, 0, ',', '.');  
         $tanggal = \Carbon\Carbon::parse($this->tanggal)->locale('id')->translatedFormat('j F Y');
 
-        // 4. Buat pesan (pakai * agar tebal di WA)
+        // 4. Buat pesan
         $pesan = "Halo Pak {$this->nelayan->nama}, ini rincian penjualan hasil laut tanggal {$tanggal}. Pendapatan bersih Bapak hari ini adalah *Rp {$rupiah}*. File karcisnya silakan diunduh ya Pak. 🙏";
         
         return "https://wa.me/{$hp}?text=" . urlencode($pesan);

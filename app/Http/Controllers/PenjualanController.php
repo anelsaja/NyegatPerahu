@@ -19,7 +19,7 @@ class PenjualanController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Simpan tabel induk (tanpa nama_pengepul)
+        // 1. Simpan tabel induk
         $penjualan = Penjualan::create([
             'pengguna_id' => Auth::id(),
             'nelayan_id' => $request->nelayan_id,
@@ -109,7 +109,7 @@ class PenjualanController extends Controller
             ->where('pengguna_id', Auth::id())
             ->firstOrFail();
 
-        // A. Update data induk (Tanggal & Nelayan)
+        // A. Update data induk
         $penjualan->update([
             'nelayan_id' => $request->nelayan_id,
             'tanggal' => $request->tanggal,
@@ -153,10 +153,8 @@ class PenjualanController extends Controller
 
         $pdf = Pdf::loadView('penjualan.pdf', compact('penjualan'));
 
-        // Nama nelayan aman untuk nama file
         $namaNelayan = preg_replace('/[^A-Za-z0-9_\-]/', '_', $penjualan->nelayan->nama);
 
-        // Format tanggal Indonesia
         $tanggal = \Carbon\Carbon::parse($penjualan->tanggal)
             ->locale('id')
             ->translatedFormat('d F Y');

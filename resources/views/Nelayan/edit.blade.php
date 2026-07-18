@@ -98,18 +98,13 @@
         let maxSize = 2 * 1024 * 1024;
 
         if (file.size > maxSize) {
-
             document.getElementById('alert-foto-besar').style.display = 'block';
-
             this.value = '';
-
             document.querySelector('label[for="fotoProfil"]').innerHTML =
                 '<i class="bi bi-image mr-1"></i> Ganti Foto (Opsional)...';
-
             setTimeout(() => {
                 document.getElementById('alert-foto-besar').style.display = 'none';
             }, 4000);
-
             return;
         }
 

@@ -96,11 +96,12 @@
         let file = this.files[0];
         if (!file) return;
         let maxSize = 2 * 1024 * 1024;
+        const label = document.querySelector('label[for="fotoProfil"]');
 
         if (file.size > maxSize) {
             document.getElementById('alert-foto-besar').style.display = 'block';
             this.value = '';
-            document.querySelector('label[for="fotoProfil"]').innerHTML =
+            label.innerHTML =
                 '<i class="bi bi-image mr-1"></i> Ganti Foto (Opsional)...';
             setTimeout(() => {
                 document.getElementById('alert-foto-besar').style.display = 'none';
@@ -110,7 +111,7 @@
 
         document.getElementById('alert-foto-besar').style.display = 'none';
 
-        document.querySelector('label[for="fotoProfil"]').innerHTML =
+        label.innerHTML =
             '<i class="bi bi-image-fill text-success mr-1"></i> ' + file.name;
     });
 </script>

@@ -224,9 +224,6 @@
             
         <div>
             @foreach($laporan as $lap)
-            @php 
-                $bersih_harian = $lap->total_harga - $lap->biaya_admin; 
-            @endphp
             <div class="list-item">
                 <div class="info-wrapper mb-2">
                     <div class="flex-grow-1 pr-2">                               
@@ -245,7 +242,7 @@
                                 @endforeach
                             </div>
                             <strong class="text-success" style="font-size: 14px;">
-                                Rp {{ number_format($bersih_harian, 0, ',', '.') }}
+                                Rp {{ number_format($lap->total_bersih,0,',','.') }}
                             </strong>
                         </div>
                     </div>

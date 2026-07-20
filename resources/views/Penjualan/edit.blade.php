@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
 <style>
     .bottom-nav {
         display: none !important;
@@ -454,10 +453,9 @@
         urutanKe++;
     });
 
-    // Varian tambah ikan khusus untuk Pengepul yang baru dibuat via JS
+    // Varian tambah ikan khusus untuk Pengepul yang baru dibuat
     function tambahIkanKeGrupPengepulDinamis(idPengepulBaru) {
         // Ambil nama pengepul yang diketik di select box
-        // let selectPengepul = document.querySelector(`#card-${idPengepulBaru} select`).value;
         let selectPengepul = document.querySelector(`#card-${idPengepulBaru} input[list="daftar-pengepul"]`).value;
         tambahIkanKeGrupPengepul(selectPengepul, idPengepulBaru);
     }
@@ -543,9 +541,9 @@
     }
 
     // Hitung total di awal saat halaman pertama kali dibuka
-    window.onload = function() {
+    document.addEventListener('DOMContentLoaded', function () {
         hitungTotalBaru();
-    };
+    });
 
     function formatInputRupiah(input) {
         let angka = input.value.replace(/\D/g, '');

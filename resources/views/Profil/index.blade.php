@@ -48,7 +48,6 @@
 
     <a href="javascript:void(0)" 
        class="btn-logout-fab" 
-       title="Keluar Akun"
        data-toggle="modal" 
        data-target="#modalLogout">
         <i class="bi bi-box-arrow-right" style="margin-left: 4px;"></i>

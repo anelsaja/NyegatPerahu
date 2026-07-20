@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
 <style>
     .bottom-nav {
         display: none !important;
@@ -31,23 +30,6 @@
         gap: 10px;
         background-color: #ffffff;
         border-top: 2px solid #f0f0f0;
-    }
-
-    .card-pengepul {
-        background-color: #ffffff;
-        border-radius: 14px;
-        border: none;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-        margin-bottom: 16px;
-        overflow: hidden;
-    }
-    .card-pengepul-header {
-        background-color: #f8fbfa;
-        padding: 12px 16px;
-        border-bottom: 1px solid #f0f0f0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
 </style>
 
@@ -145,7 +127,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <span class="text-success font-weight-bold" style="letter-spacing: 0.5px;">TOTAL AKHIR</span>
                 <strong class="text-success" style="font-size: 24px;">
-                    Rp {{ number_format($penjualan->total_harga - $penjualan->biaya_admin, 0, ',', '.') }}
+                    Rp {{ number_format($penjualan->total_bersih, 0, ',', '.') }}
                 </strong>
             </div>
         </div>

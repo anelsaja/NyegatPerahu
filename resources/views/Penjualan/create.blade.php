@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
 <style>
     .bottom-nav {
         display: none !important;
@@ -1083,7 +1082,7 @@ function gambarUlangKeranjangBelanja() {
                 ? 'badge-success'
                 : 'badge-danger';
 
-        // DESAIN BARU: Tanpa tombol Edit & Hapus (Read-Only)
+        // DESAIN: Tanpa tombol Edit & Hapus (Read-Only)
         let desainHTML = `
             <div class="mb-4 border-bottom pb-2">
                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1171,7 +1170,7 @@ function kirimKeDatabaseLaravel() {
     admin = admin.replace(/\./g, '');
     document.getElementById('input-admin-hidden').value = admin;
 
-    // KODE BARU: Ambil teks catatan dari textarea dan masukkan ke input hidden
+    // Ambil teks catatan dari textarea dan masukkan ke input hidden
     let catatanTeks = document.getElementById('input-catatan').value || '';
     document.getElementById('input-catatan-hidden').value = catatanTeks;
 

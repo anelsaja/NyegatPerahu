@@ -82,7 +82,7 @@
                             Pengepul: <strong>{{ $trx->detail->pluck('nama_pengepul')->unique()->implode(', ') }}</strong>
                         </small>
                         <strong class="text-success" style="font-size: 14px;">
-                            Rp {{ number_format($trx->total_harga - $trx->biaya_admin, 0, ',', '.') }}
+                            Rp {{ number_format($trx->total_bersih, 0, ',', '.') }}
                         </strong>
                     </div>
                 </div>
@@ -108,10 +108,10 @@
         <div class="text-center text-muted p-4 mt-4">
             <i class="bi bi-inbox" style="font-size: 40px; color: #ccc;"></i>
             <p class="mt-2 font-weight-bold">
-                {{ request('cari') ? 'Data penjualan tidak ditemukan.' : 'Belum ada riwayat penjualan.' }}
+                {{ request('tanggal') ? 'Data penjualan tidak ditemukan.' : 'Belum ada riwayat penjualan.' }}
             </p>
 
-            @if(request('cari'))
+            @if(request('tanggal'))
             <a href="{{ route('home') }}" 
             class="btn btn-md btn-light mt-2 font-weight-bold"
             style="border-radius: 12px; border: 2px solid #eaf6fd; color: #495057; background-color: #f8fcff;">

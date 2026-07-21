@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  # 1. SERVER WEB (LARAVEL)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nyegat_app
+    restart: unless-stopped
+    ports:
+      - "8000:80" # Akses web di port 8000
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=nyegat_db
+      - DB_USERNAME=nyegat_user
+      - DB_PASSWORD=rahasia_nyegat
+
+  # 2. SERVER DATABASE (MYSQL)
+  db:
+    image: mysql:8.0
+    container_name: nyegat_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: nyegat_db
+      MYSQL_USER: nyegat_user
+      MYSQL_PASSWORD: rahasia_nyegat
+      MYSQL_ROOT_PASSWORD: root_rahasia
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

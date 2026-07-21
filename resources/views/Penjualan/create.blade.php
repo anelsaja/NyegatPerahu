@@ -259,7 +259,7 @@
             </div>
         </div>
         
-        <div class="btn-tambah-baru shadow-sm" data-toggle="modal" data-target="#modalIkanBaru">
+        <div id="btn-tambah-ikan" class="btn-tambah-baru shadow-sm" data-toggle="modal" data-target="#modalIkanBaru">
             <div class="card-tambah-baru">
                 <i class="bi bi-plus-circle"></i>
             </div>
@@ -661,15 +661,60 @@ function pilihNelayan(id, nama, hp) {
 // 4. FUNGSI STEP 2: IKAN
 // ==========================================
 function toggleInputIkan(namaIkan, elemenKotak) {
+    let inputLelang = document.getElementById('input-Lelang');
+
+    // Jika Lelang aktif, ikan lain tidak boleh dipilih
+    if (
+        namaIkan !== 'Lelang' &&
+        inputLelang.style.display === 'block'
+    ) {
+        return;
+    }
+
     let kotakInput = document.getElementById('input-' + namaIkan);
+
     if (kotakInput.style.display === 'block') {
+        // Tutup input
         kotakInput.style.display = 'none';
         kotakInput.value = '';
         elemenKotak.classList.remove('active');
+
+        // Jika yang dimatikan adalah Lelang
+        if (namaIkan === 'Lelang') {
+            // Aktifkan kembali semua jenis ikan
+            document.querySelectorAll('.item-ikan').forEach(item => {
+                item.style.pointerEvents = '';
+                item.style.opacity = '';
+            });
+            // Aktifkan kembali tombol tambah ikan
+            let btnTambah = document.getElementById('btn-tambah-ikan');
+            btnTambah.style.pointerEvents = '';
+            btnTambah.style.opacity = '';
+        }
     } else {
+        // Buka input
         kotakInput.style.display = 'block';
         kotakInput.focus();
         elemenKotak.classList.add('active');
+
+        // Jika memilih Lelang
+        if (namaIkan === 'Lelang') {
+            // Nonaktifkan semua ikan selain Lelang
+            document.querySelectorAll('.item-ikan').forEach(item => {
+                let input = item.querySelector('.input-harga');
+                if (input && input.id !== 'input-Lelang') {
+                    item.style.pointerEvents = 'none';
+                    item.style.opacity = '0.4';
+                    input.style.display = 'none';
+                    input.value = '';
+                    item.classList.remove('active');
+                }
+            });
+            // Nonaktifkan tombol tambah ikan
+            let btnTambah = document.getElementById('btn-tambah-ikan');
+            btnTambah.style.pointerEvents = 'none';
+            btnTambah.style.opacity = '0.4';
+        }
     }
 
     cekModeLelang();
@@ -973,7 +1018,7 @@ function validasiDanSimpan() {
         teksWa += `\n\n*Total Uang:* Rp ${totalHargaBaru.toLocaleString('id-ID')}\nTerima kasih!`;
 
         tombolYakin.href = `https://wa.me/${hp}?text=${encodeURIComponent(teksWa)}`;
-        tombolYakin.target = "_blank"; // Buka WA di tab baru
+        tombolYakin.target = "_blank";
     } else {
         // Jika tidak ada nomor HP, matikan fitur tautan WA-nya
         tombolYakin.removeAttribute("href");
@@ -1027,6 +1072,20 @@ function eksekusiSimpanKeranjang() {
         input.value = '';
     });
 
+    // Aktifkan kembali semua jenis ikan
+    document.querySelectorAll('.item-ikan').forEach(item => {
+        item.style.pointerEvents = '';
+        item.style.opacity = '';
+    });
+
+    // Aktifkan kembali tombol tambah ikan
+    let btnTambah = document.getElementById('btn-tambah-ikan');
+    btnTambah.style.pointerEvents = '';
+    btnTambah.style.opacity = '';
+
+    // Reset mode lelang
+    cekModeLelang();
+
     // Reset pengepul
     memori.pengepul_aktif = '';
     document.querySelectorAll('.item-pengepul').forEach(el => {
@@ -1068,15 +1127,10 @@ function gambarUlangKeranjangBelanja() {
     });
 
     for (let key in lemariPengepul) {
-
         let totalHarga = 0;
-
         let daftarIkan = lemariPengepul[key];
-
         let namaPengepul = daftarIkan[0].pengepul;
-
         let statusTampil = daftarIkan[0].status;
-
         let warnaBadge =
             statusTampil === 'Lunas'
                 ? 'badge-success'
@@ -1205,7 +1259,6 @@ document.addEventListener('input', function(e) {
     ) {
 
         let angka = e.target.value.replace(/\D/g, '');
-
         e.target.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
         if (e.target.id === 'input-admin') {

@@ -12,7 +12,6 @@
 */
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 
 // Rute Login & Autentikasi Google
 Route::get('/login', 'AuthController@loginView')->name('login');

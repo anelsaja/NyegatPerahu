@@ -100,7 +100,6 @@
             </a>
         </div>
 
-        <!-- FOOTER -->
         <div class="footer">
             <p class="mb-2 font-weight-bold">Ibu-ibu nelayan baru? Silahkan daftar</p>
             <a href="{{ route('google.login') }}" class="btn btn-daftar">Daftar</a>

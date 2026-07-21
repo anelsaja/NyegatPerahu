@@ -56,7 +56,7 @@
         margin-bottom: 20px;
     }
 
-        .fotoprofil {
+    .fotoprofil {
         width: 60px;
         height: 60px;
         border: 3px solid #333;
@@ -81,7 +81,6 @@
         text-align: center;
         font-weight: bold;
     }
-    
 </style>
 
 <div class="p-3">

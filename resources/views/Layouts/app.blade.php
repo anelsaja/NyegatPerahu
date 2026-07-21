@@ -30,7 +30,7 @@
             color: #5bc0de;
         }
 
-        /* Desain Baru Navigasi Bawah */
+        /* Desain Navigasi Bawah */
         .bottom-nav { 
             width: 100%; 
             background-color: #3b769f;

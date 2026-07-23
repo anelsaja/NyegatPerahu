@@ -256,7 +256,7 @@
         @if($link_wa_bulanan && $laporan->isNotEmpty())
             <button type="button"
                     onclick="downloadLaporan()"
-                    class="btn-wa-fab"
+                    class="btn-wa-fab">
                 <i class="bi bi-file-earmark-arrow-down-fill"></i>
             </button>
         @endif
